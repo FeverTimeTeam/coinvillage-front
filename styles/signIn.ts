@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import color from '../../src/constants/color';
+import color from '../src/constants/color';
 
 const Root = styled.div`
   width: 100px;

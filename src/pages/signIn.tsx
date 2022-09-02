@@ -1,13 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import Root from '../../styles/SignIn/styled';
+import Root from '../../styles/signIn';
 import Button from '../components/button';
 
 const SignIn = () => {
   return (
     <>
       <Root>signIn page</Root>
-      <div>hi</div>
       <Button
         onClick={() => {
           console.log('회원가입 버튼');
