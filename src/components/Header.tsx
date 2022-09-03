@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import color from '../constants/color';
+import Link from 'next/link';
 
 const Root = styled.header`
   display: flex;
@@ -23,6 +24,8 @@ const Root = styled.header`
     font-weight: bold;
     background-color: ${color.light_gray};
     cursor: pointer;
+    text-decoration: none;
+    color: black;
 
     &:hover {
       background-color: ${color.light_gray2};
@@ -34,7 +37,9 @@ const Header: React.FC = () => {
   return (
     <Root>
       <img src='/logo.svg' />
-      <button>로그인/회원가입</button>
+      <button>
+        <Link href='/login'>로그인/회원가입</Link>
+      </button>
     </Root>
   );
 };
