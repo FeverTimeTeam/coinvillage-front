@@ -9,7 +9,7 @@ const Root = styled.header`
   align-items: center;
   width: 100%;
   height: 5.25rem;
-  padding: 0.75rem 5.5rem;
+  padding: 0.75rem 0rem;
 
   button {
     display: flex;
