@@ -3,7 +3,8 @@ const color = {
   kb: '#FFBB00',
   gray: '#BEBEBE',
   light_gray: '#E2E2E2',
-  light_gray2: '#D1D1D1',
+  light_gray2: '#ECECEC',
+  light_gray3: '#D1D1D1',
   deep_green: '#245630',
   deep: '#3A3A3A',
   warm_gray_deep: '#544F4C',
@@ -13,6 +14,7 @@ const color = {
   system_warning: '#FF5242',
   system_ok: '#3B9A50',
   white: '#FFFFFF',
+  black: '#000000',
   inactive: '#E3E3E3',
 };
 
