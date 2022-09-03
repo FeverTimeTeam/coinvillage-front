@@ -10,7 +10,8 @@ type Props = {
   color: string;
   borderColor?: string;
   children: any;
-  onClick?: () => void;
+  onClick: () => void;
+  style?: any;
 };
 
 type RootProps = {
@@ -37,14 +38,15 @@ const Root = styled.div<RootProps>`
 `;
 
 const Button: React.FC<Props> = ({
-  width = 7,
-  height = 3.25,
-  borderRadius = 0.625,
+  width = 5,
+  height = 2,
+  borderRadius = 0.5,
   backgroundColor,
   color,
   borderColor,
   onClick,
   children,
+  style,
 }) => {
   return (
     <>
@@ -56,6 +58,7 @@ const Button: React.FC<Props> = ({
         color={color}
         borderColor={borderColor}
         onClick={onClick}
+        style={style}
       >
         {children}
       </Root>
