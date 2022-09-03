@@ -17,15 +17,15 @@ type RootProps = {
 };
 
 const Root = styled.img<RootProps>`
-  ${(props) => `width: ${props.width}px;`}
-  ${(props) => `height: ${props.height}px;`}
+  ${(props) => `width: ${props.width}rem;`}
+  ${(props) => `height: ${props.height}rem;`}
   ${(props) => props.hover && `cursor: pointer;`}
 `;
 
 const Image: React.FC<Props> = ({
   src,
-  width = 40,
-  height = 40,
+  width = 2.5,
+  height = 2.5,
   hover = true,
   onClick = () => {},
 }) => {
