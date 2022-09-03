@@ -3,6 +3,13 @@ import color from '../src/constants/color';
 
 const Root = styled.div``;
 
-const TopBarContainer = styled.div``;
+const TopBarContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
-export { Root, TopBarContainer };
+const TopBarLeftItemsContainer = styled.div`
+  display: flex;
+`;
+
+export { Root, TopBarContainer, TopBarLeftItemsContainer };
