@@ -53,7 +53,7 @@ const Header: React.FC = () => {
             width={10}
             height={3}
             borderRadius={1}
-            backgroundColor={color.light_gray2}
+            backgroundColor={color.light_gray}
             color='black'
           >
             로그인/회원가입
