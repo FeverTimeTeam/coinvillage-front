@@ -5,7 +5,7 @@ import Button from '../components/button';
 import color from '../constants/color';
 import Link from 'next/link';
 
-const FormContainer = styled.section`
+const Root = styled.section`
   width: 100%;
   height: calc(100vh - 5.25rem);
   display: flex;
@@ -83,7 +83,7 @@ const SignUpWrapper = styled.div`
 
 const Login = () => {
   return (
-    <FormContainer>
+    <Root>
       <LoginForm>
         <h3>아이디</h3>
         <LoginInput
@@ -104,7 +104,7 @@ const Login = () => {
           <Link href='/signup'>회원가입하기</Link>
         </SignUpWrapper>
       </LoginForm>
-    </FormContainer>
+    </Root>
   );
 };
 
