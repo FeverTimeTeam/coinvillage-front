@@ -5,11 +5,10 @@ import color from '../constants/color';
 
 const FormContainer = styled.section`
   width: 100%;
-  height: calc(100vh - 3rem);
+  height: calc(100vh - 5.25rem);
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f5f5f5;
 `;
 
 const LoginForm = styled.form`
@@ -18,6 +17,8 @@ const LoginForm = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: white;
+  shadow: ;
 `;
 
 const Login = () => {
