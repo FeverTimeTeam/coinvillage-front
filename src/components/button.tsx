@@ -8,9 +8,9 @@ type Props = {
   borderRadius?: number;
   backgroundColor: string;
   color: string;
-  borderColor: string;
+  borderColor?: string;
   children: any;
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 type RootProps = {
@@ -19,7 +19,7 @@ type RootProps = {
   borderRadius?: number;
   backgroundColor: string;
   color: string;
-  borderColor: string;
+  borderColor?: string;
 };
 
 const Root = styled.div<RootProps>`
@@ -32,7 +32,6 @@ const Root = styled.div<RootProps>`
   ${(props) => `border-radius: ${props.borderRadius}rem;`}
   ${(props) => `background-color: ${props.backgroundColor};`}
   ${(props) => `color: ${props.color};`}
-  border: solid;
   ${(props) => `border-color: ${props.borderColor};`}
   cursor: pointer;
 `;

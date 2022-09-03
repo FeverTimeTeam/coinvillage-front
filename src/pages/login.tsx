@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import Root from '../../styles/signIn';
 import Button from '../components/button';
 import color from '../constants/color';
 
 const FormContainer = styled.section`
   width: 100%;
-  height: calc(100vh-3rem);
+  height: calc(100vh - 3rem);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,6 +15,9 @@ const FormContainer = styled.section`
 const LoginForm = styled.form`
   width: 38.125rem;
   height: 35.625rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Login = () => {
