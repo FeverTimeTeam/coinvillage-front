@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
-import { Root, TopBarContainer } from '../../styles/manageNation';
+import {
+  Root,
+  TopBarContainer,
+  TopBarLeftItemsContainer,
+} from '../../styles/manageNation';
 import CheckBox from '../components/checkBox';
 import Image from '../components/image';
 import yellowCheck from '../assets/images/yellow_check.png';
 import Button from '../components/button';
 import color from '../constants/color';
 import TextInput from '../components/textInput';
+import Typo from '../components/typo';
+import SearchBox from '../components/searchBox';
 
 const ManageNation = () => {
   type Nation = {
@@ -60,28 +66,36 @@ const ManageNation = () => {
     <Root>
       <>
         <TopBarContainer>
-          <div>국민관리</div>
-          <Button
-            backgroundColor={color.white}
-            color={color.kb}
-            borderColor={color.kb}
-            onClick={() => {
-              console.log('수정하기');
-            }}
-          >
-            수정하기
-          </Button>
-          <Button
-            backgroundColor={color.warm_gray1}
-            color={color.white}
-            borderColor={color.warm_gray1}
-            onClick={() => {
-              console.log('월급주기');
-            }}
-          >
-            월급주기
-          </Button>
-          <TextInput
+          <TopBarLeftItemsContainer>
+            <Typo color={color.deep} fontSize={2}>
+              국민관리
+            </Typo>
+            <Button
+              backgroundColor={color.white}
+              color={color.kb}
+              borderColor={color.kb}
+              onClick={() => {
+                console.log('수정하기');
+              }}
+              style={{ marginLeft: '1rem', marginRight: '1rem' }}
+            >
+              수정하기
+            </Button>
+            <Button
+              backgroundColor={color.warm_gray1}
+              color={color.white}
+              borderColor={color.warm_gray1}
+              onClick={() => {
+                console.log('월급주기');
+              }}
+            >
+              월급주기
+            </Button>
+          </TopBarLeftItemsContainer>
+
+          <SearchBox
+            width={3}
+            height={1}
             value={searchWord}
             placeholder='이름 검색'
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

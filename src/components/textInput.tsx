@@ -14,7 +14,11 @@ type RootProps = {
   height?: number;
 };
 
-const Root = styled.input<RootProps>``;
+const StyledInput = styled.input<RootProps>`
+  :focus {
+    outline: 0;
+  }
+`;
 
 const TextInput: React.FC<Props> = ({
   width,
@@ -37,3 +41,4 @@ const TextInput: React.FC<Props> = ({
 };
 
 export default TextInput;
+export { StyledInput };

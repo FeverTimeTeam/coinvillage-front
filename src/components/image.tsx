@@ -8,6 +8,7 @@ type Props = {
   height?: number;
   hover?: boolean;
   onClick?: () => void;
+  style?: any;
 };
 
 type RootProps = {
@@ -28,6 +29,7 @@ const Image: React.FC<Props> = ({
   height = 2.5,
   hover = true,
   onClick = () => {},
+  style,
 }) => {
   return (
     <>
@@ -38,6 +40,7 @@ const Image: React.FC<Props> = ({
         height={height}
         hover={hover}
         onClick={onClick}
+        style={style}
       />
     </>
   );
