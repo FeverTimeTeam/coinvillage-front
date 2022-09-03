@@ -13,15 +13,20 @@ const Root = styled.header`
 
   button {
     display: flex;
-    width: 12.188rem;
-    height: 3.375rem;
+    width: 10rem;
+    height: 3rem;
     border: none;
     border-radius: 1rem;
     justify-content: center;
     align-items: center;
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-weight: bold;
     background-color: ${color.light_gray};
+    cursor: pointer;
+
+    &:hover {
+      background-color: ${color.light_gray2};
+    }
   }
 `;
 
