@@ -6,6 +6,7 @@ import Image from './image';
 type Props = {
   width?: number;
   height?: number;
+  borderRadius?: number;
   isChecked: boolean;
   onClick: () => void;
 };
@@ -13,27 +14,23 @@ type Props = {
 type RootProps = {
   width?: number;
   height?: number;
+  borderRadius?: number;
   isChecked: boolean;
 };
 
 const Root = styled.div<RootProps>`
   display: flex;
-  ${(props) => `width: ${props.width}px;`}
-  ${(props) => `height: ${props.height}px;`}
-  border-radius: 8px;
+  ${(props) => `width: ${props.width}rem;`}
+  ${(props) => `height: ${props.height}rem;`}
+  ${(props) => `border-radius: ${props.borderRadius}rem;`}
   border: solid;
-  ${(props) =>
-    props.isChecked
-      ? `border-color: ${color.kb}; background-color: ${color.kb};`
-      : `border-color: ${color.warm_gray1}; background-color: ${color.white};`}
-  /* ${(props) =>
-    `background-color: ${props.isChecked ? color.kb : color.deep_green};`} */
   cursor: pointer;
 `;
 
 const CheckBox: React.FC<Props> = ({
-  width = 40,
-  height = 40,
+  width = 2.5,
+  height = 2.5,
+  borderRadius = 0.313,
   isChecked,
   onClick,
 }) => {
@@ -45,6 +42,7 @@ const CheckBox: React.FC<Props> = ({
         <Root
           width={width}
           height={height}
+          borderRadius={borderRadius}
           isChecked={isChecked}
           onClick={onClick}
         />

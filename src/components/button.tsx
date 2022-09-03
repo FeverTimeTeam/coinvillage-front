@@ -27,9 +27,9 @@ const Root = styled.div<RootProps>`
   justify-content: center;
   align-items: center;
   text-align: center;
-  ${(props) => `width: ${props.width}px;`}
-  ${(props) => `height: ${props.height}px;`}
-  ${(props) => `border-radius: ${props.borderRadius}px;`}
+  ${(props) => `width: ${props.width}rem;`}
+  ${(props) => `height: ${props.height}rem;`}
+  ${(props) => `border-radius: ${props.borderRadius}rem;`}
   ${(props) => `background-color: ${props.backgroundColor};`}
   ${(props) => `color: ${props.color};`}
   border: solid;
@@ -38,9 +38,9 @@ const Root = styled.div<RootProps>`
 `;
 
 const Button: React.FC<Props> = ({
-  width = 120,
-  height = 50,
-  borderRadius = 8,
+  width = 7,
+  height = 3.25,
+  borderRadius = 0.625,
   backgroundColor,
   color,
   borderColor,

@@ -20,7 +20,7 @@ const ManageNation = () => {
   };
 
   const [searchWord, setSearchWord] = useState<string>('');
-  // const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
   const [nationList, setNationList] = useState<Nation[] | void[]>([
     {
       id: 0,
@@ -106,12 +106,12 @@ const ManageNation = () => {
             );
           })}
         <div>
-          {/* <CheckBox
+          <CheckBox
             isChecked={isChecked}
             onClick={() => {
               setIsChecked(!isChecked);
             }}
-          /> */}
+          />
         </div>
       </>
     </Root>
