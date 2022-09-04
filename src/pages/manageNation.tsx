@@ -47,11 +47,21 @@ const ManageNation = () => {
     '개발자',
     '무직',
   ]);
-  const [isToggledJob, setIsToggledJob] = useState<number>(-1);
   const [selectedJob, setSelectedJob] = useState<number>(-1);
+  const [isToggledJob, setIsToggledJob] = useState<boolean[]>([
+    ...Array(jobList?.length).fill(false),
+  ]);
   const handleSelectJob = (id: number) => () => {
     setSelectedJob(id);
-    setIsToggledJob(id);
+    setIsToggledJob((prev) =>
+      prev.map((value, index) => (index === id ? true : false))
+    );
+  };
+
+  const handleToggled = (id: number) => () => {
+    setIsToggledJob((prev) =>
+      prev.map((value, index) => (index === id ? true : false))
+    );
   };
   const [searchWord, setSearchWord] = useState<string>('');
   const [isChecked, setIsChecked] = useState<boolean>(false);
@@ -229,8 +239,8 @@ const ManageNation = () => {
                       select={selectedJob}
                       handleSelect={handleSelectJob}
                       placeholder='직업 선택'
-                      onClickTitle={() => setIsToggledJob((prev) => !prev)}
-                      isToggled={isToggledJob}
+                      onClickTitle={handleToggled(nation.id)}
+                      isToggled={isToggledJob[nation.id]}
                     />
                   )}
 
