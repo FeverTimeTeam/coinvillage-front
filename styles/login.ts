@@ -53,7 +53,7 @@ export const LoginInput = styled.input`
   padding-bottom: 0.4rem;
 
   &::placeholder {
-    color: ${color.light_gray};
+    color: ${color.light_gray3};
   }
 `;
 

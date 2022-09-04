@@ -13,8 +13,13 @@ const Main = styled.main`
   }
 
   @media screen and (min-width: ${deviceSize.laptop}) {
-    padding-left: 13rem;
-    padding-right: 13rem;
+    padding-left: 12rem;
+    padding-right: 12rem;
+  }
+
+  @media screen and (min-width: ${deviceSize.large}) {
+    padding-left: 16rem;
+    padding-right: 16rem;
   }
 `;
 

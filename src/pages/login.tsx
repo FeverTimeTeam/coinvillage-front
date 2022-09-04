@@ -7,13 +7,18 @@ import {
   LoginButton,
   SignUpWrapper,
 } from '../../styles/login';
+import { useRecoilState } from 'recoil';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { axiosInstance } from '../queries';
+import { loginState } from '../recoil';
 
 const Login = () => {
   const [id, setId] = useState<string>('');
   const [pw, setPw] = useState<string>('');
+  const router = useRouter();
+
+  const [loginUserState, setLoginUserState] = useRecoilState(loginState);
 
   function onIdChange(e: React.ChangeEvent<HTMLInputElement>) {
     setId(e.target.value);
@@ -31,9 +36,11 @@ const Login = () => {
         email: id,
         password: pw,
       });
-      console.log(response);
+      if (response.status == 200) {
+        router.push('/');
+      }
     } catch (e) {
-      console.log(e);
+      alert('아이디/비밀번호가 일치하지 않습니다.');
     }
 
     setId('');
@@ -43,7 +50,7 @@ const Login = () => {
   return (
     <Root>
       <LoginForm onSubmit={onLoginSubmit}>
-        <h3>아이디</h3>
+        <h3>이메일</h3>
         <LoginInput placeholder='이메일을 입력해주세요' onChange={onIdChange} />
         <h3>비밀번호</h3>
         <LoginInput
