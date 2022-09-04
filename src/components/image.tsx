@@ -6,6 +6,7 @@ type Props = {
   src: string;
   width?: number;
   height?: number;
+  rotate?: number;
   hover?: boolean;
   onClick?: () => void;
   style?: any;
@@ -15,18 +16,23 @@ type RootProps = {
   width?: number;
   height?: number;
   hover?: boolean;
+  rotate?: 0;
 };
 
 const Root = styled.img<RootProps>`
   ${(props) => `width: ${props.width}rem;`}
   ${(props) => `height: ${props.height}rem;`}
   ${(props) => props.hover && `cursor: pointer;`}
+  ${(props) => `transform: rotate(${props.rotate}turn);`}
+  &&& {
+    object-fit: contain;
+  }
 `;
 
 const Image: React.FC<Props> = ({
   src,
-  width = 2.5,
-  height = 2.5,
+  width = 2,
+  height = 2,
   hover = true,
   onClick = () => {},
   style,
