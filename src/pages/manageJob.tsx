@@ -123,7 +123,7 @@ const ManageNation = () => {
                       <Typo fontSize={1.2} style={{ width: '14%' }}>
                         {nation.payCheck}리브
                       </Typo>
-                      <Typo fontSize={1.2} style={{ width: '8%' }}>
+                      <Typo fontSize={1.2} style={{ width: '20%' }}>
                         {`${nation.working}`}
                       </Typo>
                     </ListItemContainer>
@@ -160,28 +160,45 @@ const ManageNation = () => {
                         value={job.jobName}
                         borderRadius={0.5}
                         onChange={onClickDelete}
-                        style={{ marginLeft: '5%', width: '8%' }}
+                        style={{
+                          marginLeft: '5%',
+                          width: '8%',
+                          textAlign: 'center',
+                        }}
                       />
                       <TextInput
                         placeholder='직업 설명'
                         borderRadius={0.5}
                         value={job.jobDescription}
                         onChange={onClickDelete}
-                        style={{ marginLeft: '2%', width: '45.5%' }}
+                        style={{
+                          marginLeft: '2%',
+                          width: '43.5%',
+                          paddingLeft: '1.5rem',
+                        }}
                       />
                       <TextInput
                         placeholder='월급'
                         borderRadius={0.5}
                         value={job.pay}
                         onChange={onClickDelete}
-                        style={{ marginLeft: '2%', width: '8%' }}
+                        style={{
+                          marginLeft: '2%',
+                          width: '6.5%',
+                          textAlign: 'right',
+                          paddingRight: '1.5rem',
+                        }}
                       />
                       <TextInput
                         placeholder='인원'
                         borderRadius={0.5}
                         value={job.workForce}
                         onChange={onClickDelete}
-                        style={{ marginLeft: '2%', width: '4%' }}
+                        style={{
+                          marginLeft: '2%',
+                          width: '4%',
+                          textAlign: 'center',
+                        }}
                       />
 
                       <Button
