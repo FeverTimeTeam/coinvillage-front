@@ -44,7 +44,11 @@ const ImageWrapper = styled.div`
   right: 0.5rem;
 `;
 
-const ItemListContainer = styled.div`
+type ItemListContainerProps = {
+  isToggled?: boolean;
+};
+
+const ItemListContainer = styled.div<ItemListContainerProps>`
   position: absolute;
   z-index: 3;
   left: 0rem;
@@ -52,7 +56,9 @@ const ItemListContainer = styled.div`
   width: 8rem;
   border-radius: 0.5rem;
   background-color: ${color.white};
-  box-shadow: 0.125rem 0.125rem 0.25rem 0.063rem rgba(0, 0, 0, 0.2);
+  ${(props) =>
+    props.isToggled &&
+    `box-shadow: 0.125rem 0.125rem 0.25rem 0.063rem rgba(0, 0, 0, 0.2);`}
 `;
 
 type ItemContainerProps = {
