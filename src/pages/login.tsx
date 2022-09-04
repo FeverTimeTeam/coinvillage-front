@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { StyledInput } from '../components/textInput';
-import Button from '../components/button';
 import color from '../constants/color';
 import Link from 'next/link';
+import deviceSize from '../constants/deviceSize';
 
 const Root = styled.section`
   width: 100%;
@@ -19,26 +18,35 @@ const Root = styled.section`
 
 const LoginForm = styled.form`
   box-sizing: border-box;
-  width: 40rem;
-  height: 35rem;
+  width: 27rem;
+  height: 30rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: start;
   border-radius: 1.5rem;
   background-color: white;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
-  padding: 5rem;
+  padding: 2rem;
 
   h3 {
     font-size: 1.25rem;
     font-weight: 600;
   }
+
+  @media screen and (min-width: ${deviceSize.tablet}) {
+    padding-left: 3rem;
+    padding-right: 3rem;
+    width: 40rem;
+    height: 35rem;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+  }
 `;
 
-const LoginInput = styled(StyledInput)`
+const LoginInput = styled.input`
   border: none;
   border-bottom: 1px solid ${color.light_gray};
+  width: 100%;
+  height: 1.5rem;
   outline: none;
   font-size: 1rem;
   margin-top: 1rem;
@@ -51,7 +59,7 @@ const LoginInput = styled(StyledInput)`
 `;
 
 const LoginButton = styled.button`
-  width: 30rem;
+  width: 100%;
   height: 4rem;
   border-radius: 1rem;
   background-color: ${color.kb};
@@ -64,7 +72,7 @@ const LoginButton = styled.button`
 `;
 
 const SignUpWrapper = styled.div`
-  width: 30rem;
+  width: 100%;
   display: flex;
   justify-content: end;
   align-items: center;
@@ -86,18 +94,9 @@ const Login = () => {
     <Root>
       <LoginForm>
         <h3>아이디</h3>
-        <LoginInput
-          width={30}
-          height={1.5}
-          placeholder='아이디를 입력해주세요'
-        />
+        <LoginInput placeholder='아이디를 입력해주세요' />
         <h3>비밀번호</h3>
-        <LoginInput
-          type='password'
-          width={30}
-          height={1.5}
-          placeholder='비밀번호를 입력해주세요'
-        />
+        <LoginInput type='password' placeholder='비밀번호를 입력해주세요' />
         <LoginButton>로그인</LoginButton>
         <SignUpWrapper>
           <span>아직 회원이 아니신가요?</span>
