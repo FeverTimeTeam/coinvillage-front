@@ -8,6 +8,7 @@ type Props = {
   placeholder: string;
   borderRadius: number;
   onChange: (e: any) => void;
+  style?: any;
 };
 
 type RootProps = {
@@ -19,7 +20,14 @@ type RootProps = {
 const StyledInput = styled.input<RootProps>`
   ${(props) => `width: ${props.width}rem;`}
   ${(props) => `height: ${props.height}rem;`}
-  ${(props) => `border-radius: ${props.borderRadius}rem;`}
+  ${(props) => `border-radius: ${props.borderRadius}rem;`} 
+  border: solid 0.15rem ${color.light_warm_gray};
+  background: transparent;
+  ::placeholder {
+    color: ${color.black};
+  }
+  height: 3rem;
+  font-size: 1rem;
   :focus {
     outline: 0;
   }
@@ -32,6 +40,7 @@ const TextInput: React.FC<Props> = ({
   placeholder,
   borderRadius,
   onChange,
+  style,
 }) => {
   return (
     <>
@@ -42,6 +51,7 @@ const TextInput: React.FC<Props> = ({
         value={value}
         placeholder={placeholder}
         onChange={onChange}
+        style={style}
       />
     </>
   );
