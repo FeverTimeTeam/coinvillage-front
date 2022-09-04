@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import {
+  ListItemContainer,
+  ListTitleContainer,
   Root,
   TopBarContainer,
   TopBarLeftItemsContainer,
 } from '../../styles/manageNation';
 import CheckBox from '../components/checkBox';
 import Image from '../components/image';
-import yellowCheck from '../assets/images/yellow_check.png';
 import Button from '../components/button';
 import color from '../constants/color';
 import TextInput from '../components/textInput';
 import Typo from '../components/typo';
 import SearchBox from '../components/searchBox';
+import StyledHorizontalRule from '../components/horizontalRule';
+import DropDown from '../components/dropDown';
 
 const ManageNation = () => {
   type Nation = {
@@ -25,8 +28,34 @@ const ManageNation = () => {
     isChecked: boolean;
   };
 
+  const [isModifyState, setIsModifyState] = useState<boolean>(false);
+  const [modifyButtonText, setModifyButtonText] = useState<string>('수정하기');
+  const [isPaycheckState, setIsPaycheckState] = useState<boolean>(false);
+  const onClickModify = () => {
+    setIsModifyState((isModifyState) => !isModifyState);
+    isModifyState
+      ? setModifyButtonText('적용하기')
+      : setModifyButtonText('수정하기');
+  };
+  const onClickPayCheck = () => {
+    setIsPaycheckState((isPaycheckState) => !isPaycheckState);
+  };
+  const [jobList, setJobList] = useState<string[]>([
+    '은행원',
+    '펀드 매니저',
+    '통계청',
+    '개발자',
+    '무직',
+  ]);
+  const [isToggledJob, setIsToggledJob] = useState<number>(-1);
+  const [selectedJob, setSelectedJob] = useState<number>(-1);
+  const handleSelectJob = (id: number) => () => {
+    setSelectedJob(id);
+    setIsToggledJob(id);
+  };
   const [searchWord, setSearchWord] = useState<string>('');
   const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [checkedItems, setCheckedItems] = useState<number[]>();
   const [nationList, setNationList] = useState<Nation[] | void[]>([
     {
       id: 0,
@@ -48,19 +77,57 @@ const ManageNation = () => {
       property: 1000,
       isChecked: true,
     },
+    {
+      id: 2,
+      ranking: 3,
+      name: '박지은',
+      job: '환경부',
+      jobDescription: '교실 청소',
+      payCheck: 100,
+      property: 1000,
+      isChecked: true,
+    },
+    {
+      id: 3,
+      ranking: 4,
+      name: '박지은',
+      job: '환경부',
+      jobDescription: '교실 청소',
+      payCheck: 100,
+      property: 1000,
+      isChecked: true,
+    },
+    {
+      id: 4,
+      ranking: 5,
+      name: '박지은',
+      job: '환경부',
+      jobDescription: '교실 청소',
+      payCheck: 100,
+      property: 1000,
+      isChecked: true,
+    },
+    {
+      id: 5,
+      ranking: 6,
+      name: '박지은',
+      job: '환경부',
+      jobDescription: '교실 청소',
+      payCheck: 100,
+      property: 1000,
+      isChecked: true,
+    },
+    {
+      id: 6,
+      ranking: 7,
+      name: '박지은',
+      job: '환경부',
+      jobDescription: '교실 청소',
+      payCheck: 100,
+      property: 1000,
+      isChecked: true,
+    },
   ]);
-
-  const onToggle = () => (id: number) => {
-    nationList &&
-      setNationList(
-        nationList.map((nation: any) => {
-          nation && nation.id === id
-            ? { ...nation, isChecked: !nation.isChecked }
-            : nation;
-        })
-      );
-    console.log('onToggle');
-  };
 
   return (
     <Root>
@@ -74,20 +141,20 @@ const ManageNation = () => {
               backgroundColor={color.white}
               color={color.kb}
               borderColor={color.kb}
-              onClick={() => {
-                console.log('수정하기');
+              onClick={onClickModify}
+              style={{
+                marginLeft: '1rem',
+                marginRight: '1rem',
+                border: 'solid',
               }}
-              style={{ marginLeft: '1rem', marginRight: '1rem' }}
             >
-              수정하기
+              {modifyButtonText}
             </Button>
             <Button
               backgroundColor={color.warm_gray1}
               color={color.white}
               borderColor={color.warm_gray1}
-              onClick={() => {
-                console.log('월급주기');
-              }}
+              onClick={onClickPayCheck}
             >
               월급주기
             </Button>
@@ -101,32 +168,85 @@ const ManageNation = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setSearchWord(e.target.value);
             }}
+            onSubmit={(e: any) => {
+              e.preventDefault();
+              setSearchWord('');
+            }}
           />
         </TopBarContainer>
+        <ListTitleContainer>
+          <CheckBox
+            isChecked={isChecked}
+            onClick={() => setIsChecked((isChecked) => !isChecked)}
+            style={{ marginLeft: '0.5rem', marginRight: '3rem' }}
+          />
+          <Typo fontSize={1.2} style={{ width: '6%' }}>
+            랭킹
+          </Typo>
+          <Typo fontSize={1.2} style={{ width: '12%' }}>
+            이름
+          </Typo>
+          <Typo fontSize={1.2} style={{ width: '12%' }}>
+            직업
+          </Typo>
+          <Typo fontSize={1.2} style={{ width: '42%' }}>
+            하는 일
+          </Typo>
+          <Typo fontSize={1.2} style={{ width: '12%' }}>
+            월급
+          </Typo>
+          <Typo fontSize={1.2} style={{ width: '8%' }}>
+            총 재산
+          </Typo>
+        </ListTitleContainer>
+        <StyledHorizontalRule />
         {nationList &&
           nationList.map((nation, index) => {
             return (
               nation && (
-                <div key={nation.ranking}>
-                  <CheckBox isChecked={nation.isChecked} onClick={onToggle} />
-                  <div>{nation.ranking}</div>
-                  <div>{nation.name}</div>
-                  <div>{nation.job}</div>
-                  <div>{nation.jobDescription}</div>
-                  <div>{nation.payCheck}</div>
-                  <div>{nation.property}</div>
-                </div>
+                <ListItemContainer key={nation.id}>
+                  <CheckBox
+                    isChecked={nation.isChecked}
+                    onClick={() => setIsChecked((isChecked) => !isChecked)}
+                    style={{
+                      marginLeft: '0.5rem',
+                      marginRight: '3rem',
+                    }}
+                  />
+                  <Typo fontSize={1.2} style={{ width: '6%' }}>
+                    {nation.ranking}
+                  </Typo>
+                  <Typo fontSize={1.2} style={{ width: '12%' }}>
+                    {nation.name}
+                  </Typo>
+                  {isModifyState ? (
+                    <Typo fontSize={1.2} style={{ width: '12%' }}>
+                      {nation.job}
+                    </Typo>
+                  ) : (
+                    <DropDown
+                      itemList={jobList}
+                      select={selectedJob}
+                      handleSelect={handleSelectJob}
+                      placeholder='직업 선택'
+                      onClickTitle={() => setIsToggledJob((prev) => !prev)}
+                      isToggled={isToggledJob}
+                    />
+                  )}
+
+                  <Typo fontSize={1.2} style={{ width: '42%' }}>
+                    {nation.jobDescription}
+                  </Typo>
+                  <Typo fontSize={1.2} style={{ width: '12%' }}>
+                    {nation.payCheck}
+                  </Typo>
+                  <Typo fontSize={1.2} style={{ width: '8%' }}>
+                    {nation.property}
+                  </Typo>
+                </ListItemContainer>
               )
             );
           })}
-        <div>
-          <CheckBox
-            isChecked={isChecked}
-            onClick={() => {
-              setIsChecked(!isChecked);
-            }}
-          />
-        </div>
       </>
     </Root>
   );

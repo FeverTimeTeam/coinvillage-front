@@ -1,14 +1,16 @@
+import { ReactNode } from 'react';
 import styled from 'styled-components';
 import color from '../constants/color';
 
 type Props = {
-  color: string;
+  color?: string;
   fontSize?: number;
-  children: string;
+  children: any;
+  style?: any;
 };
 
 type RootProps = {
-  color: string;
+  color?: string;
   fontSize: number;
 };
 
@@ -17,9 +19,14 @@ const Root = styled.div<RootProps>`
   ${(props) => `font-size: ${props.fontSize}rem;`}
 `;
 
-const Typo: React.FC<Props> = ({ color, fontSize = 1, children }) => {
+const Typo: React.FC<Props> = ({
+  color = '#3A3A3A',
+  fontSize = 1,
+  children,
+  style,
+}) => {
   return (
-    <Root color={color} fontSize={fontSize}>
+    <Root color={color} fontSize={fontSize} style={style}>
       {children}
     </Root>
   );
