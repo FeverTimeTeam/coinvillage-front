@@ -8,6 +8,10 @@ export const ImageWrapper = styled.div`
   border-radius: 9999px;
   background-color: ${color.light_gray};
   margin-bottom: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 
   @media screen and (min-width: ${deviceSize.laptop}) {
     width: 14rem;
@@ -19,5 +23,18 @@ export const ImageWrapper = styled.div`
     width: 18rem;
     height: 18rem;
     margin: 0 auto;
+  }
+
+  span {
+    font-weight: bold;
+    font-size: 1rem;
+
+    @media screen and (min-width: ${deviceSize.laptop}) {
+      font-size: 1.25rem;
+    }
+
+    @media screen and (min-width: ${deviceSize.large}) {
+      font-size: 1.5rem;
+    }
   }
 `;
