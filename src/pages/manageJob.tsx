@@ -121,7 +121,7 @@ const ManageNation = () => {
                         {nation.workForce}
                       </Typo>
                       <Typo fontSize={1.2} style={{ width: '14%' }}>
-                        {nation.payCheck}리브
+                        {nation.pay}리브
                       </Typo>
                       <Typo fontSize={1.2} style={{ width: '20%' }}>
                         {`${nation.working}`}
@@ -137,10 +137,10 @@ const ManageNation = () => {
               <Typo fontSize={1.2} style={{ marginLeft: '8%', width: '9%' }}>
                 직업
               </Typo>
-              <Typo fontSize={1.2} style={{ width: '48%' }}>
+              <Typo fontSize={1.2} style={{ width: '49%' }}>
                 직업 설명
               </Typo>
-              <Typo fontSize={1.2} style={{ width: '10%' }}>
+              <Typo fontSize={1.2} style={{ width: '9%' }}>
                 월급
               </Typo>
               <Typo fontSize={1.2} style={{ width: '14%' }}>
