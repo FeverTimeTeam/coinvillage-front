@@ -15,6 +15,7 @@ import Typo from '../components/typo';
 import SearchBox from '../components/searchBox';
 import StyledHorizontalRule from '../components/horizontalRule';
 import DropDown from '../components/dropDown';
+import useCheckBoxList from '../hooks/useCheckBoxList';
 
 const ManageNation = () => {
   type Nation = {
@@ -64,8 +65,6 @@ const ManageNation = () => {
     );
   };
   const [searchWord, setSearchWord] = useState<string>('');
-  const [isChecked, setIsChecked] = useState<boolean>(false);
-  const [checkedItems, setCheckedItems] = useState<number[]>();
   const [nationList, setNationList] = useState<Nation[] | void[]>([
     {
       id: 0,
@@ -90,7 +89,7 @@ const ManageNation = () => {
     {
       id: 2,
       ranking: 3,
-      name: '박지은',
+      name: '이주현',
       job: '환경부',
       jobDescription: '교실 청소',
       payCheck: 100,
@@ -139,6 +138,14 @@ const ManageNation = () => {
     },
   ]);
 
+  const {
+    isCheckedList,
+    handleCheckList,
+    allIsChecked,
+    handleAllCheck,
+    allItemIsChecked,
+  } = useCheckBoxList({ itemListLength: nationList.length });
+
   return (
     <Root>
       <>
@@ -169,7 +176,6 @@ const ManageNation = () => {
               월급주기
             </Button>
           </TopBarLeftItemsContainer>
-
           <SearchBox
             width={3}
             height={1}
@@ -186,8 +192,8 @@ const ManageNation = () => {
         </TopBarContainer>
         <ListTitleContainer>
           <CheckBox
-            isChecked={isChecked}
-            onClick={() => setIsChecked((isChecked) => !isChecked)}
+            isChecked={allItemIsChecked}
+            onClick={handleAllCheck}
             style={{ marginLeft: '0.5rem', marginRight: '3rem' }}
           />
           <Typo fontSize={1.2} style={{ width: '6%' }}>
@@ -216,14 +222,8 @@ const ManageNation = () => {
               nation && (
                 <ListItemContainer key={nation.id}>
                   <CheckBox
-                    isChecked={nation.isChecked}
-                    onClick={() => {
-                      if (index === nation.id) {
-                        const copied = [...nationList] as Nation[];
-                        copied[index].isChecked = !copied[index].isChecked;
-                        setNationList(copied);
-                      }
-                    }}
+                    isChecked={isCheckedList[nation.id]}
+                    onClick={handleCheckList(nation.id)}
                     style={{
                       marginLeft: '0.5rem',
                       marginRight: '3rem',
