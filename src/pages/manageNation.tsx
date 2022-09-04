@@ -16,6 +16,7 @@ import SearchBox from '../components/searchBox';
 import StyledHorizontalRule from '../components/horizontalRule';
 import DropDown from '../components/dropDown';
 import useCheckBoxList from '../hooks/useCheckBoxList';
+import useDropDownList from '../hooks/useDropDownList';
 
 const ManageNation = () => {
   type Nation = {
@@ -48,22 +49,22 @@ const ManageNation = () => {
     '개발자',
     '무직',
   ]);
-  const [selectedJob, setSelectedJob] = useState<number>(-1);
-  const [isToggledJob, setIsToggledJob] = useState<boolean[]>([
-    ...Array(jobList?.length).fill(false),
-  ]);
-  const handleSelectJob = (id: number) => () => {
-    setSelectedJob(id);
-    setIsToggledJob((prev) =>
-      prev.map((value, index) => (index === id ? true : false))
-    );
-  };
+  // const [selectedJob, setSelectedJob] = useState<number>(-1);
+  // const [isToggledJob, setIsToggledJob] = useState<boolean[]>([
+  //   ...Array(jobList?.length).fill(false),
+  // ]);
+  // const handleSelectJob = (id: number) => () => {
+  //   setSelectedJob(id);
+  //   setIsToggledJob((prev) =>
+  //     prev.map((value, index) => (index === id ? true : false))
+  //   );
+  // };
 
-  const handleToggled = (id: number) => () => {
-    setIsToggledJob((prev) =>
-      prev.map((value, index) => (index === id ? true : false))
-    );
-  };
+  // const handleToggled = (id: number) => () => {
+  //   setIsToggledJob((prev) =>
+  //     prev.map((value, index) => (index === id ? true : false))
+  //   );
+  // };
   const [searchWord, setSearchWord] = useState<string>('');
   const [nationList, setNationList] = useState<Nation[] | void[]>([
     {
@@ -145,6 +146,16 @@ const ManageNation = () => {
     handleAllCheck,
     allItemIsChecked,
   } = useCheckBoxList({ itemListLength: nationList.length });
+
+  const {
+    selectedItemList,
+    isToggledList,
+    handleSelectItem,
+    handleSelectItemList,
+    handleToggled,
+  } = useDropDownList({
+    itemList: jobList,
+  });
 
   return (
     <Root>
@@ -242,11 +253,11 @@ const ManageNation = () => {
                   ) : (
                     <DropDown
                       itemList={jobList}
-                      select={selectedJob}
-                      handleSelect={handleSelectJob}
+                      select={selectedItemList[nation.id]}
+                      handleSelect={handleSelectItemList[nation.id]}
                       placeholder='직업 선택'
                       onClickTitle={handleToggled(nation.id)}
-                      isToggled={isToggledJob[nation.id]}
+                      isToggled={isToggledList[nation.id]}
                     />
                   )}
 
