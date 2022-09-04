@@ -6,45 +6,37 @@ import Image from './image';
 type Props = {
   width?: number;
   height?: number;
-  borderRadius?: number;
   isChecked: boolean;
   onClick: () => void;
+  style?: any;
 };
-
-type RootProps = {
-  width?: number;
-  height?: number;
-  borderRadius?: number;
-  isChecked: boolean;
-};
-
-const Root = styled.div<RootProps>`
-  display: flex;
-  ${(props) => `width: ${props.width}rem;`}
-  ${(props) => `height: ${props.height}rem;`}
-  ${(props) => `border-radius: ${props.borderRadius}rem;`}
-  border: solid;
-  cursor: pointer;
-`;
 
 const CheckBox: React.FC<Props> = ({
-  width = 2.5,
-  height = 2.5,
-  borderRadius = 0.313,
+  width = 1.5,
+  height = 1.5,
   isChecked,
   onClick,
+  style,
 }) => {
   return (
     <>
       {isChecked ? (
-        <Image src='/yellow_check.png' hover={true} onClick={onClick} />
-      ) : (
-        <Root
+        <Image
           width={width}
           height={height}
-          borderRadius={borderRadius}
-          isChecked={isChecked}
+          src='/yellow_check.png'
+          hover={true}
           onClick={onClick}
+          style={style}
+        />
+      ) : (
+        <Image
+          width={width}
+          height={height}
+          src='/uncheck.png'
+          hover={true}
+          onClick={onClick}
+          style={style}
         />
       )}
     </>
