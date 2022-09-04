@@ -9,6 +9,7 @@ type Props = {
   value: string;
   placeholder: string;
   onChange: (e: any) => void;
+  onSubmit: (e: any) => void;
 };
 
 const Root = styled.div`
@@ -34,22 +35,25 @@ const SearchBox: React.FC<Props> = ({
   value,
   placeholder,
   onChange,
+  onSubmit,
 }) => {
   return (
     <Root>
-      <Input
-        width={width}
-        height={height}
-        value={value}
-        placeholder={placeholder}
-        onChange={onChange}
-      />
-      <Image
-        src='/search.png'
-        width={1}
-        height={1}
-        style={{ marginRight: '1rem' }}
-      />
+      <form onSubmit={onSubmit}>
+        <Input
+          width={width}
+          height={height}
+          value={value}
+          placeholder={placeholder}
+          onChange={onChange}
+        />
+        <Image
+          src='/search.png'
+          width={1}
+          height={1}
+          style={{ marginRight: '1rem' }}
+        />
+      </form>
     </Root>
   );
 };
