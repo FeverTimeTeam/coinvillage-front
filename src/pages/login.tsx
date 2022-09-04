@@ -26,7 +26,7 @@ const LoginForm = styled.form`
   align-items: start;
   border-radius: 1.5rem;
   background-color: white;
-  padding: 2rem;
+  padding: 1rem;
 
   h3 {
     font-size: 1.25rem;
@@ -60,7 +60,7 @@ const LoginInput = styled.input`
 
 const LoginButton = styled.button`
   width: 100%;
-  height: 4rem;
+  height: 3.5rem;
   border-radius: 1rem;
   background-color: ${color.kb};
   color: white;
@@ -79,13 +79,23 @@ const SignUpWrapper = styled.div`
   font-color: ${color.light_gray};
 
   span {
+    font-size: 0.9rem;
     margin-right: 0.3rem;
     color: ${color.warm_gray1};
+
+    @media screen and (min-width: ${deviceSize.mobile}) {
+      font-size: 1rem;
+    }
   }
 
   a {
+    font-size: 0.9rem;
     color: ${color.warm_gray1};
     text-decoration: underline;
+
+    @media screen and (min-width: ${deviceSize.mobile}) {
+      font-size: 1rem;
+    }
   }
 `;
 

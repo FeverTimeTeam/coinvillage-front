@@ -18,8 +18,8 @@ const Root = styled.header`
   padding: 0.75rem 0rem;
 
   button {
-    width: 10rem;
-    height: 3rem;
+    width: 6rem;
+    height: 2.5rem;
     border: none;
     border-radius: 1rem;
     justify-content: center;
@@ -30,6 +30,11 @@ const Root = styled.header`
 
     &:hover {
       background-color: ${color.light_gray3};
+    }
+
+    @media screen and (min-width: ${deviceSize.tablet}) {
+      width: 10rem;
+      height: 3rem;
     }
   }
 `;
