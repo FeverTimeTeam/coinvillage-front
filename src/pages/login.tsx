@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import color from '../constants/color';
 import Link from 'next/link';
 import deviceSize from '../constants/deviceSize';
+import { useState } from 'react';
 
 const Root = styled.section`
   width: 100%;
@@ -79,7 +80,7 @@ const SignUpWrapper = styled.div`
   font-color: ${color.light_gray};
 
   span {
-    font-size: 0.9rem;
+    font-size: 0.94rem;
     margin-right: 0.3rem;
     color: ${color.warm_gray1};
 
@@ -89,7 +90,7 @@ const SignUpWrapper = styled.div`
   }
 
   a {
-    font-size: 0.9rem;
+    font-size: 0.94rem;
     color: ${color.warm_gray1};
     text-decoration: underline;
 
@@ -100,13 +101,30 @@ const SignUpWrapper = styled.div`
 `;
 
 const Login = () => {
+  const [id, setId] = useState<string>('');
+  const [pw, setPw] = useState<string>('');
+
+  function onIdChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setId(e.target.value);
+  }
+
+  function onPwChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setPw(e.target.value);
+  }
+
+  function onLoginSubmit() {}
+
   return (
     <Root>
       <LoginForm>
         <h3>아이디</h3>
-        <LoginInput placeholder='아이디를 입력해주세요' />
+        <LoginInput placeholder='이메일을 입력해주세요' onChange={onIdChange} />
         <h3>비밀번호</h3>
-        <LoginInput type='password' placeholder='비밀번호를 입력해주세요' />
+        <LoginInput
+          type='password'
+          placeholder='비밀번호를 입력해주세요'
+          onChange={onPwChange}
+        />
         <LoginButton>로그인</LoginButton>
         <SignUpWrapper>
           <span>아직 회원이 아니신가요?</span>
