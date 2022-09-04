@@ -14,6 +14,7 @@ import { axiosInstance } from '../queries';
 const Login = () => {
   const [id, setId] = useState<string>('');
   const [pw, setPw] = useState<string>('');
+  const router = useRouter();
 
   function onIdChange(e: React.ChangeEvent<HTMLInputElement>) {
     setId(e.target.value);
@@ -31,9 +32,11 @@ const Login = () => {
         email: id,
         password: pw,
       });
-      console.log(response);
+      if (response.status == 200) {
+        router.push('/');
+      }
     } catch (e) {
-      console.log(e);
+      alert('아이디/비밀번호가 일치하지 않습니다.');
     }
 
     setId('');
