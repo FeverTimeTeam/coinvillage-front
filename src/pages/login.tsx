@@ -7,14 +7,18 @@ import {
   LoginButton,
   SignUpWrapper,
 } from '../../styles/login';
+import { useRecoilState } from 'recoil';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { axiosInstance } from '../queries';
+import { loginState } from '../recoil';
 
 const Login = () => {
   const [id, setId] = useState<string>('');
   const [pw, setPw] = useState<string>('');
   const router = useRouter();
+
+  const [loginUserState, setLoginUserState] = useRecoilState(loginState);
 
   function onIdChange(e: React.ChangeEvent<HTMLInputElement>) {
     setId(e.target.value);
