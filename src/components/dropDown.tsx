@@ -46,6 +46,7 @@ const ImageWrapper = styled.div`
 
 const ItemListContainer = styled.div`
   position: absolute;
+  z-index: 3;
   left: 0rem;
   top: 2.4rem;
   width: 8rem;
