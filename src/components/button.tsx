@@ -10,7 +10,7 @@ type Props = {
   color: string;
   borderColor?: string;
   children: any;
-  onClick: () => void;
+  onClick?: () => void;
   style?: any;
 };
 

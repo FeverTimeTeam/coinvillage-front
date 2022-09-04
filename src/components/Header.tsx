@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import color from '../constants/color';
 import Link from 'next/link';
-import Button from './button';
+import deviceSize from '../constants/deviceSize';
 
 const LogoImg = styled.img`
   cursor: pointer;
@@ -16,6 +16,22 @@ const Root = styled.header`
   width: 100%;
   height: 5.25rem;
   padding: 0.75rem 0rem;
+
+  button {
+    width: 10rem;
+    height: 3rem;
+    border: none;
+    border-radius: 1rem;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: ${color.light_gray};
+
+    &:hover {
+      background-color: ${color.light_gray3};
+    }
+  }
 `;
 
 const LoginBtnWrapper = styled.div`
@@ -35,10 +51,25 @@ const LoginBtnWrapper = styled.div`
   }
 `;
 
-const LoginButton = styled(Button)`
+const PCLoginButton = styled.button`
   border: none;
   cursor: pointer;
   text-decoration: none;
+  display: none;
+
+  @media screen and (min-width: ${deviceSize.tablet}) {
+    display: flex;
+  }
+`;
+
+const MobileLoginButton = styled.button`
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+
+  @media screen and (min-width: ${deviceSize.tablet}) {
+    display: none;
+  }
 `;
 
 const Header: React.FC = () => {
@@ -49,15 +80,8 @@ const Header: React.FC = () => {
       </Link>
       <Link href='/login'>
         <LoginBtnWrapper>
-          <LoginButton
-            width={10}
-            height={3}
-            borderRadius={1}
-            backgroundColor={color.light_gray}
-            color='black'
-          >
-            로그인/회원가입
-          </LoginButton>
+          <PCLoginButton>로그인/회원가입</PCLoginButton>
+          <MobileLoginButton>로그인</MobileLoginButton>
         </LoginBtnWrapper>
       </Link>
     </Root>
