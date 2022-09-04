@@ -217,7 +217,13 @@ const ManageNation = () => {
                 <ListItemContainer key={nation.id}>
                   <CheckBox
                     isChecked={nation.isChecked}
-                    onClick={() => setIsChecked((isChecked) => !isChecked)}
+                    onClick={() => {
+                      if (index === nation.id) {
+                        const copied = [...nationList] as Nation[];
+                        copied[index].isChecked = !copied[index].isChecked;
+                        setNationList(copied);
+                      }
+                    }}
                     style={{
                       marginLeft: '0.5rem',
                       marginRight: '3rem',
