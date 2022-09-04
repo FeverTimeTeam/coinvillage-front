@@ -6,15 +6,20 @@ type Props = {
   height?: number;
   value: string;
   placeholder: string;
+  borderRadius: number;
   onChange: (e: any) => void;
 };
 
 type RootProps = {
   width?: number;
   height?: number;
+  borderRadius?: number;
 };
 
 const StyledInput = styled.input<RootProps>`
+  ${(props) => `width: ${props.width}rem;`}
+  ${(props) => `height: ${props.height}rem;`}
+  ${(props) => `border-radius: ${props.borderRadius}rem;`}
   :focus {
     outline: 0;
   }
@@ -25,13 +30,15 @@ const TextInput: React.FC<Props> = ({
   height,
   value,
   placeholder,
+  borderRadius,
   onChange,
 }) => {
   return (
     <>
-      <Root
+      <StyledInput
         width={width}
         height={height}
+        borderRadius={borderRadius}
         value={value}
         placeholder={placeholder}
         onChange={onChange}
