@@ -26,7 +26,7 @@ const StyledInput = styled.input<RootProps>`
   ::placeholder {
     color: ${color.black};
   }
-  height: 3rem;
+  height: 2.5rem;
   font-size: 1rem;
   :focus {
     outline: 0;
