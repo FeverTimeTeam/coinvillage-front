@@ -9,6 +9,7 @@ import {
 } from '../../styles/login';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { axiosInstance } from '../queries';
 
 const Login = () => {
   const [id, setId] = useState<string>('');
@@ -22,11 +23,26 @@ const Login = () => {
     setPw(e.target.value);
   }
 
-  function onLoginSubmit() {}
+  async function onLoginSubmit(e) {
+    e.preventDefault();
+
+    try {
+      const response = await axiosInstance.post('/member/authenticate', {
+        email: id,
+        password: pw,
+      });
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+    }
+
+    setId('');
+    setPw('');
+  }
 
   return (
     <Root>
-      <LoginForm>
+      <LoginForm onSubmit={onLoginSubmit}>
         <h3>아이디</h3>
         <LoginInput placeholder='이메일을 입력해주세요' onChange={onIdChange} />
         <h3>비밀번호</h3>
