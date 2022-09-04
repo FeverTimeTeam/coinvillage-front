@@ -13,7 +13,7 @@ const StudentRoot = styled(Root)`
     font-size: 1.4rem;
     font-weight: bold;
     margin: 0;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
   }
 
   h3 {
