@@ -54,7 +54,7 @@ function TeacherSignUp() {
         <h3>전화번호</h3>
         <LoginInput placeholder='전화번호를 입력해주세요 (- 제외)' />
 
-        <h3>아이디</h3>
+        <h3>이메일</h3>
         <LoginInput placeholder='이메일을 입력해주세요' />
 
         <h3>비밀번호</h3>
@@ -67,7 +67,7 @@ function TeacherSignUp() {
           <span>*아이들에게 공유되니 쉬운 이름으로 지어주세요.</span>
         </TeacherSignupWraper>
 
-        <LoginButton>나라 생성</LoginButton>
+        <LoginButton style={{ margin: 0 }}>나라 생성</LoginButton>
       </TeacherSignupForm>
     </TeacherRoot>
   );

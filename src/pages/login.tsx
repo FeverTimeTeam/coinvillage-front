@@ -46,7 +46,7 @@ const Login = () => {
   return (
     <Root>
       <LoginForm onSubmit={onLoginSubmit}>
-        <h3>아이디</h3>
+        <h3>이메일</h3>
         <LoginInput placeholder='이메일을 입력해주세요' onChange={onIdChange} />
         <h3>비밀번호</h3>
         <LoginInput
