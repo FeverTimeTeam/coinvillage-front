@@ -58,9 +58,9 @@ function TeacherSignUp() {
 
         <h3>나라</h3>
         <NationLoginInput placeholder='가입할 나라 이름을 입력해주세요' />
-        <StudentSignupWraper>
+        <StudentSignupWrapper>
           <span>*나라를 입력하면 반에 가입됩니다.</span>
-        </StudentSignupWraper>
+        </StudentSignupWrapper>
 
         <LoginButton style={{ marginBottom: 0, marginTop: '2rem' }}>
           국민 되기(가입)

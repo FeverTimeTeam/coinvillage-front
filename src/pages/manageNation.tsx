@@ -49,22 +49,7 @@ const ManageNation = () => {
     '개발자',
     '무직',
   ]);
-  // const [selectedJob, setSelectedJob] = useState<number>(-1);
-  // const [isToggledJob, setIsToggledJob] = useState<boolean[]>([
-  //   ...Array(jobList?.length).fill(false),
-  // ]);
-  // const handleSelectJob = (id: number) => () => {
-  //   setSelectedJob(id);
-  //   setIsToggledJob((prev) =>
-  //     prev.map((value, index) => (index === id ? true : false))
-  //   );
-  // };
 
-  // const handleToggled = (id: number) => () => {
-  //   setIsToggledJob((prev) =>
-  //     prev.map((value, index) => (index === id ? true : false))
-  //   );
-  // };
   const [searchWord, setSearchWord] = useState<string>('');
   const [nationList, setNationList] = useState<Nation[] | void[]>([
     {
@@ -188,7 +173,7 @@ const ManageNation = () => {
             </Button>
           </TopBarLeftItemsContainer>
           <SearchBox
-            width={3}
+            width={9}
             height={1}
             value={searchWord}
             placeholder='이름 검색'
@@ -251,16 +236,8 @@ const ManageNation = () => {
                       {nation.job}
                     </Typo>
                   ) : (
-                    <DropDown
-                      itemList={jobList}
-                      select={selectedItemList[nation.id]}
-                      handleSelect={handleSelectItemList[nation.id]}
-                      placeholder='직업 선택'
-                      onClickTitle={handleToggled(nation.id)}
-                      isToggled={isToggledList[nation.id]}
-                    />
+                    <DropDown itemList={jobList} style={{ width: '12%' }} />
                   )}
-
                   <Typo fontSize={1.2} style={{ width: '42%' }}>
                     {nation.jobDescription}
                   </Typo>
