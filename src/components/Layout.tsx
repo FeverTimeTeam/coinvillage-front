@@ -32,7 +32,7 @@ export default function Layout({
     <Main>
       <Head>
         <title>코빌: 코인빌리지</title>
-        <link rel='icon' href='/logo.svg' />
+        <link rel='icon' href='/favicon.ico' />
       </Head>
       <Header />
       {children}
