@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import Button from '../src/components/button';
+import { StyledButton } from '../src/components/button';
 import color from '../src/constants/color';
 
 const Root = styled.div`
@@ -26,10 +28,25 @@ const ListItemContainer = styled.div`
   margin-top: 1.5rem;
 `;
 
+type PaycheckButtonProps = {
+  isPaycheckState: boolean;
+};
+
+const PaycheckButton = styled(StyledButton)<PaycheckButtonProps>`
+  width: 5rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  ${(props) =>
+    props.isPaycheckState
+      ? `background-color: ${color.warm_gray1}`
+      : `background-color: ${color.light_gray}`};
+`;
+
 export {
   Root,
   TopBarContainer,
   TopBarLeftItemsContainer,
   ListTitleContainer,
   ListItemContainer,
+  PaycheckButton,
 };
