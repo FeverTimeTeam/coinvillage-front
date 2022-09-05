@@ -7,22 +7,31 @@ import Typo from './typo';
 type Props = {
   itemList: string[];
   style?: any;
+  placeholder: string;
+  height?: number;
 };
 
-type RootProps = {};
+type RootProps = {
+  height?: number;
+};
 
 const Root = styled.select<RootProps>`
-  height: 1.8rem;
-  ${`border: solid ${color.light_warm_gray};`}
+  ${(props) => `height: ${props.height}rem;`}
+  ${`border: solid 0.15rem ${color.light_warm_gray};`}
   border-radius: 0.5rem;
   cursor: pointer;
 `;
 
-const DropDown: React.FC<Props> = ({ itemList, style }) => {
+const DropDown: React.FC<Props> = ({
+  itemList,
+  style,
+  placeholder,
+  height,
+}) => {
   return (
     <div style={style}>
-      <Root>
-        <option value=''>직업선택</option>
+      <Root height={height}>
+        <option value=''>{placeholder}</option>
         {itemList.map((item) => (
           <option value={item}>{item}</option>
         ))}
@@ -30,5 +39,4 @@ const DropDown: React.FC<Props> = ({ itemList, style }) => {
     </div>
   );
 };
-
 export default DropDown;

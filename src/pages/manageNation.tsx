@@ -30,7 +30,7 @@ const ManageNation = () => {
     isChecked: boolean;
   };
 
-  const [isModifyState, setIsModifyState] = useState<boolean>(false);
+  const [isModifyState, setIsModifyState] = useState<boolean>(true);
   const [modifyButtonText, setModifyButtonText] = useState<string>('수정하기');
   const [isPaycheckState, setIsPaycheckState] = useState<boolean>(false);
   const onClickModify = () => {
@@ -236,7 +236,12 @@ const ManageNation = () => {
                       {nation.job}
                     </Typo>
                   ) : (
-                    <DropDown itemList={jobList} style={{ width: '12%' }} />
+                    <DropDown
+                      itemList={jobList}
+                      style={{ width: '12%' }}
+                      height={1.8}
+                      placeholder='직업 선택'
+                    />
                   )}
                   <Typo fontSize={1.2} style={{ width: '42%' }}>
                     {nation.jobDescription}
