@@ -32,19 +32,23 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axiosInstance.post('/member/authenticate', {
-        email: id,
-        password: pw,
-      });
-      if (response.status == 200) {
-        router.push('/');
-      }
+      await axiosInstance
+        .post('/member/authenticate', {
+          email: id,
+          password: pw,
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            setLoginUserState({
+              isLogin: true,
+              userInfo: res.data,
+            });
+            router.push('/');
+          }
+        });
     } catch (e) {
       alert('아이디/비밀번호가 일치하지 않습니다.');
     }
-
-    setId('');
-    setPw('');
   }
 
   return (

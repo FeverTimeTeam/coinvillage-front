@@ -5,12 +5,12 @@ export interface UserInfoType {
         authorityName: 'ROLE_NATION' | 'ROLE_RULER';
       }
     ];
-    email: 'string';
-    memberId: 0;
-    nickname: 'string';
-    password: 'string';
-    phoneNumber: 'string';
-    property: 0;
+    email: string;
+    memberId: number;
+    nickname: string;
+    password: string;
+    phoneNumber: string;
+    property: number;
   };
-  token: 'string';
+  token: string;
 }

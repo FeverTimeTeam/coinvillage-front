@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import color from '../constants/color';
 import Link from 'next/link';
 import deviceSize from '../constants/deviceSize';
+import { loginState } from '../recoil';
+import { useRecoilState } from 'recoil';
 
 const LogoImg = styled.img`
   cursor: pointer;
@@ -78,6 +80,12 @@ const MobileLoginButton = styled.button`
 `;
 
 const Header: React.FC = () => {
+  const [loginUserState, setLoginUserState] = useRecoilState(loginState);
+
+  useEffect(() => {
+    console.log(loginUserState);
+  }, [loginUserState]);
+
   return (
     <Root>
       <Link href='/'>
