@@ -36,8 +36,10 @@ const DropDown: React.FC<Props> = ({
     <div style={style}>
       <Root height={height} onChange={onChange}>
         <option value=''>{placeholder}</option>
-        {itemList.map((item) => (
-          <option value={item}>{item}</option>
+        {itemList.map((item, index) => (
+          <option key={index} value={item}>
+            {item}
+          </option>
         ))}
       </Root>
     </div>

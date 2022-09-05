@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   ListItemContainer,
   ListTitleContainer,
+  PaycheckButton,
   Root,
   TopBarContainer,
   TopBarLeftItemsContainer,
@@ -19,21 +20,13 @@ import useCheckBoxList from '../hooks/useCheckBoxList';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { axiosInstance } from '../queries/index';
+import { useRecoilState } from 'recoil';
+import { nationListState } from '../recoil';
 
 const ManageNation = () => {
-  type Nation = {
-    memberId: number;
-    nickname: string;
-    jobName: string;
-    jobContent: string;
-    payCheck: number;
-    property: number;
-    jobList: string[];
-  };
-
   const [isModifyState, setIsModifyState] = useState<boolean>(true);
   const [modifyButtonText, setModifyButtonText] = useState<string>('수정하기');
-  const [isPaycheckState, setIsPaycheckState] = useState<boolean>(false);
+  const [isPaycheckState, setIsPaycheckState] = useState<boolean>(true);
   const onClickModify = () => {
     setIsModifyState((isModifyState) => !isModifyState);
     isModifyState
@@ -41,25 +34,16 @@ const ManageNation = () => {
       : setModifyButtonText('수정하기');
   };
   const onClickPayCheck = () => {
-    setIsPaycheckState((isPaycheckState) => !isPaycheckState);
+    setIsPaycheckState((isPaycheckState) => false);
   };
 
   const [searchWord, setSearchWord] = useState<string>('');
-  const [nationList, setNationList] = useState<Nation[] | void[]>([]);
-
-  const {
-    isCheckedList,
-    handleCheckList,
-    allIsChecked,
-    handleAllCheck,
-    allItemIsChecked,
-  } = useCheckBoxList({ itemListLength: nationList?.length });
-
+  const [nationList, setNationList] = useRecoilState(nationListState);
+  const [nationListLength, setNationListLength] = useState<number>(0);
   const getNationList = () => {
     axiosInstance
       .get('/manage')
       .then((response) => {
-        console.log(response.data);
         setNationList(response.data);
       })
       .catch((e) => {
@@ -67,11 +51,25 @@ const ManageNation = () => {
       });
   };
 
-  const modifyNation = () => {
+  useEffect(() => {
+    if (nationList.length > 0) {
+      setNationListLength(nationList.length);
+    }
+  }, [nationList]);
+
+  const {
+    isCheckedList,
+    handleCheckList,
+    allIsChecked,
+    handleAllCheck,
+    allItemIsChecked,
+  } = useCheckBoxList({ itemListLength: nationListLength });
+
+  const modifyNation = (memberId: number, jobName: string) => {
     axiosInstance
-      .put('/manage/15', {
+      .put(`/manage/${memberId}`, {
         job: {
-          jobId: 4,
+          jobName: jobName,
         },
       })
       .then((response) => {
@@ -86,24 +84,11 @@ const ManageNation = () => {
     getNationList();
   }, []);
 
-  useEffect(() => {
-    console.log(nationList);
-  }, [nationList]);
-
-  const [job, setJob] = useState('');
-
   return (
     <Root>
       <>
         <TopBarContainer>
           <TopBarLeftItemsContainer>
-            <Button
-              color={color.kb}
-              backgroundColor={color.black}
-              onClick={modifyNation}
-            >
-              {job}
-            </Button>
             <Typo color={color.deep} fontSize={2}>
               국민관리
             </Typo>
@@ -120,14 +105,15 @@ const ManageNation = () => {
             >
               {modifyButtonText}
             </Button>
-            <Button
+            <PaycheckButton
+              isPaycheckState={isPaycheckState}
               backgroundColor={color.warm_gray1}
               color={color.white}
               borderColor={color.warm_gray1}
               onClick={onClickPayCheck}
             >
               월급주기
-            </Button>
+            </PaycheckButton>
           </TopBarLeftItemsContainer>
           <SearchBox
             width={9}
@@ -175,8 +161,8 @@ const ManageNation = () => {
               nation && (
                 <ListItemContainer key={nation.memberId}>
                   <CheckBox
-                    isChecked={isCheckedList[nation.memberId]}
-                    onClick={handleCheckList(nation.memberId)}
+                    isChecked={isCheckedList[index]}
+                    onClick={handleCheckList(index)}
                     style={{
                       marginLeft: '0.5rem',
                       marginRight: '3rem',
@@ -194,14 +180,24 @@ const ManageNation = () => {
                     </Typo>
                   ) : (
                     <DropDown
+                      key={nation.memberId}
                       itemList={nation.jobList}
                       style={{ width: '12%' }}
                       height={1.8}
                       placeholder='직업 선택'
                       onChange={(e) => {
-                        console.log('hi');
-                        console.log(e.target.value);
-                        setJob(e.target.value);
+                        setNationList(
+                          nationList.map((value) =>
+                            value.memberId === nation.memberId
+                              ? { ...value, jobName: e.target.value }
+                              : value
+                          )
+                        );
+                        nationList.map((value) => {
+                          if (value.memberId === nation.memberId) {
+                            modifyNation(value.memberId, e.target.value);
+                          }
+                        });
                       }}
                     />
                   )}
