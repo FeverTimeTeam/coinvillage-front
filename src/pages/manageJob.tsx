@@ -225,7 +225,7 @@ const ManageJob = () => {
                       />
 
                       <Button
-                        backgroundColor={color.black}
+                        backgroundColor={color.deep}
                         color={color.white}
                         onClick={onClickDelete}
                         style={{
