@@ -80,6 +80,17 @@ const ManageNation = () => {
       });
   };
 
+  const searchNation = (nickname: string) => {
+    axiosInstance
+      .get(`/manage/search?searchWord=${nickname}`)
+      .then((response) => {
+        setNationList(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   useEffect(() => {
     getNationList();
   }, []);
@@ -121,10 +132,12 @@ const ManageNation = () => {
             value={searchWord}
             placeholder='이름 검색'
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              searchNation(searchWord);
               setSearchWord(e.target.value);
             }}
             onSubmit={(e: any) => {
               e.preventDefault();
+              searchNation(searchWord);
               setSearchWord('');
             }}
           />
@@ -182,6 +195,7 @@ const ManageNation = () => {
                     <DropDown
                       key={nation.memberId}
                       itemList={nation.jobList}
+                      selectedItem={nation.jobName}
                       style={{ width: '12%' }}
                       height={1.8}
                       placeholder='직업 선택'
