@@ -6,6 +6,7 @@ import Typo from './typo';
 
 type Props = {
   itemList: string[];
+  selectedItem?: string;
   style?: any;
   placeholder: string;
   height?: number;
@@ -25,6 +26,7 @@ const Root = styled.select<RootProps>`
 
 const DropDown: React.FC<Props> = ({
   itemList,
+  selectedItem,
   style,
   placeholder,
   height,
@@ -35,12 +37,17 @@ const DropDown: React.FC<Props> = ({
   return (
     <div style={style}>
       <Root height={height} onChange={onChange}>
-        <option value=''>{placeholder}</option>
-        {itemList.map((item, index) => (
-          <option key={index} value={item}>
-            {item}
-          </option>
-        ))}
+        {itemList.map((item, index) =>
+          selectedItem === item ? (
+            <option key={index} value={item} selected={true}>
+              {item}
+            </option>
+          ) : (
+            <option key={index} value={item}>
+              {item}
+            </option>
+          )
+        )}
       </Root>
     </div>
   );
