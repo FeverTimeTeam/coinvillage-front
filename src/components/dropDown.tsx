@@ -9,6 +9,7 @@ type Props = {
   style?: any;
   placeholder: string;
   height?: number;
+  onChange?: (e: any) => void;
 };
 
 type RootProps = {
@@ -27,10 +28,13 @@ const DropDown: React.FC<Props> = ({
   style,
   placeholder,
   height,
+  onChange = (e: any) => {
+    console.log(e.target.value);
+  },
 }) => {
   return (
     <div style={style}>
-      <Root height={height}>
+      <Root height={height} onChange={onChange}>
         <option value=''>{placeholder}</option>
         {itemList.map((item) => (
           <option value={item}>{item}</option>

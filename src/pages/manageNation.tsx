@@ -16,18 +16,19 @@ import SearchBox from '../components/searchBox';
 import StyledHorizontalRule from '../components/horizontalRule';
 import DropDown from '../components/dropDown';
 import useCheckBoxList from '../hooks/useCheckBoxList';
-import useDropDownList from '../hooks/useDropDownList';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { axiosInstance } from '../queries/index';
 
 const ManageNation = () => {
   type Nation = {
-    id: number;
-    ranking: number;
-    name: string;
-    job: string;
-    jobDescription: string;
+    memberId: number;
+    nickname: string;
+    jobName: string;
+    jobContent: string;
     payCheck: number;
     property: number;
-    isChecked: boolean;
+    jobList: string[];
   };
 
   const [isModifyState, setIsModifyState] = useState<boolean>(true);
@@ -42,87 +43,9 @@ const ManageNation = () => {
   const onClickPayCheck = () => {
     setIsPaycheckState((isPaycheckState) => !isPaycheckState);
   };
-  const [jobList, setJobList] = useState<string[]>([
-    '은행원',
-    '펀드 매니저',
-    '통계청',
-    '개발자',
-    '무직',
-  ]);
 
   const [searchWord, setSearchWord] = useState<string>('');
-  const [nationList, setNationList] = useState<Nation[] | void[]>([
-    {
-      id: 0,
-      ranking: 1,
-      name: '유다연',
-      job: '은행원',
-      jobDescription: '친구들의 돈 관리',
-      payCheck: 100,
-      property: 1000,
-      isChecked: false,
-    },
-    {
-      id: 1,
-      ranking: 2,
-      name: '박지은',
-      job: '환경부',
-      jobDescription: '교실 청소',
-      payCheck: 100,
-      property: 1000,
-      isChecked: true,
-    },
-    {
-      id: 2,
-      ranking: 3,
-      name: '이주현',
-      job: '환경부',
-      jobDescription: '교실 청소',
-      payCheck: 100,
-      property: 1000,
-      isChecked: true,
-    },
-    {
-      id: 3,
-      ranking: 4,
-      name: '박지은',
-      job: '환경부',
-      jobDescription: '교실 청소',
-      payCheck: 100,
-      property: 1000,
-      isChecked: true,
-    },
-    {
-      id: 4,
-      ranking: 5,
-      name: '박지은',
-      job: '환경부',
-      jobDescription: '교실 청소',
-      payCheck: 100,
-      property: 1000,
-      isChecked: true,
-    },
-    {
-      id: 5,
-      ranking: 6,
-      name: '박지은',
-      job: '환경부',
-      jobDescription: '교실 청소',
-      payCheck: 100,
-      property: 1000,
-      isChecked: true,
-    },
-    {
-      id: 6,
-      ranking: 7,
-      name: '박지은',
-      job: '환경부',
-      jobDescription: '교실 청소',
-      payCheck: 100,
-      property: 1000,
-      isChecked: true,
-    },
-  ]);
+  const [nationList, setNationList] = useState<Nation[] | void[]>([]);
 
   const {
     isCheckedList,
@@ -130,23 +53,57 @@ const ManageNation = () => {
     allIsChecked,
     handleAllCheck,
     allItemIsChecked,
-  } = useCheckBoxList({ itemListLength: nationList.length });
+  } = useCheckBoxList({ itemListLength: nationList?.length });
 
-  const {
-    selectedItemList,
-    isToggledList,
-    handleSelectItem,
-    handleSelectItemList,
-    handleToggled,
-  } = useDropDownList({
-    itemList: jobList,
-  });
+  const getNationList = () => {
+    axiosInstance
+      .get('/manage')
+      .then((response) => {
+        console.log(response.data);
+        setNationList(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const modifyNation = () => {
+    axiosInstance
+      .put('/manage/15', {
+        job: {
+          jobId: 4,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  useEffect(() => {
+    getNationList();
+  }, []);
+
+  useEffect(() => {
+    console.log(nationList);
+  }, [nationList]);
+
+  const [job, setJob] = useState('');
 
   return (
     <Root>
       <>
         <TopBarContainer>
           <TopBarLeftItemsContainer>
+            <Button
+              color={color.kb}
+              backgroundColor={color.black}
+              onClick={modifyNation}
+            >
+              {job}
+            </Button>
             <Typo color={color.deep} fontSize={2}>
               국민관리
             </Typo>
@@ -216,35 +173,40 @@ const ManageNation = () => {
           nationList.map((nation, index) => {
             return (
               nation && (
-                <ListItemContainer key={nation.id}>
+                <ListItemContainer key={nation.memberId}>
                   <CheckBox
-                    isChecked={isCheckedList[nation.id]}
-                    onClick={handleCheckList(nation.id)}
+                    isChecked={isCheckedList[nation.memberId]}
+                    onClick={handleCheckList(nation.memberId)}
                     style={{
                       marginLeft: '0.5rem',
                       marginRight: '3rem',
                     }}
                   />
                   <Typo fontSize={1.2} style={{ width: '6%' }}>
-                    {nation.ranking}
+                    {index + 1}
                   </Typo>
                   <Typo fontSize={1.2} style={{ width: '12%' }}>
-                    {nation.name}
+                    {nation.nickname}
                   </Typo>
                   {isModifyState ? (
                     <Typo fontSize={1.2} style={{ width: '12%' }}>
-                      {nation.job}
+                      {nation.jobName}
                     </Typo>
                   ) : (
                     <DropDown
-                      itemList={jobList}
+                      itemList={nation.jobList}
                       style={{ width: '12%' }}
                       height={1.8}
                       placeholder='직업 선택'
+                      onChange={(e) => {
+                        console.log('hi');
+                        console.log(e.target.value);
+                        setJob(e.target.value);
+                      }}
                     />
                   )}
                   <Typo fontSize={1.2} style={{ width: '42%' }}>
-                    {nation.jobDescription}
+                    {nation.jobContent}
                   </Typo>
                   <Typo fontSize={1.2} style={{ width: '12%' }}>
                     {nation.payCheck}
