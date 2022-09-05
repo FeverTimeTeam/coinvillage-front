@@ -12,7 +12,7 @@ import TextInput from '../components/textInput';
 import Typo from '../components/typo';
 import StyledHorizontalRule from '../components/horizontalRule';
 
-const ManageNation = () => {
+const ManageJob = () => {
   type Job = {
     id: number;
     jobName: string;
@@ -160,6 +160,7 @@ const ManageNation = () => {
                         value={job.jobName}
                         borderRadius={0.5}
                         onChange={onClickDelete}
+                        height={2.5}
                         style={{
                           marginLeft: '5%',
                           width: '8%',
@@ -171,6 +172,7 @@ const ManageNation = () => {
                         borderRadius={0.5}
                         value={job.jobDescription}
                         onChange={onClickDelete}
+                        height={2.5}
                         style={{
                           marginLeft: '2%',
                           width: '43.5%',
@@ -182,6 +184,7 @@ const ManageNation = () => {
                         borderRadius={0.5}
                         value={job.pay}
                         onChange={onClickDelete}
+                        height={2.5}
                         style={{
                           marginLeft: '2%',
                           width: '6.5%',
@@ -194,6 +197,7 @@ const ManageNation = () => {
                         borderRadius={0.5}
                         value={job.workForce}
                         onChange={onClickDelete}
+                        height={2.5}
                         style={{
                           marginLeft: '2%',
                           width: '4%',
@@ -225,4 +229,4 @@ const ManageNation = () => {
   );
 };
 
-export default ManageNation;
+export default ManageJob;
