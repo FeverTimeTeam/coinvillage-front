@@ -80,6 +80,17 @@ const ManageNation = () => {
       });
   };
 
+  const deleteNation = (memberId: number) => {
+    axiosInstance
+      .delete(`/manage/${memberId}`)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   const searchNation = (nickname: string) => {
     axiosInstance
       .get(`/manage/search?searchWord=${nickname}`)
@@ -224,6 +235,30 @@ const ManageNation = () => {
                   <Typo fontSize={1.2} style={{ width: '8%' }}>
                     {nation.property}
                   </Typo>
+                  <Button
+                    backgroundColor={color.deep}
+                    color={color.white}
+                    onClick={() => {
+                      setNationList(
+                        nationList.filter(
+                          (value) => value.memberId !== nation.memberId
+                        )
+                      );
+                      nationList.map((value) => {
+                        if (value.memberId === nation.memberId) {
+                          deleteNation(value.memberId);
+                        }
+                      });
+                    }}
+                    style={{
+                      marginLeft: '1rem',
+                      marginRight: '1rem',
+                      marginTop: '0.5rem',
+                      border: 'solid',
+                    }}
+                  >
+                    국민 삭제
+                  </Button>
                 </ListItemContainer>
               )
             );
