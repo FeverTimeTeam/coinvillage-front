@@ -72,7 +72,7 @@ function TeacherSignUp() {
           phoneNumber: phone,
         })
         .then(() => {
-          alert('성공적으로 나라를 생성하였습니다.');
+          alert('성공적으로 나라를 생성하였습니다! 로그인을 진행해주세요.');
           router.push('/login');
         });
     } catch (e) {
