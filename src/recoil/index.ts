@@ -5,6 +5,16 @@ interface loginStateType {
   token: string;
 }
 
+type Nation = {
+  memberId: number;
+  nickname: string;
+  jobName: string;
+  jobContent: string;
+  payCheck: number;
+  property: number;
+  jobList: string[];
+};
+
 const loginState = atom<loginStateType>({
   key: 'loginState',
   default: {
@@ -13,4 +23,9 @@ const loginState = atom<loginStateType>({
   },
 });
 
-export { loginState };
+const nationListState = atom<any>({
+  key: 'nationListState',
+  default: [],
+});
+
+export { loginState, nationListState };
