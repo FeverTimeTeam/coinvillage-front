@@ -183,7 +183,7 @@ const ManageNation = () => {
         </ListTitleContainer>
         <StyledHorizontalRule />
         {nationList &&
-          nationList.map((nation, index) => {
+          nationList.map((nation: any, index: any) => {
             return (
               nation && (
                 <ListItemContainer key={nation.memberId}>
@@ -214,13 +214,13 @@ const ManageNation = () => {
                       height={1.8}
                       onChange={(e) => {
                         setNationList(
-                          nationList.map((value) =>
+                          nationList.map((value: any) =>
                             value.memberId === nation.memberId
                               ? { ...value, jobName: e.target.value }
                               : value
                           )
                         );
-                        nationList.map((value) => {
+                        nationList.map((value: any) => {
                           if (value.memberId === nation.memberId) {
                             modifyNation(value.memberId, e.target.value);
                           }
@@ -244,10 +244,10 @@ const ManageNation = () => {
                       setIsModalOpen(true);
                       setNationList(
                         nationList.filter(
-                          (value) => value.memberId !== nation.memberId
+                          (value: any) => value.memberId !== nation.memberId
                         )
                       );
-                      nationList.map((value) => {
+                      nationList.map((value: any) => {
                         if (value.memberId === nation.memberId) {
                           console.log(value);
                           console.log(nation);

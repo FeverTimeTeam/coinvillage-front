@@ -4,7 +4,7 @@ import color from '../constants/color';
 type Props = {
   width?: number;
   height?: number;
-  value: string;
+  value: string | number;
   placeholder: string;
   borderRadius: number;
   onChange: (e: any) => void;

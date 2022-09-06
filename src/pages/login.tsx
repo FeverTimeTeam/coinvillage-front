@@ -28,7 +28,7 @@ const Login = () => {
     setPw(e.target.value);
   }
 
-  async function onLoginSubmit(e) {
+  async function onLoginSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     try {
