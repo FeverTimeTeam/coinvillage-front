@@ -8,8 +8,8 @@ type Props = {
   itemList: string[];
   selectedItem?: string;
   style?: any;
-  placeholder: string;
   height?: number;
+  disabled?: boolean;
   onChange?: (e: any) => void;
 };
 
@@ -28,15 +28,15 @@ const DropDown: React.FC<Props> = ({
   itemList,
   selectedItem,
   style,
-  placeholder,
   height,
+  disabled,
   onChange = (e: any) => {
     console.log(e.target.value);
   },
 }) => {
   return (
     <div style={style}>
-      <Root height={height} onChange={onChange}>
+      <Root height={height} onChange={onChange} disabled={disabled}>
         {itemList.map((item, index) =>
           selectedItem === item ? (
             <option key={index} value={item} selected={true}>

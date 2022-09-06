@@ -9,6 +9,7 @@ type Props = {
   borderRadius: number;
   onChange: (e: any) => void;
   style?: any;
+  disabled?: boolean;
 };
 
 type RootProps = {
@@ -40,6 +41,7 @@ const TextInput: React.FC<Props> = ({
   borderRadius,
   onChange,
   style,
+  disabled,
 }) => {
   return (
     <>
@@ -51,6 +53,7 @@ const TextInput: React.FC<Props> = ({
         placeholder={placeholder}
         onChange={onChange}
         style={style}
+        disabled={disabled}
       />
     </>
   );
