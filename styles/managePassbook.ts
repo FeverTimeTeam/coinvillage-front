@@ -11,6 +11,10 @@ const TopBarContainer = styled.div`
   margin-left: 7%;
 `;
 
+const TopBarLeftItemsContainer = styled.div`
+  display: flex;
+`;
+
 const ListContentContainer = styled.div`
   display: flex;
   margin-top: 2.5rem;
@@ -32,6 +36,7 @@ const GuideBox = styled.div`
 export {
   Root,
   TopBarContainer,
+  TopBarLeftItemsContainer,
   ListContentContainer,
   ListDayContentContainer,
   GuideBox,

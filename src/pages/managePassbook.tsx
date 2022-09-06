@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Root,
   TopBarContainer,
+  TopBarLeftItemsContainer,
   ListContentContainer,
   ListDayContentContainer,
   GuideBox,
@@ -15,6 +16,9 @@ import DropDown from '../components/dropDown';
 const ManagePassbook = () => {
   const [isInterestRate, setIsInterestRate] = useState<string>('');
   const [isPaymentDay, setIsPaymentDay] = useState<string>('');
+  const [isDayOfWeek, setIsDayOfWeek] = useState<string>('');
+  const [dropDownDisabled, setDropDownDisabled] = useState<boolean>(false);
+  const [inputDisabled, setInputDisabled] = useState<boolean>(false);
   const [isDayOfWeekList, setIsDayOfWeekList] = useState<string[]>([
     '월',
     '화',
@@ -45,9 +49,23 @@ const ManagePassbook = () => {
     <Root>
       <>
         <TopBarContainer>
-          <Typo color={color.deep} fontSize={2}>
-            통장 관리
-          </Typo>
+          <TopBarLeftItemsContainer>
+            <Typo color={color.deep} fontSize={2}>
+              통장 관리
+            </Typo>
+            <Button
+              backgroundColor={color.white}
+              color={color.kb}
+              borderColor={color.kb}
+              style={{
+                marginLeft: '1rem',
+                marginRight: '1rem',
+                border: 'solid',
+              }}
+            >
+              적용하기
+            </Button>
+          </TopBarLeftItemsContainer>
         </TopBarContainer>
         <GuideBox>
           <Typo color={color.deep}>
@@ -67,7 +85,7 @@ const ManagePassbook = () => {
           <Typo
             color={color.deep}
             fontSize={1.1}
-            style={{ width: '12%', marginTop: '0.5rem' }}
+            style={{ width: '13%', marginTop: '0.5rem' }}
           >
             적금 통장 잔액의
           </Typo>
@@ -92,28 +110,39 @@ const ManagePassbook = () => {
           <Typo
             color={color.deep}
             fontSize={1.1}
-            style={{ marginLeft: '5%', width: '12%', marginTop: '0.5rem' }}
+            style={{ marginLeft: '3%', width: '12%', marginTop: '0.5rem' }}
           >
             이자 지급 시기
           </Typo>
           <DropDown
             itemList={dateOfThePaymentList}
             style={{ width: '12%', marginTop: '0.2rem' }}
-            height={2}
-            placeholder='--선택--'
+            height={2.5}
+            onChange={(e) => {
+              if (
+                e.target.value === '매주(일주일 단위)' ||
+                e.target.value === '2주 단위'
+              ) {
+                setInputDisabled(true);
+                setDropDownDisabled(false);
+              } else {
+                setDropDownDisabled(true);
+                setInputDisabled(false);
+              }
+            }}
           />
           <Typo
             color={color.deep}
             fontSize={1.1}
-            style={{ width: '4%', marginTop: '0.5rem' }}
+            style={{ marginLeft: '1%', width: '4%', marginTop: '0.5rem' }}
           >
             요일
           </Typo>
           <DropDown
             itemList={isDayOfWeekList}
             style={{ width: '5%', marginTop: '0.2rem', marginRight: '15%' }}
-            height={2}
-            placeholder='--선택--'
+            height={2.5}
+            disabled={dropDownDisabled}
           />
         </ListContentContainer>
         <ListDayContentContainer>
@@ -130,6 +159,7 @@ const ManagePassbook = () => {
             borderRadius={0.5}
             onChange={onDayChange}
             height={2}
+            disabled={inputDisabled}
             style={{
               width: '5%',
               textAlign: 'center',
