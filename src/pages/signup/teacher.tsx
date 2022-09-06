@@ -53,7 +53,7 @@ function TeacherSignUp() {
 
   const router = useRouter();
 
-  async function onTeacherSignUp(e) {
+  async function onTeacherSignUp(e: any) {
     e.preventDefault();
 
     try {
