@@ -52,7 +52,7 @@ function StudentSignup() {
 
   const router = useRouter();
 
-  async function onStudentSignup(e) {
+  async function onStudentSignup(e: any) {
     e.preventDefault();
 
     try {
