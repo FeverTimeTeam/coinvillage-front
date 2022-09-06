@@ -58,6 +58,16 @@ const LoginBtnWrapper = styled.div`
   }
 `;
 
+const RulerMenuWrapper = styled(LoginBtnWrapper)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  a {
+    margin-right: 2.5rem;
+  }
+`;
+
 const PCLoginButton = styled.button`
   border: none;
   cursor: pointer;
@@ -109,7 +119,8 @@ const Header: React.FC = () => {
         <LogoImg src='/logo.svg' />
       </Link>
       {loginUserState.isLogin == true ? (
-        <LoginBtnWrapper>
+        <RulerMenuWrapper>
+          <Link href='/manageNation'>국민 관리</Link>
           <MemberInfoArea>
             {loginUserState.userInfo.memberResponseDto.nickname}(
             {loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
@@ -118,7 +129,7 @@ const Header: React.FC = () => {
               : '국민'}
             )
           </MemberInfoArea>
-        </LoginBtnWrapper>
+        </RulerMenuWrapper>
       ) : (
         <Link href='/login'>
           <LoginBtnWrapper>
