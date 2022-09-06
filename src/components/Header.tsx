@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import color from '../constants/color';
 import Link from 'next/link';
 import deviceSize from '../constants/deviceSize';
+import { FiLogOut } from 'react-icons/fi';
 import { loginState } from '../recoil';
 import { useRecoilState } from 'recoil';
+import { useRouter } from 'next/router';
 
 const LogoImg = styled.img`
   cursor: pointer;
@@ -63,6 +65,10 @@ const RulerMenuWrapper = styled(LoginBtnWrapper)`
   justify-content: space-between;
   align-items: center;
 
+  div {
+    margin-right: 1rem;
+  }
+
   a {
     margin-right: 2.5rem;
   }
@@ -79,6 +85,14 @@ const PCLoginButton = styled.button`
   }
 `;
 
+const LogoutButton = styled.button`
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  width: 1.5rem !important;
+  background: none !important;
+`;
+
 const MobileLoginButton = styled.button`
   border: none;
   cursor: pointer;
@@ -90,7 +104,7 @@ const MobileLoginButton = styled.button`
 `;
 
 const MemberInfoArea = styled.div`
-  min-width: 6rem;
+  min-width: 4rem;
   width: content-fit;
   height: 1.5rem;
   display: flex;
@@ -108,10 +122,18 @@ const MemberInfoArea = styled.div`
 
 const Header: React.FC = () => {
   const [loginUserState, setLoginUserState] = useRecoilState(loginState);
+  const router = useRouter();
 
   useEffect(() => {
     console.log(loginUserState);
   }, [loginUserState]);
+
+  function onLogout() {
+    if (confirm('로그아웃 하시겠습니까?')) {
+      sessionStorage.removeItem('recoil-persist');
+      router.reload();
+    }
+  }
 
   return (
     <Root>
@@ -132,6 +154,9 @@ const Header: React.FC = () => {
               : '국민'}
             )
           </MemberInfoArea>
+          <LogoutButton onClick={onLogout}>
+            <FiLogOut size={20} />
+          </LogoutButton>
         </RulerMenuWrapper>
       ) : (
         <Link href='/login'>
