@@ -7,12 +7,14 @@ const nextConfig = {
   },
 
   async rewrites() {
-    return [
-      {
-        source: '/:path*',
-        destination: `${process.env.ENDPOINT}/:path*`,
-      },
-    ];
+    return {
+      fallback: [
+        {
+          source: '/:path*',
+          destination: `${process.env.ENDPOINT}/:path*`,
+        },
+      ],
+    };
   },
 };
 
