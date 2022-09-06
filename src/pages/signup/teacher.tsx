@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { axiosInstance } from '../../queries';
+import { useRouter } from 'next/router';
 import {
   Root,
   LoginForm,
@@ -43,25 +45,76 @@ const NationLoginInput = styled(LoginInput)`
 `;
 
 function TeacherSignUp() {
+  const [name, setName] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [countryName, setCountryName] = useState<string>('');
+
+  const router = useRouter();
+
+  async function onTeacherSignUp(e) {
+    e.preventDefault();
+
+    try {
+      await axiosInstance
+        .post('/member/ruler/signup', {
+          authority: [
+            {
+              authorityName: 'ROLE_RULER',
+            },
+          ],
+          countryName: countryName,
+          property: 0,
+          email: email,
+          nickname: name,
+          password: password,
+          phoneNumber: phone,
+        })
+        .then(() => {
+          alert('성공적으로 나라를 생성하였습니다! 로그인을 진행해주세요.');
+          router.push('/login');
+        });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   return (
     <TeacherRoot>
-      <TeacherSignupForm>
+      <TeacherSignupForm onSubmit={onTeacherSignUp}>
         <h2>당신은 대통령이에요</h2>
 
         <h3>이름</h3>
-        <LoginInput placeholder='이름을 입력해주세요' />
+        <LoginInput
+          placeholder='이름을 입력해주세요'
+          onChange={(e) => setName(e.target.value)}
+        />
 
         <h3>전화번호</h3>
-        <LoginInput placeholder='전화번호를 입력해주세요 (- 제외)' />
+        <LoginInput
+          placeholder='전화번호를 입력해주세요 (- 제외)'
+          onChange={(e) => setPhone(e.target.value)}
+        />
 
         <h3>이메일</h3>
-        <LoginInput placeholder='이메일을 입력해주세요' />
+        <LoginInput
+          placeholder='이메일을 입력해주세요'
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
         <h3>비밀번호</h3>
-        <LoginInput type='password' placeholder='비밀번호를 입력해주세요' />
+        <LoginInput
+          type='password'
+          placeholder='비밀번호를 입력해주세요'
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
         <h3>나라 이름</h3>
-        <NationLoginInput placeholder='나라 이름을 입력해주세요' />
+        <NationLoginInput
+          placeholder='나라 이름을 입력해주세요'
+          onChange={(e) => setCountryName(e.target.value)}
+        />
         <TeacherSignupWraper>
           <span>*나라 이름은 추후 변경할 수 없습니다.</span>
           <span>*아이들에게 공유되니 쉬운 이름으로 지어주세요.</span>
