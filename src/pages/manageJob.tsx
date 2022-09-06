@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { ButtonHTMLAttributes } from 'react';
+import axios from 'axios';
+import { axiosInstance } from '../queries/index';
 import {
   ListItemContainer,
   ListTitleContainer,
@@ -12,17 +15,28 @@ import TextInput from '../components/textInput';
 import Typo from '../components/typo';
 import StyledHorizontalRule from '../components/horizontalRule';
 
-const ManageNation = () => {
-  type Job = {
-    id: number;
-    jobName: string;
-    jobDescription: string;
-    workForce: number;
-    pay: number;
-    working: string[];
+const ManageJob = () => {
+  type memberList = {
+    authorityDtoSet: any[];
+    email: string;
+    memberId: number;
+    nickname: string;
+    password: string;
+    phoneNumer: string;
+    property: number;
   };
+  type Job = {
+    headcount: number;
+    jobId: number;
+    jobName: string;
+    jobContent: string;
+    payCheck: number;
+    memberList: memberList[];
+  };
+
   const [isModifyState, setIsModifyState] = useState<boolean>(true);
   const [modifyButtonText, setModifyButtonText] = useState<string>('수정하기');
+  const [deleteJobId, setDeleteJobId] = useState<number>(-1);
   const onClickModify = () => {
     setIsModifyState((isModifyState) => !isModifyState);
     isModifyState
@@ -31,34 +45,39 @@ const ManageNation = () => {
     modifyButtonText == '적용하기' ? onClickAdapt() : null;
   };
   const onClickAdapt = () => {};
+  const onClickDelete = (e: React.MouseEvent<HTMLElement>) => {
+    console.log(e.target);
+  };
+  const [jobList, setJobList] = useState<Job[] | any[]>([]);
+  const getJobList = () => {
+    axiosInstance
+      .get('/job')
+      .then((response) => {
+        console.log(response.data);
+        setJobList(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+  const deleteJob = () => {
+    axiosInstance
+      .delete('/job/${product.pid}')
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+  useEffect(() => {
+    getJobList();
+  }, []);
+  useEffect(() => {
+    console.log(jobList);
+  }, [jobList]);
+  console.log(deleteJobId);
 
-  const [jobList, setJobList] = useState<Job[] | any[]>([
-    {
-      id: 0,
-      jobName: '은행원',
-      jobDescription: '친구들의 돈 관리',
-      workForce: 2,
-      pay: 100,
-      working: ['유다연', '이승우'],
-    },
-    {
-      id: 1,
-      jobName: '청소부',
-      jobDescription: '반 청결 관리',
-      workForce: 1,
-      pay: 100,
-      working: ['이주현'],
-    },
-    {
-      id: 2,
-      jobName: '투자자',
-      jobDescription: '주식 투자 관리',
-      workForce: 3,
-      pay: 100,
-      working: ['개미', '파리', '모기'],
-    },
-  ]);
-  const onClickDelete = () => {};
   return (
     <Root>
       <>
@@ -115,16 +134,16 @@ const ManageNation = () => {
                         {nation.jobName}
                       </Typo>
                       <Typo fontSize={1.2} style={{ width: '42.75%' }}>
-                        {nation.jobDescription}
+                        {nation.jobContent}
                       </Typo>
                       <Typo fontSize={1.2} style={{ width: '9.25%' }}>
-                        {nation.workForce}
+                        {nation.headcount}
                       </Typo>
                       <Typo fontSize={1.2} style={{ width: '14%' }}>
-                        {nation.pay}리브
+                        {nation.payCheck}리브
                       </Typo>
                       <Typo fontSize={1.2} style={{ width: '20%' }}>
-                        {`${nation.working}`}
+                        {`${nation.memberList.email}`}
                       </Typo>
                     </ListItemContainer>
                   )
@@ -159,7 +178,8 @@ const ManageNation = () => {
                         placeholder='직업 이름'
                         value={job.jobName}
                         borderRadius={0.5}
-                        onChange={onClickDelete}
+                        onChange={onClickAdapt}
+                        height={2.5}
                         style={{
                           marginLeft: '5%',
                           width: '8%',
@@ -169,8 +189,9 @@ const ManageNation = () => {
                       <TextInput
                         placeholder='직업 설명'
                         borderRadius={0.5}
-                        value={job.jobDescription}
-                        onChange={onClickDelete}
+                        value={job.jobContent}
+                        onChange={onClickAdapt}
+                        height={2.5}
                         style={{
                           marginLeft: '2%',
                           width: '43.5%',
@@ -180,8 +201,9 @@ const ManageNation = () => {
                       <TextInput
                         placeholder='월급'
                         borderRadius={0.5}
-                        value={job.pay}
-                        onChange={onClickDelete}
+                        value={job.payCheck}
+                        onChange={onClickAdapt}
+                        height={2.5}
                         style={{
                           marginLeft: '2%',
                           width: '6.5%',
@@ -192,8 +214,9 @@ const ManageNation = () => {
                       <TextInput
                         placeholder='인원'
                         borderRadius={0.5}
-                        value={job.workForce}
-                        onChange={onClickDelete}
+                        value={job.headcount}
+                        onChange={onClickAdapt}
+                        height={2.5}
                         style={{
                           marginLeft: '2%',
                           width: '4%',
@@ -202,7 +225,7 @@ const ManageNation = () => {
                       />
 
                       <Button
-                        backgroundColor={color.black}
+                        backgroundColor={color.deep}
                         color={color.white}
                         onClick={onClickDelete}
                         style={{
@@ -225,4 +248,4 @@ const ManageNation = () => {
   );
 };
 
-export default ManageNation;
+export default ManageJob;
