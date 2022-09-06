@@ -79,6 +79,23 @@ const MobileLoginButton = styled.button`
   }
 `;
 
+const MemberInfoArea = styled.div`
+  min-width: 6rem;
+  width: content-fit;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 1rem;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: ${color.kb};
+`;
+
 const Header: React.FC = () => {
   const [loginUserState, setLoginUserState] = useRecoilState(loginState);
 
@@ -91,12 +108,25 @@ const Header: React.FC = () => {
       <Link href='/'>
         <LogoImg src='/logo.svg' />
       </Link>
-      <Link href='/login'>
+      {loginUserState.isLogin == true ? (
         <LoginBtnWrapper>
-          <PCLoginButton>로그인/회원가입</PCLoginButton>
-          <MobileLoginButton>로그인</MobileLoginButton>
+          <MemberInfoArea>
+            {loginUserState.userInfo.memberResponseDto.nickname}(
+            {loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
+              .authorityName == 'ROLE_RULER'
+              ? '대통령'
+              : '국민'}
+            )
+          </MemberInfoArea>
         </LoginBtnWrapper>
-      </Link>
+      ) : (
+        <Link href='/login'>
+          <LoginBtnWrapper>
+            <PCLoginButton>로그인/회원가입</PCLoginButton>
+            <MobileLoginButton>로그인</MobileLoginButton>
+          </LoginBtnWrapper>
+        </Link>
+      )}
     </Root>
   );
 };
