@@ -212,7 +212,6 @@ const ManageNation = () => {
                       selectedItem={nation.jobName}
                       style={{ width: '12%' }}
                       height={1.8}
-                      placeholder='직업 선택'
                       onChange={(e) => {
                         setNationList(
                           nationList.map((value) =>
