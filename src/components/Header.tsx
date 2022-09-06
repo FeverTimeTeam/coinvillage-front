@@ -120,7 +120,10 @@ const Header: React.FC = () => {
       </Link>
       {loginUserState.isLogin == true ? (
         <RulerMenuWrapper>
-          <Link href='/manageNation'>국민 관리</Link>
+          {loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
+            .authorityName === 'ROLE_RULER' ? (
+            <Link href='/manageNation'>국민 관리</Link>
+          ) : null}
           <MemberInfoArea>
             {loginUserState.userInfo.memberResponseDto.nickname}(
             {loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
