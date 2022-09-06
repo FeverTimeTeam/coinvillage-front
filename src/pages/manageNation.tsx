@@ -22,6 +22,7 @@ import axios from 'axios';
 import { axiosInstance } from '../queries/index';
 import { useRecoilState } from 'recoil';
 import { nationListState } from '../recoil';
+import Modal from '../components/modal';
 
 const ManageNation = () => {
   const [isModifyState, setIsModifyState] = useState<boolean>(true);
@@ -106,6 +107,8 @@ const ManageNation = () => {
     getNationList();
   }, []);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <Root>
       <>
@@ -159,22 +162,22 @@ const ManageNation = () => {
             onClick={handleAllCheck}
             style={{ marginLeft: '0.5rem', marginRight: '3rem' }}
           />
-          <Typo fontSize={1.2} style={{ width: '6%' }}>
+          <Typo fontSize={1.2} style={{ width: '8%' }}>
             랭킹
           </Typo>
-          <Typo fontSize={1.2} style={{ width: '12%' }}>
+          <Typo fontSize={1.2} style={{ width: '8%' }}>
             이름
           </Typo>
           <Typo fontSize={1.2} style={{ width: '12%' }}>
             직업
           </Typo>
-          <Typo fontSize={1.2} style={{ width: '42%' }}>
+          <Typo fontSize={1.2} style={{ width: '36%' }}>
             하는 일
           </Typo>
-          <Typo fontSize={1.2} style={{ width: '12%' }}>
+          <Typo fontSize={1.2} style={{ width: '8%' }}>
             월급
           </Typo>
-          <Typo fontSize={1.2} style={{ width: '8%' }}>
+          <Typo fontSize={1.2} style={{ width: '8%', marginRight: '8%' }}>
             총 재산
           </Typo>
         </ListTitleContainer>
@@ -192,10 +195,10 @@ const ManageNation = () => {
                       marginRight: '3rem',
                     }}
                   />
-                  <Typo fontSize={1.2} style={{ width: '6%' }}>
+                  <Typo fontSize={1.2} style={{ width: '8%' }}>
                     {index + 1}
                   </Typo>
-                  <Typo fontSize={1.2} style={{ width: '12%' }}>
+                  <Typo fontSize={1.2} style={{ width: '8%' }}>
                     {nation.nickname}
                   </Typo>
                   {isModifyState ? (
@@ -226,10 +229,10 @@ const ManageNation = () => {
                       }}
                     />
                   )}
-                  <Typo fontSize={1.2} style={{ width: '42%' }}>
+                  <Typo fontSize={1.2} style={{ width: '36%' }}>
                     {nation.jobContent}
                   </Typo>
-                  <Typo fontSize={1.2} style={{ width: '12%' }}>
+                  <Typo fontSize={1.2} style={{ width: '8%' }}>
                     {nation.payCheck}
                   </Typo>
                   <Typo fontSize={1.2} style={{ width: '8%' }}>
@@ -239,6 +242,7 @@ const ManageNation = () => {
                     backgroundColor={color.deep}
                     color={color.white}
                     onClick={() => {
+                      setIsModalOpen(true);
                       setNationList(
                         nationList.filter(
                           (value) => value.memberId !== nation.memberId
@@ -246,7 +250,9 @@ const ManageNation = () => {
                       );
                       nationList.map((value) => {
                         if (value.memberId === nation.memberId) {
-                          deleteNation(value.memberId);
+                          console.log(value);
+                          console.log(nation);
+                          // deleteNation(value.memberId);
                         }
                       });
                     }}
@@ -259,6 +265,13 @@ const ManageNation = () => {
                   >
                     국민 삭제
                   </Button>
+                  {isModalOpen && (
+                    <Modal
+                      closeModal={() => {
+                        setIsModalOpen(false);
+                      }}
+                    />
+                  )}
                 </ListItemContainer>
               )
             );
