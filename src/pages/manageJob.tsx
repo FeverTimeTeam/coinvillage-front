@@ -25,7 +25,7 @@ const ManageJob = () => {
     phoneNumer: string;
     property: number;
   };
-  type Job = {
+  type job = {
     headcount: number;
     jobId: number;
     jobName: string;
@@ -48,7 +48,7 @@ const ManageJob = () => {
   const onClickDelete = (e: React.MouseEvent<HTMLElement>) => {
     console.log(e.target);
   };
-  const [jobList, setJobList] = useState<Job[] | any[]>([]);
+  const [jobList, setJobList] = useState<job[]>([]);
   const getJobList = () => {
     axiosInstance
       .get('/job')
@@ -60,9 +60,9 @@ const ManageJob = () => {
         console.log(e);
       });
   };
-  const deleteJob = () => {
+  const deleteJob = (jobId: number) => {
     axiosInstance
-      .delete('/job/${product.pid}')
+      .delete(`/job/${jobId}`)
       .then((response) => {
         console.log(response);
       })
@@ -77,6 +77,11 @@ const ManageJob = () => {
     console.log(jobList);
   }, [jobList]);
   console.log(deleteJobId);
+  console.log(
+    jobList.map((job) => {
+      console.log(job.memberList);
+    })
+  );
 
   return (
     <Root>
@@ -126,7 +131,7 @@ const ManageJob = () => {
               jobList.map((nation, index) => {
                 return (
                   nation && (
-                    <ListItemContainer key={nation.id}>
+                    <ListItemContainer key={nation.jobId}>
                       <Typo
                         fontSize={1.2}
                         style={{ marginLeft: '2%', width: '12%' }}
@@ -142,9 +147,14 @@ const ManageJob = () => {
                       <Typo fontSize={1.2} style={{ width: '14%' }}>
                         {nation.payCheck}리브
                       </Typo>
-                      <Typo fontSize={1.2} style={{ width: '20%' }}>
-                        {`${nation.memberList.email}`}
-                      </Typo>
+                      {nation.memberList &&
+                        nation.memberList.map((member, index) => {
+                          return (
+                            <Typo fontSize={1.2} style={{ width: '4%' }}>
+                              {`${member.nickname},`}
+                            </Typo>
+                          );
+                        })}
                     </ListItemContainer>
                   )
                 );
@@ -173,7 +183,7 @@ const ManageJob = () => {
               jobList.map((job, index) => {
                 return (
                   job && (
-                    <ListItemContainer key={job.id}>
+                    <ListItemContainer key={job.jobId}>
                       <TextInput
                         placeholder='직업 이름'
                         value={job.jobName}
@@ -223,11 +233,23 @@ const ManageJob = () => {
                           textAlign: 'center',
                         }}
                       />
-
                       <Button
                         backgroundColor={color.deep}
                         color={color.white}
-                        onClick={onClickDelete}
+                        onClick={() => {
+                          setJobList(
+                            jobList.filter(
+                              (value, index) => value.jobId !== job.jobId
+                            )
+                          );
+                          jobList.map((value) => {
+                            if (value.jobId === job.jobId) {
+                              console.log(value);
+                              console.log(job);
+                              deleteJob(value.jobId);
+                            }
+                          });
+                        }}
                         style={{
                           marginLeft: '1rem',
                           marginRight: '1rem',
