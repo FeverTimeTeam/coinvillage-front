@@ -7,7 +7,13 @@ interface loginStateType {
   userInfo: UserInfoType;
 }
 
-const { persistAtom } = recoilPersist();
+const sessionStorage =
+  typeof window !== `undefined` ? window.sessionStorage : undefined;
+
+const { persistAtom } = recoilPersist({
+  key: 'recoil-persist',
+  storage: sessionStorage,
+});
 
 type Nation = {
   memberId: number;
