@@ -11,7 +11,7 @@ const nextConfig = {
       fallback: [
         {
           source: '/:path*',
-          destination: `${process.env.ENDPOINT}/:path*`,
+          destination: `http://${process.env.ENDPOINT}/:path*`,
         },
       ],
     };
