@@ -51,7 +51,11 @@ const loginState = atom<loginStateType>({
 
 const nationListState = atom<any>({
   key: 'nationListState',
-  default: [],
+  default: [
+    {
+      isChecked: false,
+    },
+  ],
 });
 
 export { loginState, nationListState };

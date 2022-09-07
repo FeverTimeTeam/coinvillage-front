@@ -16,18 +16,23 @@ import Typo from '../components/typo';
 import SearchBox from '../components/searchBox';
 import StyledHorizontalRule from '../components/horizontalRule';
 import DropDown from '../components/dropDown';
-import useCheckBoxList from '../hooks/useCheckBoxList';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { axiosInstance } from '../queries/index';
 import { useRecoilState } from 'recoil';
 import { nationListState } from '../recoil';
 import Modal from '../components/modal';
+import { truncate } from 'fs';
 
 const ManageNation = () => {
   const [isModifyState, setIsModifyState] = useState<boolean>(true);
   const [modifyButtonText, setModifyButtonText] = useState<string>('수정하기');
   const [isPaycheckState, setIsPaycheckState] = useState<boolean>(true);
+  const [allIsChecked, setAllIsChecked] = useState<boolean>(false);
+  const [searchWord, setSearchWord] = useState<string>('');
+  const [nationList, setNationList] = useRecoilState(nationListState);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const onClickModify = () => {
     setIsModifyState((isModifyState) => !isModifyState);
     isModifyState
@@ -37,10 +42,6 @@ const ManageNation = () => {
   const onClickPayCheck = () => {
     setIsPaycheckState((isPaycheckState) => false);
   };
-
-  const [searchWord, setSearchWord] = useState<string>('');
-  const [nationList, setNationList] = useRecoilState(nationListState);
-  const [nationListLength, setNationListLength] = useState<number>(0);
   const getNationList = () => {
     axiosInstance
       .get('/manage')
@@ -51,21 +52,6 @@ const ManageNation = () => {
         console.log(e);
       });
   };
-
-  useEffect(() => {
-    if (nationList.length > 0) {
-      setNationListLength(nationList.length);
-    }
-  }, [nationList]);
-
-  const {
-    isCheckedList,
-    handleCheckList,
-    allIsChecked,
-    handleAllCheck,
-    allItemIsChecked,
-  } = useCheckBoxList({ itemListLength: nationListLength });
-
   const modifyNation = (memberId: number, jobName: string) => {
     axiosInstance
       .put(`/manage/${memberId}`, {
@@ -80,7 +66,6 @@ const ManageNation = () => {
         console.log(e);
       });
   };
-
   const deleteNation = (memberId: number) => {
     axiosInstance
       .delete(`/manage/${memberId}`)
@@ -103,11 +88,26 @@ const ManageNation = () => {
       });
   };
 
+  const handleAllCheck = async () => {
+    setAllIsChecked((prev) => !prev);
+  };
+  const allItemIsChecked = () => {
+    setNationList(
+      nationList.map((key: any) => (key ? { ...key, isChecked: true } : key))
+    );
+  };
+  const allItemIsNotChecked = () => {
+    setNationList(
+      nationList.map((key: any) => (key ? { ...key, isChecked: false } : key))
+    );
+  };
+
   useEffect(() => {
     getNationList();
   }, []);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  useEffect(() => {
+    allIsChecked ? allItemIsChecked() : allItemIsNotChecked();
+  }, [allIsChecked]);
 
   return (
     <Root>
@@ -158,7 +158,7 @@ const ManageNation = () => {
         </TopBarContainer>
         <ListTitleContainer>
           <CheckBox
-            isChecked={allItemIsChecked}
+            isChecked={allIsChecked}
             onClick={handleAllCheck}
             style={{ marginLeft: '0.5rem', marginRight: '3rem' }}
           />
@@ -188,8 +188,19 @@ const ManageNation = () => {
               nation && (
                 <ListItemContainer key={nation.memberId}>
                   <CheckBox
-                    isChecked={isCheckedList[index]}
-                    onClick={handleCheckList(index)}
+                    onClick={() => {
+                      setNationList(
+                        nationList.map((value: any) =>
+                          value.memberId === nation.memberId
+                            ? {
+                                ...value,
+                                isChecked: !value.isChecked,
+                              }
+                            : { ...value }
+                        )
+                      );
+                    }}
+                    isChecked={nation.isChecked}
                     style={{
                       marginLeft: '0.5rem',
                       marginRight: '3rem',
@@ -249,9 +260,7 @@ const ManageNation = () => {
                       );
                       nationList.map((value: any) => {
                         if (value.memberId === nation.memberId) {
-                          console.log(value);
-                          console.log(nation);
-                          // deleteNation(value.memberId);
+                          deleteNation(value.memberId);
                         }
                       });
                     }}
