@@ -35,6 +35,8 @@ const ManageJob = () => {
   };
 
   const [isModifyState, setIsModifyState] = useState<boolean>(true);
+  const [isJobContent, setIsJobContent] = useState<string>('');
+  const [isPay, setIsPay] = useState<number>(0);
   const [modifyButtonText, setModifyButtonText] = useState<string>('수정하기');
   const [deleteJobId, setDeleteJobId] = useState<number>(-1);
   const onClickModify = () => {
@@ -60,6 +62,19 @@ const ManageJob = () => {
         console.log(e);
       });
   };
+  const modifyJob = (jobId: number, jobContent: string, payCheck: number) => {
+    axiosInstance
+      .put(`/job/${jobId}`, {
+        jobContent: jobContent,
+        payCheck: payCheck,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
   const deleteJob = (jobId: number) => {
     axiosInstance
       .delete(`/job/${jobId}`)
@@ -70,18 +85,19 @@ const ManageJob = () => {
         console.log(e);
       });
   };
+
   useEffect(() => {
     getJobList();
   }, []);
   useEffect(() => {
     console.log(jobList);
   }, [jobList]);
-  console.log(deleteJobId);
-  console.log(
+  /*console.log(
     jobList.map((job) => {
       console.log(job.memberList);
     })
-  );
+  ); 
+  */
 
   return (
     <Root>
@@ -128,30 +144,32 @@ const ManageJob = () => {
             </ListTitleContainer>
             <StyledHorizontalRule />
             {jobList &&
-              jobList.map((nation, index) => {
+              jobList.map((job, index) => {
                 return (
-                  nation && (
-                    <ListItemContainer key={nation.jobId}>
+                  job && (
+                    <ListItemContainer key={job.jobId}>
                       <Typo
                         fontSize={1.2}
                         style={{ marginLeft: '2%', width: '12%' }}
                       >
-                        {nation.jobName}
+                        {job.jobName}
                       </Typo>
                       <Typo fontSize={1.2} style={{ width: '42.75%' }}>
-                        {nation.jobContent}
+                        {job.jobContent}
                       </Typo>
                       <Typo fontSize={1.2} style={{ width: '9.25%' }}>
-                        {nation.headcount}
+                        {job.headcount}
                       </Typo>
                       <Typo fontSize={1.2} style={{ width: '14%' }}>
-                        {nation.payCheck}리브
+                        {job.payCheck}리브
                       </Typo>
-                      {nation.memberList &&
-                        nation.memberList.map((member, index) => {
+                      {job.memberList &&
+                        job.memberList.map((member, index) => {
                           return (
-                            <Typo fontSize={1.2} style={{ width: '4%' }}>
-                              {`${member.nickname},`}
+                            <Typo fontSize={1.2} style={{ width: '5%' }}>
+                              {index === job.headcount - 1
+                                ? `${member.nickname}`
+                                : `${member.nickname},`}
                             </Typo>
                           );
                         })}
@@ -163,7 +181,7 @@ const ManageJob = () => {
         ) : (
           <>
             <ListTitleContainer>
-              <Typo fontSize={1.2} style={{ marginLeft: '8%', width: '9%' }}>
+              <Typo fontSize={1.2} style={{ marginLeft: '2%', width: '12%' }}>
                 직업
               </Typo>
               <Typo fontSize={1.2} style={{ width: '49%' }}>
@@ -176,9 +194,7 @@ const ManageJob = () => {
                 인원
               </Typo>
             </ListTitleContainer>
-            <StyledHorizontalRule
-              style={{ width: '75%', marginRight: '20%' }}
-            />
+            <StyledHorizontalRule />
             {jobList &&
               jobList.map((job, index) => {
                 return (
@@ -190,6 +206,7 @@ const ManageJob = () => {
                         borderRadius={0.5}
                         onChange={onClickAdapt}
                         height={2.5}
+                        disabled={true}
                         style={{
                           marginLeft: '5%',
                           width: '8%',
@@ -200,7 +217,16 @@ const ManageJob = () => {
                         placeholder='직업 설명'
                         borderRadius={0.5}
                         value={job.jobContent}
-                        onChange={onClickAdapt}
+                        onChange={(e) => {
+                          setIsJobContent(e.target.value);
+                          setJobList(
+                            jobList.map((value: any) =>
+                              value.jobId === job.jobId
+                                ? { ...value, jobContent: e.target.value }
+                                : value
+                            )
+                          );
+                        }}
                         height={2.5}
                         style={{
                           marginLeft: '2%',
@@ -212,7 +238,16 @@ const ManageJob = () => {
                         placeholder='월급'
                         borderRadius={0.5}
                         value={job.payCheck}
-                        onChange={onClickAdapt}
+                        onChange={(e) => {
+                          setIsPay(e.target.value);
+                          setJobList(
+                            jobList.map((value: any) =>
+                              value.jobId === job.jobId
+                                ? { ...value, payCheck: e.target.value }
+                                : value
+                            )
+                          );
+                        }}
                         height={2.5}
                         style={{
                           marginLeft: '2%',
@@ -227,12 +262,36 @@ const ManageJob = () => {
                         value={job.headcount}
                         onChange={onClickAdapt}
                         height={2.5}
+                        disabled={true}
                         style={{
                           marginLeft: '2%',
                           width: '4%',
                           textAlign: 'center',
                         }}
                       />
+                      <Button
+                        backgroundColor={color.deep}
+                        color={color.white}
+                        onClick={() => {
+                          jobList.map((value) => {
+                            if (value.jobId === job.jobId) {
+                              modifyJob(
+                                value.jobId,
+                                value.jobContent,
+                                value.payCheck
+                              );
+                            }
+                          });
+                        }}
+                        style={{
+                          marginLeft: '1rem',
+                          marginRight: '1rem',
+                          marginTop: '0.5rem',
+                          border: 'solid',
+                        }}
+                      >
+                        직업 수정
+                      </Button>
                       <Button
                         backgroundColor={color.deep}
                         color={color.white}
@@ -244,8 +303,6 @@ const ManageJob = () => {
                           );
                           jobList.map((value) => {
                             if (value.jobId === job.jobId) {
-                              console.log(value);
-                              console.log(job);
                               deleteJob(value.jobId);
                             }
                           });

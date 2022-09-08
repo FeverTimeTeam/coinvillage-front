@@ -28,18 +28,13 @@ const ListItemContainer = styled.div`
   margin-top: 1.5rem;
 `;
 
-type PaycheckButtonProps = {
-  isPaycheckState: boolean;
-};
-
-const PaycheckButton = styled(StyledButton)<PaycheckButtonProps>`
+const PaycheckButton = styled(StyledButton)`
   width: 5rem;
   height: 2rem;
   border-radius: 0.5rem;
-  ${(props) =>
-    props.isPaycheckState
-      ? `background-color: ${color.warm_gray1}`
-      : `background-color: ${color.light_gray}`};
+  border: solid;
+  background-color: ${color.warm_gray1};
+  border-color: ${color.warm_gray1};
 `;
 
 export {
