@@ -1,10 +1,12 @@
 import type { NextPage } from 'next';
+import Image from '../components/image';
 
 const Home: NextPage = () => {
   return (
-    <>
-      <div>Welcome to CoinVillage</div>
-    </>
+    <Image
+      src='/main_world_with_background.png'
+      style={{ width: '100%', height: '100%' }}
+    />
   );
 };
 
