@@ -6,7 +6,7 @@ import Typo from './typo';
 
 type Props = {
   closeModal: () => void;
-  warningMessage?: string;
+  warningMessage: string;
   leftButtonText?: string;
   rightButtonText?: string;
 };
@@ -38,10 +38,7 @@ const ModalBody = styled.div`
   box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
 `;
 
-const Modal: React.FC<Props> = ({
-  closeModal,
-  warningMessage = '삭제되었습니다.',
-}) => {
+const Modal: React.FC<Props> = ({ closeModal, warningMessage }) => {
   return (
     <Root onClick={closeModal}>
       <ModalBody onClick={(e) => e.stopPropagation()}>
