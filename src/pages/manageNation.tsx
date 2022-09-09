@@ -196,6 +196,8 @@ const ManageNation = () => {
                 </PaycheckButton>
                 {isPayModalOpen && (
                   <Modal
+                    width={15}
+                    height={5}
                     warningMessage={'월급이 지급되었습니다.'}
                     closeModal={() => {
                       setIsPayModalOpen(false);
@@ -350,6 +352,8 @@ const ManageNation = () => {
                   ) : null}
                   {isModalOpen && (
                     <Modal
+                      width={15}
+                      height={5}
                       warningMessage={'삭제되었습니다.'}
                       closeModal={() => {
                         setIsModalOpen(false);
