@@ -7,6 +7,7 @@ import { FiLogOut } from 'react-icons/fi';
 import { loginState } from '../recoil';
 import { useRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
+import { axiosInstance } from '../queries';
 
 const LogoImg = styled.img`
   cursor: pointer;
@@ -131,6 +132,7 @@ const Header: React.FC = () => {
   function onLogout() {
     if (confirm('로그아웃 하시겠습니까?')) {
       sessionStorage.removeItem('recoil-persist');
+      delete axiosInstance.defaults.headers.common['Authorization'];
       router.reload();
     }
   }

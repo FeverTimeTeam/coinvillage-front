@@ -43,6 +43,8 @@ const Login = () => {
               isLogin: true,
               userInfo: res.data,
             });
+            axiosInstance.defaults.headers.common['Authorization'] =
+              'Bearer ' + res.data.token;
             router.push('/');
           }
         });
