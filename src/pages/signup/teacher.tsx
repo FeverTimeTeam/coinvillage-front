@@ -58,7 +58,7 @@ function TeacherSignUp() {
 
     try {
       await axiosInstance
-        .post('/member/ruler/signup', {
+        .post('/members/ruler/signup', {
           authority: [
             {
               authorityName: 'ROLE_RULER',
