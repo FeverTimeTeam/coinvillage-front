@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import color from '../constants/color';
 import Button from './button';
 import Typo from './typo';
+import { axiosInstance } from '../queries/index';
+import TextInput from './textInput';
 
 type Props = {
   closeModal: () => void;
-  warningMessage: string;
+  warningMessage?: string;
   leftButtonText?: string;
   rightButtonText?: string;
+  jobInput?: boolean;
+  width: number;
+  height: number;
+};
+
+type RootProps = {
+  width?: number;
+  height?: number;
 };
 
 const Root = styled.div`
@@ -23,14 +33,14 @@ const Root = styled.div`
   align-items: center;
 `;
 
-const ModalBody = styled.div`
+const ModalBody = styled.div<RootProps>`
   position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 15rem;
-  height: 5rem;
+  ${(props) => `width: ${props.width}rem;`}
+  ${(props) => `height: ${props.height}rem;`}
   padding: 2.5rem;
   text-align: center;
   ${`background-color: ${color.light_gray3};`}
@@ -38,21 +48,152 @@ const ModalBody = styled.div`
   box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
 `;
 
-const Modal: React.FC<Props> = ({ closeModal, warningMessage }) => {
+const Modal: React.FC<Props> = ({
+  closeModal,
+  warningMessage,
+  jobInput,
+  width,
+  height,
+}) => {
+  const [isJobName, setIsJobName] = useState<string>('');
+  const [isJobContent, setIsJobContent] = useState<string>('');
+  const [isJobPay, setIsJobPay] = useState<number>(0);
+  const postJob = (jobName: string, jobContent: string, payCheck: number) => {
+    axiosInstance
+      .post('/job', {
+        jobName: jobName,
+        jobContent: jobContent,
+        payCheck: payCheck,
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
   return (
     <Root onClick={closeModal}>
-      <ModalBody onClick={(e) => e.stopPropagation()}>
-        <Typo fontSize={1.2}>{warningMessage}</Typo>
-        <Button
-          color={color.system_ok}
-          backgroundColor={color.light_gray3}
-          borderColor={color.white}
-          onClick={() => {
-            closeModal();
-          }}
-        >
-          확인
-        </Button>
+      <ModalBody
+        width={width}
+        height={height}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {jobInput ? (
+          <>
+            <div style={{ display: 'flex' }}>
+              <Typo
+                fontSize={1.2}
+                style={{
+                  marginTop: '0.5rem',
+                  textAlign: 'right',
+                  width: '5rem',
+                }}
+              >
+                직업명 :
+              </Typo>
+              <TextInput
+                value={isJobName}
+                borderRadius={0.5}
+                onChange={(e) => {
+                  setIsJobName(e.target.value);
+                }}
+                height={2.5}
+                style={{
+                  marginLeft: '1rem',
+                  width: '15rem',
+                  textAlign: 'center',
+                }}
+              />
+            </div>
+            <div style={{ marginTop: '0.5rem', display: 'flex' }}>
+              <Typo
+                fontSize={1.2}
+                style={{
+                  marginTop: '0.5rem',
+                  textAlign: 'right',
+                  width: '5rem',
+                }}
+              >
+                하는 일 :
+              </Typo>
+              <TextInput
+                value={isJobContent}
+                borderRadius={0.5}
+                onChange={(e) => {
+                  setIsJobContent(e.target.value);
+                }}
+                height={2.5}
+                style={{
+                  marginLeft: '1rem',
+                  width: '15rem',
+                  textAlign: 'center',
+                }}
+              />
+            </div>
+            <div style={{ marginTop: '0.5rem', display: 'flex' }}>
+              <Typo
+                fontSize={1.2}
+                style={{
+                  marginTop: '0.5rem',
+                  textAlign: 'right',
+                  width: '5rem',
+                }}
+              >
+                월급 :
+              </Typo>
+              <TextInput
+                value={isJobPay}
+                borderRadius={0.5}
+                onChange={(e) => {
+                  setIsJobPay(e.target.value);
+                }}
+                height={2.5}
+                style={{
+                  marginLeft: '1rem',
+                  width: '15rem',
+                  textAlign: 'center',
+                }}
+              />
+            </div>
+            <div style={{ display: 'flex' }}>
+              <Button
+                color={color.system_ok}
+                backgroundColor={color.light_gray3}
+                style={{ marginLeft: '12rem' }}
+                onClick={() => {
+                  closeModal();
+                  postJob(isJobName, isJobContent, isJobPay);
+                }}
+              >
+                추가하기
+              </Button>
+              <Button
+                color={color.system_ok}
+                backgroundColor={color.light_gray3}
+                style={{ marginLeft: '1rem' }}
+                onClick={() => {
+                  closeModal();
+                }}
+              >
+                취소하기
+              </Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <Typo fontSize={1.2}>{warningMessage}</Typo>
+            <Button
+              color={color.system_ok}
+              backgroundColor={color.light_gray3}
+              onClick={() => {
+                closeModal();
+              }}
+            >
+              확인
+            </Button>
+          </>
+        )}
       </ModalBody>
     </Root>
   );
