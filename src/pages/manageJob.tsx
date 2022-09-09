@@ -13,10 +13,13 @@ import Button from '../components/button';
 import color from '../constants/color';
 import TextInput from '../components/textInput';
 import Typo from '../components/typo';
+import Modal from '../components/modal';
 import StyledHorizontalRule from '../components/horizontalRule';
+import { useRecoilState } from 'recoil';
+import { jobListState } from '../recoil';
 
 const ManageJob = () => {
-  type memberList = {
+  /*type memberList = {
     authorityDtoSet: any[];
     email: string;
     memberId: number;
@@ -32,25 +35,22 @@ const ManageJob = () => {
     jobContent: string;
     payCheck: number;
     memberList: memberList[];
-  };
-
+  }; 
+  */
   const [isModifyState, setIsModifyState] = useState<boolean>(true);
-  const [isJobContent, setIsJobContent] = useState<string>('');
-  const [isPay, setIsPay] = useState<number>(0);
   const [modifyButtonText, setModifyButtonText] = useState<string>('수정하기');
-  const [deleteJobId, setDeleteJobId] = useState<number>(-1);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModifyModalOpen, setIsModifyModalOpen] = useState<boolean>(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [jobList, setJobList] = useRecoilState(jobListState);
+
   const onClickModify = () => {
     setIsModifyState((isModifyState) => !isModifyState);
     isModifyState
       ? setModifyButtonText('적용하기')
       : setModifyButtonText('수정하기');
-    modifyButtonText == '적용하기' ? onClickAdapt() : null;
   };
-  const onClickAdapt = () => {};
-  const onClickDelete = (e: React.MouseEvent<HTMLElement>) => {
-    console.log(e.target);
-  };
-  const [jobList, setJobList] = useState<job[]>([]);
+  const onChange = () => {};
   const getJobList = () => {
     axiosInstance
       .get('/job')
@@ -88,10 +88,8 @@ const ManageJob = () => {
 
   useEffect(() => {
     getJobList();
-  }, []);
-  useEffect(() => {
-    console.log(jobList);
-  }, [jobList]);
+  }, [isModalOpen]);
+
   /*console.log(
     jobList.map((job) => {
       console.log(job.memberList);
@@ -114,12 +112,36 @@ const ManageJob = () => {
               onClick={onClickModify}
               style={{
                 marginLeft: '1rem',
-                marginRight: '1rem',
+                marginRight: '0.5rem',
                 border: 'solid',
               }}
             >
               {modifyButtonText}
             </Button>
+            <Button
+              backgroundColor={color.white}
+              color={color.kb}
+              borderColor={color.kb}
+              onClick={() => {
+                setIsModalOpen(true);
+              }}
+              style={{
+                marginRight: '1rem',
+                border: 'solid',
+              }}
+            >
+              직업 추가
+            </Button>
+            {isModalOpen && (
+              <Modal
+                width={30}
+                height={15}
+                jobInput={true}
+                closeModal={() => {
+                  setIsModalOpen(false);
+                }}
+              />
+            )}
           </TopBarLeftItemsContainer>
         </TopBarContainer>
         <Typo fontSize={1}>*담당자 변경은 국민관리에서 해주세요.</Typo>
@@ -144,7 +166,7 @@ const ManageJob = () => {
             </ListTitleContainer>
             <StyledHorizontalRule />
             {jobList &&
-              jobList.map((job, index) => {
+              jobList.map((job: any, index: any) => {
                 return (
                   job && (
                     <ListItemContainer key={job.jobId}>
@@ -164,7 +186,7 @@ const ManageJob = () => {
                         {job.payCheck}리브
                       </Typo>
                       {job.memberList &&
-                        job.memberList.map((member, index) => {
+                        job.memberList.map((member: any, index: any) => {
                           return (
                             <Typo fontSize={1.2} style={{ width: '5%' }}>
                               {index === job.headcount - 1
@@ -181,30 +203,33 @@ const ManageJob = () => {
         ) : (
           <>
             <ListTitleContainer>
-              <Typo fontSize={1.2} style={{ marginLeft: '2%', width: '12%' }}>
+              <Typo
+                fontSize={1.2}
+                style={{ marginLeft: '5.5%', width: '10.5%' }}
+              >
                 직업
               </Typo>
-              <Typo fontSize={1.2} style={{ width: '49%' }}>
+              <Typo fontSize={1.2} style={{ width: '50%' }}>
                 직업 설명
               </Typo>
               <Typo fontSize={1.2} style={{ width: '9%' }}>
                 월급
               </Typo>
-              <Typo fontSize={1.2} style={{ width: '14%' }}>
+              <Typo fontSize={1.2} style={{ width: '4%' }}>
                 인원
               </Typo>
             </ListTitleContainer>
             <StyledHorizontalRule />
             {jobList &&
-              jobList.map((job, index) => {
+              jobList.map((job: any, index: any) => {
                 return (
                   job && (
                     <ListItemContainer key={job.jobId}>
                       <TextInput
                         placeholder='직업 이름'
+                        onChange={onChange}
                         value={job.jobName}
                         borderRadius={0.5}
-                        onChange={onClickAdapt}
                         height={2.5}
                         disabled={true}
                         style={{
@@ -218,7 +243,6 @@ const ManageJob = () => {
                         borderRadius={0.5}
                         value={job.jobContent}
                         onChange={(e) => {
-                          setIsJobContent(e.target.value);
                           setJobList(
                             jobList.map((value: any) =>
                               value.jobId === job.jobId
@@ -239,7 +263,6 @@ const ManageJob = () => {
                         borderRadius={0.5}
                         value={job.payCheck}
                         onChange={(e) => {
-                          setIsPay(e.target.value);
                           setJobList(
                             jobList.map((value: any) =>
                               value.jobId === job.jobId
@@ -260,9 +283,9 @@ const ManageJob = () => {
                         placeholder='인원'
                         borderRadius={0.5}
                         value={job.headcount}
-                        onChange={onClickAdapt}
                         height={2.5}
                         disabled={true}
+                        onChange={onChange}
                         style={{
                           marginLeft: '2%',
                           width: '4%',
@@ -273,7 +296,8 @@ const ManageJob = () => {
                         backgroundColor={color.deep}
                         color={color.white}
                         onClick={() => {
-                          jobList.map((value) => {
+                          setIsModifyModalOpen(true);
+                          jobList.map((value: any) => {
                             if (value.jobId === job.jobId) {
                               modifyJob(
                                 value.jobId,
@@ -292,30 +316,50 @@ const ManageJob = () => {
                       >
                         직업 수정
                       </Button>
+                      {isModifyModalOpen && (
+                        <Modal
+                          width={15}
+                          height={5}
+                          warningMessage={'수정되었습니다.'}
+                          closeModal={() => {
+                            setIsModifyModalOpen(false);
+                          }}
+                        />
+                      )}
                       <Button
                         backgroundColor={color.deep}
                         color={color.white}
                         onClick={() => {
+                          setIsDeleteModalOpen(true);
                           setJobList(
                             jobList.filter(
-                              (value, index) => value.jobId !== job.jobId
+                              (value: any, index: any) =>
+                                value.jobId !== job.jobId
                             )
                           );
-                          jobList.map((value) => {
+                          jobList.map((value: any) => {
                             if (value.jobId === job.jobId) {
                               deleteJob(value.jobId);
                             }
                           });
                         }}
                         style={{
-                          marginLeft: '1rem',
-                          marginRight: '1rem',
                           marginTop: '0.5rem',
                           border: 'solid',
                         }}
                       >
                         직업 삭제
                       </Button>
+                      {isDeleteModalOpen && (
+                        <Modal
+                          width={15}
+                          height={5}
+                          warningMessage={'삭제되었습니다.'}
+                          closeModal={() => {
+                            setIsDeleteModalOpen(false);
+                          }}
+                        />
+                      )}
                     </ListItemContainer>
                   )
                 );
