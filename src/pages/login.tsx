@@ -33,7 +33,7 @@ const Login = () => {
 
     try {
       await axiosInstance
-        .post('/member/authenticate', {
+        .post('/members/authenticate', {
           email: id,
           password: pw,
         })
