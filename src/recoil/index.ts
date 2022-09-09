@@ -58,4 +58,9 @@ const nationListState = atom<any>({
   ],
 });
 
-export { loginState, nationListState };
+const jobListState = atom<any>({
+  key: 'jobListState',
+  default: [],
+});
+
+export { loginState, nationListState, jobListState };
