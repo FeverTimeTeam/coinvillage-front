@@ -14,6 +14,24 @@ const LogoImg = styled.img`
 `;
 
 const Root = styled.header`
+  padding-left: 2rem;
+  padding-right: 2rem;
+
+  @media screen and (min-width: ${deviceSize.tablet}) {
+    padding-left: 10rem;
+    padding-right: 10rem;
+  }
+
+  @media screen and (min-width: ${deviceSize.laptop}) {
+    padding-left: 12rem;
+    padding-right: 12rem;
+  }
+
+  @media screen and (min-width: ${deviceSize.large}) {
+    padding-left: 16rem;
+    padding-right: 16rem;
+  }
+
   display: flex;
   box-sizing: border-box;
   justify-content: space-between;
@@ -21,6 +39,7 @@ const Root = styled.header`
   width: 100%;
   height: 5.25rem;
   padding: 0.75rem 0rem;
+  box-shadow: 0px 4px 100px rgba(0, 0, 0, 0.05);
 
   button {
     width: 6rem;

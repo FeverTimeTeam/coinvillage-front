@@ -7,6 +7,7 @@ const IndexPageWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
+  background: linear-gradient(180deg, #6dc3df 0%, #fffcb7 49.48%);
   height: calc(100vh - 5.25rem);
 `;
 
