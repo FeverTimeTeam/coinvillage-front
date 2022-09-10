@@ -57,7 +57,7 @@ function StudentSignup() {
 
     try {
       await axiosInstance
-        .post('/member/nation/signup', {
+        .post('/members/nation/signup', {
           authority: [
             {
               authorityName: 'ROLE_NATION',

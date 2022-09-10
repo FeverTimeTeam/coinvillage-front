@@ -23,15 +23,17 @@ import { useRecoilState } from 'recoil';
 import { nationListState } from '../recoil';
 import Modal from '../components/modal';
 import { truncate } from 'fs';
+import { devNull } from 'os';
 
 const ManageNation = () => {
   const [isModifyState, setIsModifyState] = useState<boolean>(true);
   const [modifyButtonText, setModifyButtonText] = useState<string>('수정하기');
-  const [isPaycheckState, setIsPaycheckState] = useState<boolean>(true);
   const [allIsChecked, setAllIsChecked] = useState<boolean>(false);
+  const [allItemChecked, setAllItemChecked] = useState<boolean>(false);
   const [searchWord, setSearchWord] = useState<string>('');
   const [nationList, setNationList] = useRecoilState(nationListState);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isPayModalOpen, setIsPayModalOpen] = useState<boolean>(false);
 
   const onClickModify = () => {
     setIsModifyState((isModifyState) => !isModifyState);
@@ -39,12 +41,9 @@ const ManageNation = () => {
       ? setModifyButtonText('적용하기')
       : setModifyButtonText('수정하기');
   };
-  const onClickPayCheck = () => {
-    setIsPaycheckState((isPaycheckState) => false);
-  };
   const getNationList = () => {
     axiosInstance
-      .get('/manage')
+      .get('/managements')
       .then((response) => {
         setNationList(response.data);
       })
@@ -54,7 +53,7 @@ const ManageNation = () => {
   };
   const modifyNation = (memberId: number, jobName: string) => {
     axiosInstance
-      .put(`/manage/${memberId}`, {
+      .put(`/managements/${memberId}`, {
         job: {
           jobName: jobName,
         },
@@ -68,7 +67,27 @@ const ManageNation = () => {
   };
   const deleteNation = (memberId: number) => {
     axiosInstance
-      .delete(`/manage/${memberId}`)
+      .delete(`/managements/${memberId}`)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+  const searchNation = (nickname: string) => {
+    axiosInstance
+      .get(`/managements/search?searchWord=${nickname}`)
+      .then((response) => {
+        setNationList(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+  const payNation = (memberId: number) => {
+    axiosInstance
+      .put(`/managements/pay/${memberId}`)
       .then((response) => {
         console.log(response);
       })
@@ -77,20 +96,6 @@ const ManageNation = () => {
       });
   };
 
-  const searchNation = (nickname: string) => {
-    axiosInstance
-      .get(`/manage/search?searchWord=${nickname}`)
-      .then((response) => {
-        setNationList(response.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-
-  const handleAllCheck = async () => {
-    setAllIsChecked((prev) => !prev);
-  };
   const allItemIsChecked = () => {
     setNationList(
       nationList.map((key: any) => (key ? { ...key, isChecked: true } : key))
@@ -101,13 +106,60 @@ const ManageNation = () => {
       nationList.map((key: any) => (key ? { ...key, isChecked: false } : key))
     );
   };
+  const handleAllCheck = () => {
+    if (allItemChecked === false && allIsChecked == true) {
+      setAllItemChecked(true);
+      allItemIsChecked();
+    } else if (allItemChecked === true && allIsChecked == true) {
+      setAllItemChecked(false);
+      setAllIsChecked(false);
+      allItemIsNotChecked();
+    } else {
+      setAllIsChecked(true);
+      allItemIsChecked();
+      setAllItemChecked(true);
+    }
+  };
+
+  const checkAllChecked = () => {
+    nationList.map((value: any) => {
+      if (value.isChecked === false) {
+        setAllItemChecked(false);
+      }
+    });
+  };
+
+  const onPayClick = () => {
+    nationList.map((value: any) => {
+      if (value.isChecked === true) {
+        payNation(value.memberId);
+        console.log('월급 지급!');
+      }
+    });
+    setIsPayModalOpen(true);
+    setAllItemChecked(false);
+  };
 
   useEffect(() => {
     getNationList();
-  }, []);
+  }, [isPayModalOpen]);
+
   useEffect(() => {
-    allIsChecked ? allItemIsChecked() : allItemIsNotChecked();
-  }, [allIsChecked]);
+    checkAllChecked();
+  }, [
+    nationList.map((value: any) => {
+      value.isChecked;
+    }),
+  ]);
+
+  nationList.map((nation: any) => {
+    if (nation.isChecked === true) {
+      console.log(nation.nickname);
+    }
+  });
+
+  console.log(`bb ${allItemChecked}`);
+  console.log(`allIsChecked ${allIsChecked}`);
 
   return (
     <Root>
@@ -130,15 +182,30 @@ const ManageNation = () => {
             >
               {modifyButtonText}
             </Button>
-            <PaycheckButton
-              isPaycheckState={isPaycheckState}
-              backgroundColor={color.warm_gray1}
-              color={color.white}
-              borderColor={color.warm_gray1}
-              onClick={onClickPayCheck}
-            >
-              월급주기
-            </PaycheckButton>
+            {isModifyState ? (
+              <>
+                <PaycheckButton
+                  backgroundColor={color.warm_gray1}
+                  color={color.white}
+                  borderColor={color.warm_gray1}
+                  onClick={() => {
+                    onPayClick();
+                  }}
+                >
+                  월급주기
+                </PaycheckButton>
+                {isPayModalOpen && (
+                  <Modal
+                    width={15}
+                    height={5}
+                    warningMessage={'월급이 지급되었습니다.'}
+                    closeModal={() => {
+                      setIsPayModalOpen(false);
+                    }}
+                  />
+                )}
+              </>
+            ) : null}
           </TopBarLeftItemsContainer>
           <SearchBox
             width={9}
@@ -157,11 +224,15 @@ const ManageNation = () => {
           />
         </TopBarContainer>
         <ListTitleContainer>
-          <CheckBox
-            isChecked={allIsChecked}
-            onClick={handleAllCheck}
-            style={{ marginLeft: '0.5rem', marginRight: '3rem' }}
-          />
+          {!isModifyState ? (
+            <div style={{ width: '5rem' }}> </div>
+          ) : (
+            <CheckBox
+              isChecked={allItemChecked}
+              onClick={handleAllCheck}
+              style={{ marginLeft: '0.5rem', marginRight: '3rem' }}
+            />
+          )}
           <Typo fontSize={1.2} style={{ width: '8%' }}>
             랭킹
           </Typo>
@@ -187,26 +258,30 @@ const ManageNation = () => {
             return (
               nation && (
                 <ListItemContainer key={nation.memberId}>
-                  <CheckBox
-                    onClick={() => {
-                      setNationList(
-                        nationList.map((value: any) =>
-                          value.memberId === nation.memberId
-                            ? {
-                                ...value,
-                                isChecked: !value.isChecked,
-                              }
-                            : { ...value }
-                        )
-                      );
-                    }}
-                    isChecked={nation.isChecked}
-                    style={{
-                      marginLeft: '0.5rem',
-                      marginRight: '3rem',
-                    }}
-                  />
-                  <Typo fontSize={1.2} style={{ width: '8%' }}>
+                  {!isModifyState ? (
+                    <div style={{ width: '5.5rem' }}> </div>
+                  ) : (
+                    <CheckBox
+                      onClick={() => {
+                        setNationList(
+                          nationList.map((value: any) =>
+                            value.memberId === nation.memberId
+                              ? {
+                                  ...value,
+                                  isChecked: !value.isChecked,
+                                }
+                              : { ...value }
+                          )
+                        );
+                      }}
+                      isChecked={nation.isChecked}
+                      style={{
+                        marginLeft: '0.5rem',
+                        marginRight: '3.5rem',
+                      }}
+                    />
+                  )}
+                  <Typo fontSize={1.2} style={{ width: '7.5%' }}>
                     {index + 1}
                   </Typo>
                   <Typo fontSize={1.2} style={{ width: '8%' }}>
@@ -248,33 +323,38 @@ const ManageNation = () => {
                   <Typo fontSize={1.2} style={{ width: '8%' }}>
                     {nation.property}
                   </Typo>
-                  <Button
-                    backgroundColor={color.deep}
-                    color={color.white}
-                    onClick={() => {
-                      setIsModalOpen(true);
-                      setNationList(
-                        nationList.filter(
-                          (value: any) => value.memberId !== nation.memberId
-                        )
-                      );
-                      nationList.map((value: any) => {
-                        if (value.memberId === nation.memberId) {
-                          deleteNation(value.memberId);
-                        }
-                      });
-                    }}
-                    style={{
-                      marginLeft: '1rem',
-                      marginRight: '1rem',
-                      marginTop: '0.5rem',
-                      border: 'solid',
-                    }}
-                  >
-                    국민 삭제
-                  </Button>
+                  {!isModifyState ? (
+                    <Button
+                      backgroundColor={color.deep}
+                      color={color.white}
+                      onClick={() => {
+                        setIsModalOpen(true);
+                        setNationList(
+                          nationList.filter(
+                            (value: any) => value.memberId !== nation.memberId
+                          )
+                        );
+                        nationList.map((value: any) => {
+                          if (value.memberId === nation.memberId) {
+                            deleteNation(value.memberId);
+                          }
+                        });
+                      }}
+                      style={{
+                        marginLeft: '1rem',
+                        marginRight: '1rem',
+                        marginTop: '0.5rem',
+                        border: 'solid',
+                      }}
+                    >
+                      국민 삭제
+                    </Button>
+                  ) : null}
                   {isModalOpen && (
                     <Modal
+                      width={15}
+                      height={5}
+                      warningMessage={'삭제되었습니다.'}
                       closeModal={() => {
                         setIsModalOpen(false);
                       }}

@@ -33,7 +33,7 @@ const Login = () => {
 
     try {
       await axiosInstance
-        .post('/member/authenticate', {
+        .post('/members/authenticate', {
           email: id,
           password: pw,
         })
@@ -43,6 +43,8 @@ const Login = () => {
               isLogin: true,
               userInfo: res.data,
             });
+            axiosInstance.defaults.headers.common['Authorization'] =
+              'Bearer ' + res.data.token;
             router.push('/');
           }
         });
