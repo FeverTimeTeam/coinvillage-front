@@ -60,7 +60,7 @@ const Modal: React.FC<Props> = ({
   const [isJobPay, setIsJobPay] = useState<number>(0);
   const postJob = (jobName: string, jobContent: string, payCheck: number) => {
     axiosInstance
-      .post('/job', {
+      .post('/jobs', {
         jobName: jobName,
         jobContent: jobContent,
         payCheck: payCheck,
