@@ -6,6 +6,7 @@ import {
   ListItemContainer,
   ListTitleContainer,
   Root,
+  RootPart,
   TopBarContainer,
   TopBarLeftItemsContainer,
 } from '../../styles/manageJob';
@@ -100,272 +101,306 @@ const ManageJob = () => {
   return (
     <Root>
       <>
-        <TopBarContainer>
-          <TopBarLeftItemsContainer>
-            <Typo color={color.deep} fontSize={2}>
-              직업 관리
-            </Typo>
-            <Button
-              backgroundColor={color.white}
-              color={color.kb}
-              borderColor={color.kb}
-              onClick={onClickModify}
-              style={{
-                marginLeft: '1rem',
-                marginRight: '0.5rem',
-                border: 'solid',
-              }}
-            >
-              {modifyButtonText}
-            </Button>
-            <Button
-              backgroundColor={color.white}
-              color={color.kb}
-              borderColor={color.kb}
-              onClick={() => {
-                setIsModalOpen(true);
-              }}
-              style={{
-                marginRight: '1rem',
-                border: 'solid',
-              }}
-            >
-              직업 추가
-            </Button>
-            {isModalOpen && (
-              <Modal
-                width={30}
-                height={15}
-                jobInput={true}
-                closeModal={() => {
-                  setIsModalOpen(false);
-                }}
-              />
-            )}
-          </TopBarLeftItemsContainer>
-        </TopBarContainer>
-        <Typo fontSize={1}>*담당자 변경은 국민관리에서 해주세요.</Typo>
-        {isModifyState ? (
-          <>
-            <ListTitleContainer>
-              <Typo fontSize={1.2} style={{ marginLeft: '2%', width: '12%' }}>
-                직업
-              </Typo>
-              <Typo fontSize={1.2} style={{ width: '42%' }}>
-                하는 일
-              </Typo>
-              <Typo fontSize={1.2} style={{ width: '10%' }}>
-                인원
-              </Typo>
-              <Typo fontSize={1.2} style={{ width: '14%' }}>
-                월급
-              </Typo>
-              <Typo fontSize={1.2} style={{ width: '8%' }}>
-                담당자
-              </Typo>
-            </ListTitleContainer>
-            <StyledHorizontalRule />
-            {jobList &&
-              jobList.map((job: any, index: any) => {
-                return (
-                  job && (
-                    <ListItemContainer key={job.jobId}>
-                      <Typo
-                        fontSize={1.2}
-                        style={{ marginLeft: '2%', width: '12%' }}
-                      >
-                        {job.jobName}
-                      </Typo>
-                      <Typo fontSize={1.2} style={{ width: '42.75%' }}>
-                        {job.jobContent}
-                      </Typo>
-                      <Typo fontSize={1.2} style={{ width: '9.25%' }}>
-                        {job.headcount}
-                      </Typo>
-                      <Typo fontSize={1.2} style={{ width: '14%' }}>
-                        {job.payCheck}리브
-                      </Typo>
-                      {job.memberList &&
-                        job.memberList.map((member: any, index: any) => {
-                          return (
-                            <Typo fontSize={1.2} style={{ width: '5%' }}>
-                              {index === job.headcount - 1
-                                ? `${member.nickname}`
-                                : `${member.nickname},`}
-                            </Typo>
-                          );
-                        })}
-                    </ListItemContainer>
-                  )
-                );
-              })}
-          </>
-        ) : (
-          <>
-            <ListTitleContainer>
+        <RootPart>
+          <TopBarContainer>
+            <TopBarLeftItemsContainer>
               <Typo
-                fontSize={1.2}
-                style={{ marginLeft: '5.5%', width: '10.5%' }}
+                color={color.deep}
+                fontSize={1.5}
+                style={{ marginTop: '0.2rem', fontWeight: 'bold' }}
               >
-                직업
+                직업 관리
               </Typo>
-              <Typo fontSize={1.2} style={{ width: '50%' }}>
-                직업 설명
-              </Typo>
-              <Typo fontSize={1.2} style={{ width: '9%' }}>
-                월급
-              </Typo>
-              <Typo fontSize={1.2} style={{ width: '4%' }}>
-                인원
-              </Typo>
-            </ListTitleContainer>
-            <StyledHorizontalRule />
-            {jobList &&
-              jobList.map((job: any, index: any) => {
-                return (
-                  job && (
-                    <ListItemContainer key={job.jobId}>
-                      <TextInput
-                        placeholder='직업 이름'
-                        onChange={onChange}
-                        value={job.jobName}
-                        borderRadius={0.5}
-                        height={2.5}
-                        disabled={true}
-                        style={{
-                          marginLeft: '5%',
-                          width: '8%',
-                          textAlign: 'center',
-                        }}
-                      />
-                      <TextInput
-                        placeholder='직업 설명'
-                        borderRadius={0.5}
-                        value={job.jobContent}
-                        onChange={(e) => {
-                          setJobList(
-                            jobList.map((value: any) =>
-                              value.jobId === job.jobId
-                                ? { ...value, jobContent: e.target.value }
-                                : value
-                            )
-                          );
-                        }}
-                        height={2.5}
-                        style={{
-                          marginLeft: '2%',
-                          width: '43.5%',
-                          paddingLeft: '1.5rem',
-                        }}
-                      />
-                      <TextInput
-                        placeholder='월급'
-                        borderRadius={0.5}
-                        value={job.payCheck}
-                        onChange={(e) => {
-                          setJobList(
-                            jobList.map((value: any) =>
-                              value.jobId === job.jobId
-                                ? { ...value, payCheck: e.target.value }
-                                : value
-                            )
-                          );
-                        }}
-                        height={2.5}
-                        style={{
-                          marginLeft: '2%',
-                          width: '6.5%',
-                          textAlign: 'right',
-                          paddingRight: '1.5rem',
-                        }}
-                      />
-                      <TextInput
-                        placeholder='인원'
-                        borderRadius={0.5}
-                        value={job.headcount}
-                        height={2.5}
-                        disabled={true}
-                        onChange={onChange}
-                        style={{
-                          marginLeft: '2%',
-                          width: '4%',
-                          textAlign: 'center',
-                        }}
-                      />
-                      <Button
-                        backgroundColor={color.deep}
-                        color={color.white}
-                        onClick={() => {
-                          setIsModifyModalOpen(true);
-                          jobList.map((value: any) => {
-                            if (value.jobId === job.jobId) {
-                              modifyJob(
-                                value.jobId,
-                                value.jobContent,
-                                value.payCheck
-                              );
-                            }
-                          });
-                        }}
-                        style={{
-                          marginLeft: '1rem',
-                          marginRight: '1rem',
-                          marginTop: '0.5rem',
-                          border: 'solid',
-                        }}
-                      >
-                        직업 수정
-                      </Button>
-                      {isModifyModalOpen && (
-                        <Modal
-                          width={15}
-                          height={5}
-                          warningMessage={'수정되었습니다.'}
-                          closeModal={() => {
-                            setIsModifyModalOpen(false);
+              <Button
+                backgroundColor={color.white}
+                color={color.kb}
+                borderColor={color.kb}
+                onClick={onClickModify}
+                style={{
+                  marginLeft: '2rem',
+                  marginRight: '0.5rem',
+                  border: 'solid',
+                }}
+              >
+                {modifyButtonText}
+              </Button>
+              <Button
+                backgroundColor={color.white}
+                color={color.kb}
+                borderColor={color.kb}
+                onClick={() => {
+                  setIsModalOpen(true);
+                }}
+                style={{
+                  marginRight: '1rem',
+                  border: 'solid',
+                }}
+              >
+                직업 추가
+              </Button>
+              {isModalOpen && (
+                <Modal
+                  width={30}
+                  height={15}
+                  jobInput={true}
+                  closeModal={() => {
+                    setIsModalOpen(false);
+                  }}
+                />
+              )}
+            </TopBarLeftItemsContainer>
+          </TopBarContainer>
+          <Typo fontSize={1}>*담당자 변경은 국민관리에서 해주세요.</Typo>
+          {isModifyState ? (
+            <>
+              <ListTitleContainer>
+                <Typo
+                  fontSize={1.2}
+                  style={{ fontWeight: 'bold', marginLeft: '2%', width: '12%' }}
+                >
+                  직업
+                </Typo>
+                <Typo
+                  fontSize={1.2}
+                  style={{ fontWeight: 'bold', width: '42%' }}
+                >
+                  하는 일
+                </Typo>
+                <Typo
+                  fontSize={1.2}
+                  style={{ fontWeight: 'bold', width: '10%' }}
+                >
+                  인원
+                </Typo>
+                <Typo
+                  fontSize={1.2}
+                  style={{ fontWeight: 'bold', width: '14%' }}
+                >
+                  월급
+                </Typo>
+                <Typo
+                  fontSize={1.2}
+                  style={{ fontWeight: 'bold', width: '8%' }}
+                >
+                  담당자
+                </Typo>
+              </ListTitleContainer>
+              <StyledHorizontalRule />
+              {jobList &&
+                jobList.map((job: any, index: any) => {
+                  return (
+                    job && (
+                      <ListItemContainer key={job.jobId}>
+                        <Typo
+                          fontSize={1.2}
+                          style={{ marginLeft: '2%', width: '12%' }}
+                        >
+                          {job.jobName}
+                        </Typo>
+                        <Typo fontSize={1.2} style={{ width: '42.75%' }}>
+                          {job.jobContent}
+                        </Typo>
+                        <Typo fontSize={1.2} style={{ width: '9.25%' }}>
+                          {job.headcount}
+                        </Typo>
+                        <Typo fontSize={1.2} style={{ width: '14%' }}>
+                          {job.payCheck}리브
+                        </Typo>
+                        {job.memberList &&
+                          job.memberList.map((member: any, index: any) => {
+                            return (
+                              <Typo fontSize={1.2} style={{ width: '5%' }}>
+                                {index === job.headcount - 1
+                                  ? `${member.nickname}`
+                                  : `${member.nickname},`}
+                              </Typo>
+                            );
+                          })}
+                      </ListItemContainer>
+                    )
+                  );
+                })}
+            </>
+          ) : (
+            <>
+              <ListTitleContainer>
+                <Typo
+                  fontSize={1.2}
+                  style={{
+                    fontWeight: 'bold',
+                    marginLeft: '7.5%',
+                    width: '10.5%',
+                  }}
+                >
+                  직업
+                </Typo>
+                <Typo
+                  fontSize={1.2}
+                  style={{ fontWeight: 'bold', width: '49%' }}
+                >
+                  하는 일
+                </Typo>
+                <Typo
+                  fontSize={1.2}
+                  style={{ fontWeight: 'bold', width: '8.5%' }}
+                >
+                  월급
+                </Typo>
+                <Typo
+                  fontSize={1.2}
+                  style={{ fontWeight: 'bold', width: '4%' }}
+                >
+                  인원
+                </Typo>
+              </ListTitleContainer>
+              <StyledHorizontalRule />
+              {jobList &&
+                jobList.map((job: any, index: any) => {
+                  return (
+                    job && (
+                      <ListItemContainer key={job.jobId}>
+                        <TextInput
+                          placeholder='직업 이름'
+                          onChange={onChange}
+                          value={job.jobName}
+                          borderRadius={0.5}
+                          height={2.5}
+                          disabled={true}
+                          style={{
+                            marginLeft: '5%',
+                            width: '8%',
+                            textAlign: 'center',
                           }}
                         />
-                      )}
-                      <Button
-                        backgroundColor={color.deep}
-                        color={color.white}
-                        onClick={() => {
-                          setIsDeleteModalOpen(true);
-                          setJobList(
-                            jobList.filter(
-                              (value: any, index: any) =>
-                                value.jobId !== job.jobId
-                            )
-                          );
-                          jobList.map((value: any) => {
-                            if (value.jobId === job.jobId) {
-                              deleteJob(value.jobId);
-                            }
-                          });
-                        }}
-                        style={{
-                          marginTop: '0.5rem',
-                          border: 'solid',
-                        }}
-                      >
-                        직업 삭제
-                      </Button>
-                      {isDeleteModalOpen && (
-                        <Modal
-                          width={15}
-                          height={5}
-                          warningMessage={'삭제되었습니다.'}
-                          closeModal={() => {
-                            setIsDeleteModalOpen(false);
+                        <TextInput
+                          placeholder='직업 설명'
+                          borderRadius={0.5}
+                          value={job.jobContent}
+                          onChange={(e) => {
+                            setJobList(
+                              jobList.map((value: any) =>
+                                value.jobId === job.jobId
+                                  ? { ...value, jobContent: e.target.value }
+                                  : value
+                              )
+                            );
+                          }}
+                          height={2.5}
+                          style={{
+                            marginLeft: '2%',
+                            width: '43.5%',
+                            paddingLeft: '1.5rem',
                           }}
                         />
-                      )}
-                    </ListItemContainer>
-                  )
-                );
-              })}
-          </>
-        )}
+                        <TextInput
+                          placeholder='월급'
+                          borderRadius={0.5}
+                          value={job.payCheck}
+                          onChange={(e) => {
+                            setJobList(
+                              jobList.map((value: any) =>
+                                value.jobId === job.jobId
+                                  ? { ...value, payCheck: e.target.value }
+                                  : value
+                              )
+                            );
+                          }}
+                          height={2.5}
+                          style={{
+                            marginLeft: '2%',
+                            width: '6.5%',
+                            textAlign: 'right',
+                            paddingRight: '1.5rem',
+                          }}
+                        />
+                        <TextInput
+                          placeholder='인원'
+                          borderRadius={0.5}
+                          value={job.headcount}
+                          height={2.5}
+                          disabled={true}
+                          onChange={onChange}
+                          style={{
+                            marginLeft: '2%',
+                            width: '4%',
+                            textAlign: 'center',
+                          }}
+                        />
+                        <Button
+                          backgroundColor={color.deep}
+                          color={color.white}
+                          onClick={() => {
+                            setIsModifyModalOpen(true);
+                            jobList.map((value: any) => {
+                              if (value.jobId === job.jobId) {
+                                modifyJob(
+                                  value.jobId,
+                                  value.jobContent,
+                                  value.payCheck
+                                );
+                              }
+                            });
+                          }}
+                          style={{
+                            marginLeft: '1rem',
+                            marginRight: '1rem',
+                            marginTop: '0.5rem',
+                            border: 'solid',
+                          }}
+                        >
+                          직업 수정
+                        </Button>
+                        {isModifyModalOpen && (
+                          <Modal
+                            width={15}
+                            height={5}
+                            warningMessage={'수정되었습니다.'}
+                            closeModal={() => {
+                              setIsModifyModalOpen(false);
+                            }}
+                          />
+                        )}
+                        <Button
+                          backgroundColor={color.deep}
+                          color={color.white}
+                          onClick={() => {
+                            setIsDeleteModalOpen(true);
+                            setJobList(
+                              jobList.filter(
+                                (value: any, index: any) =>
+                                  value.jobId !== job.jobId
+                              )
+                            );
+                            jobList.map((value: any) => {
+                              if (value.jobId === job.jobId) {
+                                deleteJob(value.jobId);
+                              }
+                            });
+                          }}
+                          style={{
+                            marginTop: '0.5rem',
+                            border: 'solid',
+                          }}
+                        >
+                          직업 삭제
+                        </Button>
+                        {isDeleteModalOpen && (
+                          <Modal
+                            width={15}
+                            height={5}
+                            warningMessage={'삭제되었습니다.'}
+                            closeModal={() => {
+                              setIsDeleteModalOpen(false);
+                            }}
+                          />
+                        )}
+                      </ListItemContainer>
+                    )
+                  );
+                })}
+            </>
+          )}
+        </RootPart>
       </>
     </Root>
   );

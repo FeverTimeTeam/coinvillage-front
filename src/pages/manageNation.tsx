@@ -166,8 +166,12 @@ const ManageNation = () => {
       <>
         <TopBarContainer>
           <TopBarLeftItemsContainer>
-            <Typo color={color.deep} fontSize={2}>
-              국민관리
+            <Typo
+              color={color.deep}
+              fontSize={1.5}
+              style={{ marginTop: '0.2rem', fontWeight: 'bold' }}
+            >
+              국민 관리
             </Typo>
             <Button
               backgroundColor={color.white}
@@ -175,8 +179,8 @@ const ManageNation = () => {
               borderColor={color.kb}
               onClick={onClickModify}
               style={{
-                marginLeft: '1rem',
-                marginRight: '1rem',
+                marginLeft: '2rem',
+                marginRight: '0.5rem',
                 border: 'solid',
               }}
             >
@@ -227,28 +231,39 @@ const ManageNation = () => {
           {!isModifyState ? (
             <div style={{ width: '5rem' }}> </div>
           ) : (
-            <CheckBox
-              isChecked={allItemChecked}
-              onClick={handleAllCheck}
-              style={{ marginLeft: '0.5rem', marginRight: '3rem' }}
-            />
+            <div>
+              <Typo
+                fontSize={0.7}
+                style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}
+              >
+                전체 선택
+              </Typo>
+              <CheckBox
+                isChecked={allItemChecked}
+                onClick={handleAllCheck}
+                style={{ marginLeft: '0.5rem', marginRight: '3rem' }}
+              />
+            </div>
           )}
-          <Typo fontSize={1.2} style={{ width: '8%' }}>
+          <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '8%' }}>
             랭킹
           </Typo>
-          <Typo fontSize={1.2} style={{ width: '8%' }}>
+          <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '8%' }}>
             이름
           </Typo>
-          <Typo fontSize={1.2} style={{ width: '12%' }}>
+          <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '12%' }}>
             직업
           </Typo>
-          <Typo fontSize={1.2} style={{ width: '36%' }}>
+          <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '36%' }}>
             하는 일
           </Typo>
-          <Typo fontSize={1.2} style={{ width: '8%' }}>
+          <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '8%' }}>
             월급
           </Typo>
-          <Typo fontSize={1.2} style={{ width: '8%', marginRight: '8%' }}>
+          <Typo
+            fontSize={1.2}
+            style={{ fontWeight: 'bold', width: '8%', marginRight: '8%' }}
+          >
             총 재산
           </Typo>
         </ListTitleContainer>
@@ -324,9 +339,11 @@ const ManageNation = () => {
                     {nation.property}
                   </Typo>
                   {!isModifyState ? (
-                    <Button
-                      backgroundColor={color.deep}
-                      color={color.white}
+                    <Image
+                      src='/delete_button.png'
+                      hover={true}
+                      width={1.5}
+                      height={1.5}
                       onClick={() => {
                         setIsModalOpen(true);
                         setNationList(
@@ -341,14 +358,10 @@ const ManageNation = () => {
                         });
                       }}
                       style={{
-                        marginLeft: '1rem',
-                        marginRight: '1rem',
-                        marginTop: '0.5rem',
-                        border: 'solid',
+                        marginLeft: '3rem',
+                        marginRight: '5rem',
                       }}
-                    >
-                      국민 삭제
-                    </Button>
+                    />
                   ) : null}
                   {isModalOpen && (
                     <Modal
