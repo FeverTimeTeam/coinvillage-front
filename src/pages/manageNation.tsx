@@ -43,7 +43,7 @@ const ManageNation = () => {
   };
   const getNationList = () => {
     axiosInstance
-      .get('/manage')
+      .get('/managements')
       .then((response) => {
         setNationList(response.data);
       })
@@ -53,7 +53,7 @@ const ManageNation = () => {
   };
   const modifyNation = (memberId: number, jobName: string) => {
     axiosInstance
-      .put(`/manage/${memberId}`, {
+      .put(`/managements/${memberId}`, {
         job: {
           jobName: jobName,
         },
@@ -67,7 +67,7 @@ const ManageNation = () => {
   };
   const deleteNation = (memberId: number) => {
     axiosInstance
-      .delete(`/manage/${memberId}`)
+      .delete(`/managements/${memberId}`)
       .then((response) => {
         console.log(response);
       })
@@ -77,7 +77,7 @@ const ManageNation = () => {
   };
   const searchNation = (nickname: string) => {
     axiosInstance
-      .get(`/manage/search?searchWord=${nickname}`)
+      .get(`/managements/search?searchWord=${nickname}`)
       .then((response) => {
         setNationList(response.data);
       })
@@ -87,7 +87,7 @@ const ManageNation = () => {
   };
   const payNation = (memberId: number) => {
     axiosInstance
-      .put(`/manage/pay/${memberId}`)
+      .put(`/managements/pay/${memberId}`)
       .then((response) => {
         console.log(response);
       })

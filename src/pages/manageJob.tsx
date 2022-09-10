@@ -53,7 +53,7 @@ const ManageJob = () => {
   const onChange = () => {};
   const getJobList = () => {
     axiosInstance
-      .get('/job')
+      .get('/jobs')
       .then((response) => {
         console.log(response.data);
         setJobList(response.data);
@@ -64,7 +64,7 @@ const ManageJob = () => {
   };
   const modifyJob = (jobId: number, jobContent: string, payCheck: number) => {
     axiosInstance
-      .put(`/job/${jobId}`, {
+      .put(`/jobs/${jobId}`, {
         jobContent: jobContent,
         payCheck: payCheck,
       })
@@ -77,7 +77,7 @@ const ManageJob = () => {
   };
   const deleteJob = (jobId: number) => {
     axiosInstance
-      .delete(`/job/${jobId}`)
+      .delete(`/jobs/${jobId}`)
       .then((response) => {
         console.log(response);
       })
