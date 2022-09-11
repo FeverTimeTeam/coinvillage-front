@@ -2,6 +2,8 @@ import type { NextPage } from 'next';
 import Image from '../components/image';
 import styled from 'styled-components';
 import Link from 'next/link';
+import Typo from '../components/typo';
+import color from '../constants/color';
 
 const IndexPageWrapper = styled.div`
   display: flex;
@@ -50,6 +52,34 @@ const Home: NextPage = () => {
               src='/chat_text_button.png'
               style={{ width: '100%', height: '100%' }}
             />
+          </div>
+          <div style={{ position: 'absolute', top: '-5.5rem', left: '-11rem' }}>
+            <Link href='/aboutCoinvillage'>
+              <div style={{ position: 'relative' }}>
+                <Image
+                  src='/union.png'
+                  style={{ width: '95%', height: '100%' }}
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '0.8rem',
+                    left: '3.2rem',
+                  }}
+                >
+                  <Typo
+                    color={color.warm_gray1}
+                    fontSize={1.7}
+                    style={{
+                      marginTop: '1.5rem',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    About 코빌
+                  </Typo>
+                </div>
+              </div>
+            </Link>
           </div>
         </div>
       </>
