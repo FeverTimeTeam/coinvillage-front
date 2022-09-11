@@ -43,7 +43,11 @@ const ManagePassbook = () => {
       <>
         <TopBarContainer>
           <TopBarLeftItemsContainer>
-            <Typo color={color.deep} fontSize={2}>
+            <Typo
+              color={color.deep}
+              fontSize={1.5}
+              style={{ fontWeight: 'bold' }}
+            >
               통장 관리
             </Typo>
             <Button

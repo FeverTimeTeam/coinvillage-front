@@ -18,6 +18,7 @@ import Button from '../components/button';
 import color from '../constants/color';
 import TextInput from '../components/textInput';
 import Typo from '../components/typo';
+import Modal from '../components/modal';
 
 const ManageInvestment = () => {
   type stock = {
@@ -41,6 +42,7 @@ const ManageInvestment = () => {
     },
   ]);
   const [isAddState, setIsAddState] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const onClickAdd = () => {
     setIsAddState((isAddState) => !isAddState);
   };
@@ -49,24 +51,55 @@ const ManageInvestment = () => {
       <>
         <TopBarContainer>
           <TopBarLeftItemsContainer>
-            <Typo color={color.deep} fontSize={1.9}>
+            <Typo
+              color={color.deep}
+              fontSize={1.5}
+              style={{ fontWeight: 'bold' }}
+            >
               주식(종목) 관리
             </Typo>
             {isAddState ? (
-              <Button
-                backgroundColor={color.white}
-                color={color.kb}
-                borderColor={color.kb}
-                onClick={onClickAdd}
-                style={{
-                  marginLeft: '1rem',
-                  marginRight: '1rem',
-                  border: 'solid',
-                  borderWidth: '0.15rem',
-                }}
-              >
-                종목 추가
-              </Button>
+              <div style={{ display: 'flex' }}>
+                <Button
+                  backgroundColor={color.white}
+                  color={color.kb}
+                  borderColor={color.kb}
+                  onClick={onClickAdd}
+                  style={{
+                    marginLeft: '1rem',
+                    marginRight: '0.5rem',
+                    border: 'solid',
+                    borderWidth: '0.15rem',
+                  }}
+                >
+                  종목 추가
+                </Button>
+                <Button
+                  backgroundColor={color.white}
+                  color={'#B13992'}
+                  borderColor={'#B13992'}
+                  onClick={() => {
+                    setIsModalOpen(true);
+                  }}
+                  width={8}
+                  style={{
+                    border: 'solid',
+                    borderWidth: '0.15rem',
+                  }}
+                >
+                  오늘의 정보 추가
+                </Button>
+                {isModalOpen && (
+                  <Modal
+                    width={30}
+                    height={15}
+                    informationInput={true}
+                    closeModal={() => {
+                      setIsModalOpen(false);
+                    }}
+                  />
+                )}
+              </div>
             ) : null}
           </TopBarLeftItemsContainer>
         </TopBarContainer>
