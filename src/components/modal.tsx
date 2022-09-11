@@ -12,6 +12,7 @@ type Props = {
   leftButtonText?: string;
   rightButtonText?: string;
   jobInput?: boolean;
+  informationInput?: boolean;
   width: number;
   height: number;
 };
@@ -52,6 +53,7 @@ const Modal: React.FC<Props> = ({
   closeModal,
   warningMessage,
   jobInput,
+  informationInput,
   width,
   height,
 }) => {
@@ -182,16 +184,71 @@ const Modal: React.FC<Props> = ({
           </>
         ) : (
           <>
-            <Typo fontSize={1.2}>{warningMessage}</Typo>
-            <Button
-              color={color.system_ok}
-              backgroundColor={color.light_gray3}
-              onClick={() => {
-                closeModal();
-              }}
-            >
-              확인
-            </Button>
+            {informationInput ? (
+              <>
+                <div style={{ marginTop: '4rem', display: 'flex' }}>
+                  <Typo
+                    fontSize={1.2}
+                    style={{
+                      marginTop: '0.5rem',
+                      textAlign: 'center',
+                      width: '10rem',
+                    }}
+                  >
+                    오늘의 정보 :
+                  </Typo>
+                  <TextInput
+                    value={isJobContent}
+                    borderRadius={0.5}
+                    onChange={(e) => {
+                      setIsJobContent(e.target.value);
+                    }}
+                    height={2.5}
+                    style={{
+                      marginLeft: '1rem',
+                      width: '15rem',
+                      textAlign: 'center',
+                    }}
+                  />
+                </div>
+                <div style={{ display: 'flex' }}>
+                  <Button
+                    color={color.system_ok}
+                    backgroundColor={color.light_gray3}
+                    style={{ marginBottom: '3rem' }}
+                    onClick={() => {
+                      closeModal();
+                      postJob(isJobName, isJobContent, isJobPay);
+                    }}
+                  >
+                    추가하기
+                  </Button>
+                  <Button
+                    color={color.system_ok}
+                    backgroundColor={color.light_gray3}
+                    style={{ marginLeft: '1rem' }}
+                    onClick={() => {
+                      closeModal();
+                    }}
+                  >
+                    취소하기
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <>
+                <Typo fontSize={1.2}>{warningMessage}</Typo>
+                <Button
+                  color={color.system_ok}
+                  backgroundColor={color.light_gray3}
+                  onClick={() => {
+                    closeModal();
+                  }}
+                >
+                  확인
+                </Button>
+              </>
+            )}
           </>
         )}
       </ModalBody>
