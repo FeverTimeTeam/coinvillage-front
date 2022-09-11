@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ListItemContainer,
   ListTitleContainer,
@@ -16,14 +16,13 @@ import Typo from '../components/typo';
 import SearchBox from '../components/searchBox';
 import StyledHorizontalRule from '../components/horizontalRule';
 import DropDown from '../components/dropDown';
-import { useEffect } from 'react';
-import axios from 'axios';
 import { axiosInstance } from '../queries/index';
 import { useRecoilState } from 'recoil';
-import { nationListState } from '../recoil';
+import { loginState, nationListState } from '../recoil';
 import Modal from '../components/modal';
 import { truncate } from 'fs';
 import { devNull } from 'os';
+import { useRouter } from 'next/router';
 
 const ManageNation = () => {
   const [isModifyState, setIsModifyState] = useState<boolean>(true);
@@ -34,6 +33,20 @@ const ManageNation = () => {
   const [nationList, setNationList] = useRecoilState(nationListState);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isPayModalOpen, setIsPayModalOpen] = useState<boolean>(false);
+  const [loginUserState, setLoginUserState] = useRecoilState(loginState);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (
+      loginUserState.isLogin == false ||
+      loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
+        .authorityName == 'ROLE_NATION'
+    ) {
+      alert('비로그인 유저 및 학생 회원은 접근 불가합니다.');
+      router.push('/');
+    }
+  }, []);
 
   const onClickModify = () => {
     setIsModifyState((isModifyState) => !isModifyState);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Root,
   TopBarContainer,
@@ -19,6 +19,9 @@ import color from '../constants/color';
 import TextInput from '../components/textInput';
 import Typo from '../components/typo';
 import Modal from '../components/modal';
+import { useRecoilState } from 'recoil';
+import { loginState } from '../recoil';
+import { useRouter } from 'next/router';
 
 const ManageInvestment = () => {
   type stock = {
@@ -43,6 +46,19 @@ const ManageInvestment = () => {
   ]);
   const [isAddState, setIsAddState] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [loginUserState, setLoginUserState] = useRecoilState(loginState);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (
+      loginUserState.isLogin == false ||
+      loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
+        .authorityName == 'ROLE_NATION'
+    ) {
+      alert('비로그인 유저 및 학생 회원은 접근 불가합니다.');
+      router.push('/');
+    }
+  }, []);
   const onClickAdd = () => {
     setIsAddState((isAddState) => !isAddState);
   };
