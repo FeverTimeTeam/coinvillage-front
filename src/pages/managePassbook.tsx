@@ -38,13 +38,6 @@ const ManagePassbook = () => {
     '6개월마다',
   ]);
 
-  function onChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setIsInterestRate(e.target.value);
-  }
-  function onDayChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setIsPaymentDay(e.target.value);
-  }
-
   return (
     <Root>
       <>
@@ -69,9 +62,8 @@ const ManagePassbook = () => {
         </TopBarContainer>
         <GuideBox>
           <Typo color={color.deep}>
-            통장에는 입출금 통장, 적금 통장, 주식 통장이 있습니다.
-            <br />
-            적금에는 이자가 적용되어 기간별로 국민에게 이자가 지급됩니다.
+            통장에는 입출금 통장, 적금 통장, 주식 통장이 있습니다. 적금에는
+            이자가 적용되어 기간별로 국민에게 이자가 지급됩니다.
           </Typo>
         </GuideBox>
         <ListContentContainer>
@@ -93,7 +85,9 @@ const ManagePassbook = () => {
             placeholder=''
             value={isInterestRate}
             borderRadius={0.5}
-            onChange={onChange}
+            onChange={(e) => {
+              setIsInterestRate(e.target.value);
+            }}
             height={2}
             style={{
               width: '5%',
@@ -157,7 +151,9 @@ const ManagePassbook = () => {
             placeholder=''
             value={isPaymentDay}
             borderRadius={0.5}
-            onChange={onDayChange}
+            onChange={(e) => {
+              setIsPaymentDay(e.target.value);
+            }}
             height={2}
             disabled={inputDisabled}
             style={{
