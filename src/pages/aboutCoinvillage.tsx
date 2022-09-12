@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import Image from '../components/image';
 import styled from 'styled-components';
 import Link from 'next/link';
@@ -8,6 +9,8 @@ import {
   FirstSection,
   Section,
 } from '../../styles/aboutCoinvillage';
+import { aboutPageState } from '../recoil';
+import { useRecoilState } from 'recoil';
 
 const AboutPageWrapper = styled.div`
   display: flex;
@@ -16,6 +19,14 @@ const AboutPageWrapper = styled.div`
   width: 100%;
   height: calc(100vh - 5.25rem);
 `;
+
+// 이 부분
+/*const [aboutState, setAboutState] = useRecoilState(aboutPageState);
+
+useEffect(() => {
+  setAboutState({ isAbout: true });
+}, []); 
+*/
 
 const aboutCoinvillage = () => {
   return (
