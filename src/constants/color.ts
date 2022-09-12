@@ -15,6 +15,7 @@ const color = {
   system_ok: '#3B9A50',
   white: '#FFFFFF',
   black: '#000000',
+  blue: '#428EFF',
   inactive: '#E3E3E3',
 };
 
