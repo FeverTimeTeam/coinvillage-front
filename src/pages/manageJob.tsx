@@ -18,6 +18,8 @@ import Modal from '../components/modal';
 import StyledHorizontalRule from '../components/horizontalRule';
 import { useRecoilState } from 'recoil';
 import { jobListState } from '../recoil';
+import { useRouter } from 'next/router';
+import { loginState } from '../recoil';
 
 const ManageJob = () => {
   /*type memberList = {
@@ -44,6 +46,20 @@ const ManageJob = () => {
   const [isModifyModalOpen, setIsModifyModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [jobList, setJobList] = useRecoilState(jobListState);
+
+  const [loginUserState, setLoginUserState] = useRecoilState(loginState);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (
+      loginUserState.isLogin == false ||
+      loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
+        .authorityName == 'ROLE_NATION'
+    ) {
+      alert('비로그인 유저 및 학생 회원은 접근 불가합니다.');
+      router.push('/');
+    }
+  }, []);
 
   const onClickModify = () => {
     setIsModifyState((isModifyState) => !isModifyState);

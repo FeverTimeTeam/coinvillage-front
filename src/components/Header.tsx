@@ -152,7 +152,26 @@ const Header: React.FC = () => {
     if (confirm('로그아웃 하시겠습니까?')) {
       sessionStorage.removeItem('recoil-persist');
       delete axiosInstance.defaults.headers.common['Authorization'];
-      router.reload();
+      setLoginUserState({
+        isLogin: false,
+        userInfo: {
+          memberResponseDto: {
+            authorityDtoSet: [
+              {
+                authorityName: 'ROLE_NATION',
+              },
+            ],
+            email: '',
+            memberId: -999,
+            nickname: '',
+            password: '',
+            phoneNumber: '',
+            property: 0,
+          },
+          token: '',
+        },
+      });
+      router.push('/');
     }
   }
 

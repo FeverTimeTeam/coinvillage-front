@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Root,
   TopBarContainer,
@@ -12,6 +12,9 @@ import color from '../constants/color';
 import TextInput from '../components/textInput';
 import Typo from '../components/typo';
 import DropDown from '../components/dropDown';
+import { useRouter } from 'next/router';
+import { useRecoilState } from 'recoil';
+import { loginState } from '../recoil';
 
 const ManagePassbook = () => {
   const [isInterestRate, setIsInterestRate] = useState<string>('');
@@ -38,12 +41,30 @@ const ManagePassbook = () => {
     '6개월마다',
   ]);
 
+  const router = useRouter();
+  const [loginUserState, setLoginUserState] = useRecoilState(loginState);
+
+  useEffect(() => {
+    if (
+      loginUserState.isLogin == false ||
+      loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
+        .authorityName == 'ROLE_NATION'
+    ) {
+      alert('비로그인 유저 및 학생 회원은 접근 불가합니다.');
+      router.push('/');
+    }
+  }, []);
+
   return (
     <Root>
       <>
         <TopBarContainer>
           <TopBarLeftItemsContainer>
-            <Typo color={color.deep} fontSize={2}>
+            <Typo
+              color={color.deep}
+              fontSize={1.5}
+              style={{ fontWeight: 'bold' }}
+            >
               통장 관리
             </Typo>
             <Button
