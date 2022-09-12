@@ -70,4 +70,21 @@ const aboutPageState = atom<any>({
   },
 });
 
-export { loginState, nationListState, jobListState, aboutPageState };
+const stocksListState = atom<any>({
+  key: 'stocksListState',
+  default: [],
+});
+
+const detailStockState = atom<any>({
+  key: 'detailStockState',
+  default: [],
+});
+
+export {
+  loginState,
+  nationListState,
+  jobListState,
+  aboutPageState,
+  stocksListState,
+  detailStockState,
+};
