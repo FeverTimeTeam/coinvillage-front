@@ -105,17 +105,6 @@ const HorizontalRule = styled.hr`
   margin-left: 4%;
   margin-top: 5rem;
 `;
-const PriceInput = styled.input`
-  width: 10%;
-  height: 3.6rem;
-  outline: none;
-  font-size: 1rem;
-  text-align: right;
-  margin-left: 75%;
-  font-weight: bold;
-  border: none;
-  padding-top: 0.3rem;
-`;
 
 export {
   Root,
@@ -130,6 +119,5 @@ export {
   PriceDiv,
   StockNameInput,
   StockContentInput,
-  PriceInput,
   HorizontalRule,
 };
