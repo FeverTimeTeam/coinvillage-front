@@ -2,9 +2,11 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import color from '../constants/color';
 import Link from 'next/link';
+import Typo from './typo';
+import Button from './button';
 import deviceSize from '../constants/deviceSize';
 import { FiLogOut } from 'react-icons/fi';
-import { loginState } from '../recoil';
+import { loginState, aboutPageState } from '../recoil';
 import { useRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
 import { axiosInstance } from '../queries';
@@ -142,6 +144,7 @@ const MemberInfoArea = styled.div`
 
 const Header: React.FC = () => {
   const [loginUserState, setLoginUserState] = useRecoilState(loginState);
+  const [aboutState, setPageState] = useRecoilState(aboutPageState);
   const router = useRouter();
 
   useEffect(() => {
@@ -177,35 +180,53 @@ const Header: React.FC = () => {
 
   return (
     <Root>
-      <Link href='/'>
-        <LogoImg src='/logo.svg' />
-      </Link>
-      {loginUserState.isLogin == true ? (
-        <RulerMenuWrapper>
-          {loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
-            .authorityName === 'ROLE_RULER' ? (
-            <Link href='/manageNation'>국민 관리</Link>
-          ) : null}
-          <MemberInfoArea>
-            {loginUserState.userInfo.memberResponseDto.nickname}(
-            {loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
-              .authorityName == 'ROLE_RULER'
-              ? '대통령'
-              : '국민'}
-            )
-          </MemberInfoArea>
-          <LogoutButton onClick={onLogout}>
-            <FiLogOut size={20} />
-          </LogoutButton>
-        </RulerMenuWrapper>
-      ) : (
-        <Link href='/login'>
-          <LoginBtnWrapper>
-            <PCLoginButton>로그인/회원가입</PCLoginButton>
-            <MobileLoginButton>로그인</MobileLoginButton>
-          </LoginBtnWrapper>
+      <>
+        <Link href='/'>
+          <LogoImg src='/logo.svg' />
         </Link>
-      )}
+        {aboutState.isAbout ? (
+          <>
+            <Link href='/'>
+              <Button
+                backgroundColor={color.white}
+                color={color.kb}
+                borderColor={color.kb}
+              >
+                서비스 바로가기
+              </Button>
+            </Link>
+          </>
+        ) : (
+          <>
+            {loginUserState.isLogin == true ? (
+              <RulerMenuWrapper>
+                {loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
+                  .authorityName === 'ROLE_RULER' ? (
+                  <Link href='/manageNation'>국민 관리</Link>
+                ) : null}
+                <MemberInfoArea>
+                  {loginUserState.userInfo.memberResponseDto.nickname}(
+                  {loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
+                    .authorityName == 'ROLE_RULER'
+                    ? '대통령'
+                    : '국민'}
+                  )
+                </MemberInfoArea>
+                <LogoutButton onClick={onLogout}>
+                  <FiLogOut size={20} />
+                </LogoutButton>
+              </RulerMenuWrapper>
+            ) : (
+              <Link href='/login'>
+                <LoginBtnWrapper>
+                  <PCLoginButton>로그인/회원가입</PCLoginButton>
+                  <MobileLoginButton>로그인</MobileLoginButton>
+                </LoginBtnWrapper>
+              </Link>
+            )}
+          </>
+        )}
+      </>
     </Root>
   );
 };
