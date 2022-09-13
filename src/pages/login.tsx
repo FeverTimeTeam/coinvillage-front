@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import {
   Root,
@@ -11,7 +11,12 @@ import { useRecoilState } from 'recoil';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { axiosInstance } from '../queries';
-import { loginState } from '../recoil';
+import { aboutPageState, loginState } from '../recoil';
+import styled from 'styled-components';
+
+export const FullHeightRoot = styled(Root)`
+  height: 100vh;
+`;
 
 const Login = () => {
   const [id, setId] = useState<string>('');
@@ -19,6 +24,11 @@ const Login = () => {
   const router = useRouter();
 
   const [loginUserState, setLoginUserState] = useRecoilState(loginState);
+  const [aboutState, setAboutState] = useRecoilState(aboutPageState);
+
+  useEffect(() => {
+    setAboutState({ isAbout: 'sign' });
+  }, []);
 
   function onIdChange(e: React.ChangeEvent<HTMLInputElement>) {
     setId(e.target.value);
@@ -54,7 +64,7 @@ const Login = () => {
   }
 
   return (
-    <Root>
+    <FullHeightRoot>
       <LoginForm onSubmit={onLoginSubmit}>
         <h3>이메일</h3>
         <LoginInput placeholder='이메일을 입력해주세요' onChange={onIdChange} />
@@ -70,7 +80,7 @@ const Login = () => {
           <Link href='/signup'>회원가입하기</Link>
         </SignUpWrapper>
       </LoginForm>
-    </Root>
+    </FullHeightRoot>
   );
 };
 

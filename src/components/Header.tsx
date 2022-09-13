@@ -178,19 +178,24 @@ const Header: React.FC = () => {
     }
   }
 
+  if (aboutState.isAbout === 'sign') return null;
+
   return (
     <Root>
       <>
         <Link href='/'>
           <LogoImg src='/logo.svg' />
         </Link>
-        {aboutState.isAbout ? (
+        {aboutState.isAbout === 'about' ? (
           <>
             <Link href='/'>
               <Button
-                backgroundColor={color.white}
-                color={color.kb}
+                backgroundColor={color.kb}
+                color={color.white}
                 borderColor={color.kb}
+                width={10}
+                height={3}
+                fontWeight='bold'
               >
                 서비스 바로가기
               </Button>
