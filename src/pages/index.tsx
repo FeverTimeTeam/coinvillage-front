@@ -7,7 +7,6 @@ import Typo from '../components/typo';
 import color from '../constants/color';
 import { useRecoilState } from 'recoil';
 import { aboutPageState } from '../recoil';
-import { useEffect } from 'react';
 import Modal from '../components/smallModal';
 
 const IndexPageWrapper = styled.div`
