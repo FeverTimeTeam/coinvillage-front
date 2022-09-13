@@ -73,6 +73,7 @@ const Home: NextPage = () => {
                     style={{
                       marginTop: '1.5rem',
                       fontWeight: 'bold',
+                      cursor: 'pointer',
                     }}
                   >
                     About 코빌

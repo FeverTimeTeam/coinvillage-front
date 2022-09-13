@@ -18,6 +18,5 @@ const FirstSection = styled.div`
 `;
 const Section = styled.div`
   height: calc(100vh - 5.25rem);
-  border: solid 0.2rem ${color.light_warm_gray};
 `;
 export { ScrollContainer, FirstSection, Section };
