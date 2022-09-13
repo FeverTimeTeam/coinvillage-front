@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import type { NextPage } from 'next';
 import Image from '../components/image';
 import styled from 'styled-components';
@@ -7,6 +8,7 @@ import color from '../constants/color';
 import { useRecoilState } from 'recoil';
 import { aboutPageState } from '../recoil';
 import { useEffect } from 'react';
+import Modal from '../components/smallModal';
 
 const IndexPageWrapper = styled.div`
   display: flex;
@@ -22,6 +24,12 @@ const Home: NextPage = () => {
   useEffect(() => {
     setAboutState({ isAbout: false });
   }, []);
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const onClickButton = () => {
+    setIsModalOpen(true);
+  };
+
   return (
     <IndexPageWrapper>
       <>
@@ -57,8 +65,17 @@ const Home: NextPage = () => {
           <div style={{ position: 'absolute', top: '4rem', left: '36rem' }}>
             <Image
               src='/chat_text_button.png'
+              onClick={onClickButton}
               style={{ width: '100%', height: '100%' }}
             />
+            {isModalOpen && (
+              <Modal
+                warningMessage={'선생님은 오늘 본가 갈 예정'}
+                closeModal={() => {
+                  setIsModalOpen(false);
+                }}
+              />
+            )}
           </div>
           <div style={{ position: 'absolute', top: '-5.5rem', left: '-11rem' }}>
             <Link href='/aboutCoinvillage'>
