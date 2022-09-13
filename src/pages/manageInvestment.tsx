@@ -38,6 +38,13 @@ const ManageInvestment = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [isId, setIsId] = useState<number>(-1);
   const router = useRouter();
+  const today = new Date();
+  const time = {
+    year: today.getFullYear(),
+    month: String(today.getMonth() + 1).padStart(2, '0'),
+    date: today.getDate(),
+  };
+  const timestring = `${time.year - 2000}.${time.month}.${time.date}`;
 
   const getStockList = () => {
     axiosInstance
@@ -273,7 +280,7 @@ const ManageInvestment = () => {
                       marginTop: '1.5rem',
                     }}
                   >
-                    날짜 넣을 자리
+                    {detailStock.createdAt}
                   </Typo>
                   <StockNameInput
                     placeholder={'주식 항목 이름을 적어주세요.'}
@@ -488,7 +495,7 @@ const ManageInvestment = () => {
                   marginTop: '1.5rem',
                 }}
               >
-                날짜 넣을 자리
+                {timestring}
               </Typo>
               <StockNameInput
                 placeholder={'주식 항목 이름을 적어주세요.'}
