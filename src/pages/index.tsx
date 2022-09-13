@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Typo from '../components/typo';
 import color from '../constants/color';
+import { useRecoilState } from 'recoil';
+import { aboutPageState } from '../recoil';
+import { useEffect } from 'react';
 
 const IndexPageWrapper = styled.div`
   display: flex;
@@ -15,6 +18,10 @@ const IndexPageWrapper = styled.div`
 `;
 
 const Home: NextPage = () => {
+  const [aboutState, setAboutState] = useRecoilState(aboutPageState);
+  useEffect(() => {
+    setAboutState({ isAbout: false });
+  }, []);
   return (
     <IndexPageWrapper>
       <>
