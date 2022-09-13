@@ -35,6 +35,7 @@ const ManageInvestment = () => {
   const [isStockPrice, setIsStockPrice] = useState<number>(0);
   const [isPostModalOpen, setIsPostModalOpen] = useState<boolean>(false);
   const [isModifyModalOpen, setIsModifyModalOpen] = useState<boolean>(false);
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [isId, setIsId] = useState<number>(-1);
   const router = useRouter();
@@ -156,6 +157,10 @@ const ManageInvestment = () => {
               color={color.deep}
               fontSize={1.5}
               style={{ fontWeight: 'bold' }}
+              onClick={() => {
+                setIsAddState(false);
+                setIsModifyState(false);
+              }}
             >
               주식(종목) 관리
             </Typo>
@@ -223,7 +228,7 @@ const ManageInvestment = () => {
                         );
                       });
                     }}
-                    style={{ width: '5%', marginLeft: '90%' }}
+                    style={{ width: '4.5%', marginLeft: '86.5%' }}
                   >
                     수정
                   </Button>
@@ -254,7 +259,7 @@ const ManageInvestment = () => {
 
                       deleteStock(isId);
                     }}
-                    style={{ width: '5%' }}
+                    style={{ width: '4.5%' }}
                   >
                     삭제
                   </Button>
@@ -265,6 +270,27 @@ const ManageInvestment = () => {
                       warningMessage={'삭제되었습니다.'}
                       closeModal={() => {
                         setIsDeleteModalOpen(false);
+                        setIsModifyState(false);
+                      }}
+                    />
+                  )}
+                  <Button
+                    backgroundColor={color.white}
+                    color={color.gray}
+                    style={{ width: '4.5%' }}
+                    onClick={() => {
+                      setIsCancelModalOpen(true);
+                    }}
+                  >
+                    취소
+                  </Button>
+                  {isCancelModalOpen && (
+                    <Modal
+                      width={15}
+                      height={5}
+                      warningMessage={'취소하시겠습니까?'}
+                      closeModal={() => {
+                        setIsCancelModalOpen(false);
                         setIsModifyState(false);
                       }}
                     />
@@ -387,6 +413,9 @@ const ManageInvestment = () => {
                               color={color.deep}
                               fontSize={1.2}
                               style={{ width: '39.3%' }}
+                              onClick={() => {
+                                getDetailStockList(stock.stockId);
+                              }}
                             >
                               {stock.content}
                             </Typo>
@@ -462,7 +491,7 @@ const ManageInvestment = () => {
               <Button
                 backgroundColor={color.white}
                 color={color.blue}
-                style={{ width: '5%', marginLeft: '93%' }}
+                style={{ width: '5%', marginLeft: '90%' }}
                 onClick={() => {
                   postStock(isStockContent, isStockDescription, isStockPrice);
                   setIsPostModalOpen(true);
@@ -470,6 +499,27 @@ const ManageInvestment = () => {
               >
                 완료
               </Button>
+              <Button
+                backgroundColor={color.white}
+                color={color.blue}
+                style={{ width: '5%' }}
+                onClick={() => {
+                  setIsCancelModalOpen(true);
+                }}
+              >
+                취소
+              </Button>
+              {isCancelModalOpen && (
+                <Modal
+                  width={15}
+                  height={5}
+                  warningMessage={'취소하시겠습니까?'}
+                  closeModal={() => {
+                    setIsCancelModalOpen(false);
+                    setIsAddState(false);
+                  }}
+                />
+              )}
               {isPostModalOpen && (
                 <Modal
                   width={15}
