@@ -18,6 +18,7 @@ import { loginState } from '../recoil';
 
 const ManagePassbook = () => {
   const [isInterestRate, setIsInterestRate] = useState<string>('');
+  const [isTax, setIsTax] = useState<string>('');
   const [isPaymentDay, setIsPaymentDay] = useState<string>('');
   const [isDayOfWeek, setIsDayOfWeek] = useState<string>('');
   const [dropDownDisabled, setDropDownDisabled] = useState<boolean>(false);
@@ -192,6 +193,45 @@ const ManagePassbook = () => {
         >
           *숫자 1~31 입력 가능
         </Typo>
+        <hr
+          style={{
+            border: '0',
+            marginTop: '2.5%',
+            marginLeft: '10%',
+            width: '83%',
+            height: '1.5px',
+            background: 'lightgray',
+          }}
+        />
+        <ListContentContainer>
+          <Typo
+            color={color.deep}
+            fontSize={1.4}
+            style={{ marginLeft: '15%', width: '6%', marginTop: '0.3rem' }}
+          >
+            세금
+          </Typo>
+          <TextInput
+            placeholder=''
+            value={isTax}
+            borderRadius={0.5}
+            onChange={(e) => {
+              setIsTax(e.target.value);
+            }}
+            height={2}
+            style={{
+              width: '5%',
+              textAlign: 'center',
+            }}
+          />
+          <Typo
+            color={color.deep}
+            fontSize={1.1}
+            style={{ marginLeft: '1%', width: '8%', marginTop: '0.5rem' }}
+          >
+            &nbsp;%&nbsp;&nbsp;&nbsp;&nbsp;부과
+          </Typo>
+        </ListContentContainer>
       </>
     </Root>
   );

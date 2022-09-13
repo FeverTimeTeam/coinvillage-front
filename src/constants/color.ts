@@ -5,6 +5,7 @@ const color = {
   light_gray: '#E2E2E2',
   light_gray2: '#ECECEC',
   light_gray3: '#F3F3F3',
+  light_gray4: 'F9F9F9',
   deep_green: '#245630',
   deep: '#3A3A3A',
   warm_gray_deep: '#544F4C',
