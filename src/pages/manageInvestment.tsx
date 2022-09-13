@@ -11,43 +11,119 @@ import {
   PriceDiv,
   StockNameInput,
   StockContentInput,
-  PriceInput,
   HorizontalRule,
 } from '../../styles/manageInvestment';
+import { axiosInstance } from '../queries/index';
 import Button from '../components/button';
 import color from '../constants/color';
-import TextInput from '../components/textInput';
+import NumberInput from '../components/numberInput';
 import Typo from '../components/typo';
 import Modal from '../components/modal';
 import { useRecoilState } from 'recoil';
-import { loginState } from '../recoil';
+import { loginState, stocksListState, detailStockState } from '../recoil';
 import { useRouter } from 'next/router';
 
 const ManageInvestment = () => {
-  type stock = {
-    stockName: string;
-    stockContent: string;
-    price: number;
-    createDate: string;
-  };
-  const [stockList, setStockList] = useState<stock[] | any[]>([
-    {
-      stockName: '대통령의 몸무게',
-      stockContent: '추석이 다가오고 있다.',
-      price: 10,
-      createDate: '20220905',
-    },
-    {
-      stockName: '대통령의 구독자 수',
-      stockContent: '유퀴즈에 출연했다.',
-      price: 15,
-      createDate: '20220906',
-    },
-  ]);
-  const [isAddState, setIsAddState] = useState<boolean>(true);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [stockList, setStockList] = useRecoilState(stocksListState);
+  const [detailStock, setDetailStock] = useRecoilState(detailStockState);
   const [loginUserState, setLoginUserState] = useRecoilState(loginState);
+  const [isAddState, setIsAddState] = useState<boolean>(false);
+  const [isModifyState, setIsModifyState] = useState<boolean>(false);
+  const [isStockContent, setIsStockContent] = useState<string>('');
+  const [isStockDescription, setIsStockDescription] = useState<string>('');
+  const [isStockPrice, setIsStockPrice] = useState<number>(0);
+  const [isPostModalOpen, setIsPostModalOpen] = useState<boolean>(false);
+  const [isModifyModalOpen, setIsModifyModalOpen] = useState<boolean>(false);
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState<boolean>(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [isId, setIsId] = useState<number>(-1);
   const router = useRouter();
+  const today = new Date();
+  const time = {
+    year: today.getFullYear(),
+    month: String(today.getMonth() + 1).padStart(2, '0'),
+    date: today.getDate(),
+  };
+  const timestring = `${time.year - 2000}.${time.month}.${time.date}`;
+
+  const getStockList = () => {
+    axiosInstance
+      .get('/stocks/ruler')
+      .then((response) => {
+        console.log(response.data);
+        setStockList(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const getDetailStockList = async (stockId: number) => {
+    await axiosInstance
+      .get(`/stocks/ruler/${stockId}`)
+      .then((response) => {
+        console.log(response.data);
+        setDetailStock(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    setIsId(stockId);
+    setIsStockContent(detailStock.content);
+    setIsStockDescription(detailStock.description);
+    setIsStockPrice(detailStock.price);
+    setIsModifyState(true);
+  };
+
+  const postStock = (
+    isStockContent: string,
+    isStockDescription: string,
+    isStockPrice: number
+  ) => {
+    axiosInstance
+      .post('/stocks/ruler', {
+        content: isStockContent,
+        description: isStockDescription,
+        price: isStockPrice,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const modifyStock = (
+    stockId: number,
+    content: string,
+    description: string,
+    price: number
+  ) => {
+    axiosInstance
+      .put(`/stocks/ruler/${stockId}`, {
+        content: content,
+        description: description,
+        price: price,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const deleteStock = (stockId: number) => {
+    axiosInstance
+      .delete(`/stocks/ruler/${stockId}`)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   useEffect(() => {
     if (
@@ -62,6 +138,15 @@ const ManageInvestment = () => {
   const onClickAdd = () => {
     setIsAddState((isAddState) => !isAddState);
   };
+
+  useEffect(() => {
+    getStockList();
+  }, [isAddState]);
+
+  useEffect(() => {
+    getStockList();
+  }, [isModifyState]);
+
   return (
     <Root>
       <>
@@ -71,151 +156,356 @@ const ManageInvestment = () => {
               color={color.deep}
               fontSize={1.5}
               style={{ fontWeight: 'bold' }}
+              onClick={() => {
+                setIsAddState(false);
+                setIsModifyState(false);
+              }}
             >
               주식(종목) 관리
             </Typo>
-            {isAddState ? (
-              <div style={{ display: 'flex' }}>
-                <Button
-                  backgroundColor={color.white}
-                  color={color.kb}
-                  borderColor={color.kb}
-                  onClick={onClickAdd}
-                  style={{
-                    marginLeft: '1rem',
-                    marginRight: '0.5rem',
-                    border: 'solid',
-                    borderWidth: '0.15rem',
-                  }}
-                >
-                  종목 추가
-                </Button>
-                <Button
-                  backgroundColor={color.white}
-                  color={'#B13992'}
-                  borderColor={'#B13992'}
-                  onClick={() => {
-                    setIsModalOpen(true);
-                  }}
-                  width={8}
-                  style={{
-                    border: 'solid',
-                    borderWidth: '0.15rem',
-                  }}
-                >
-                  오늘의 정보 추가
-                </Button>
-                {isModalOpen && (
-                  <Modal
-                    width={30}
-                    height={15}
-                    informationInput={true}
-                    closeModal={() => {
-                      setIsModalOpen(false);
-                    }}
-                  />
-                )}
-              </div>
-            ) : null}
-          </TopBarLeftItemsContainer>
-        </TopBarContainer>
-        {isAddState ? (
-          <>
-            <ListTitleContainer style={{ marginTop: '2.5rem' }}>
-              <Typo
-                color={color.gray}
-                fontSize={1}
+            {isAddState || isModifyState ? null : (
+              <Button
+                backgroundColor={color.white}
+                color={color.kb}
+                borderColor={color.kb}
+                onClick={onClickAdd}
                 style={{
-                  width: '15%',
+                  marginLeft: '1rem',
+                  marginRight: '0.5rem',
+                  border: 'solid',
+                  borderWidth: '0.15rem',
                 }}
               >
-                No.
-              </Typo>
-              <Typo color={color.gray} fontSize={1} style={{ width: '40%' }}>
-                종목 이름
-              </Typo>
-              <Typo color={color.gray} fontSize={1} style={{ width: '45%' }}>
-                생성 날짜
-              </Typo>
-            </ListTitleContainer>
-            <StyledHorizontalRule />
-            {stockList &&
-              stockList.map((stock, index) => {
-                return (
-                  stock && (
-                    <>
-                      <ListTitleContainer
-                        key={stock.id}
-                        style={{ marginTop: '1rem', marginBottom: '1rem' }}
-                      >
-                        <Typo
-                          color={color.deep}
-                          fontSize={1.2}
-                          style={{ width: '15%' }}
-                        >
-                          {index + 1}
-                        </Typo>
-                        <Typo
-                          color={color.deep}
-                          fontSize={1.2}
-                          style={{ width: '39.3%' }}
-                        >
-                          {stock.stockName}
-                        </Typo>
-                        <Typo
-                          fontSize={1.1}
-                          color={color.gray}
-                          style={{ width: '15%' }}
-                        >
-                          {stock.createDate}
-                        </Typo>
-                        <ItemDiv>
-                          <Button
-                            backgroundColor={color.white}
-                            color={color.black}
-                            fontWeight={'bold'}
-                            style={{
-                              width: '10%',
-                              marginLeft: '70%',
-                            }}
+                종목 추가
+              </Button>
+            )}
+          </TopBarLeftItemsContainer>
+        </TopBarContainer>
+        {!isAddState ? (
+          <>
+            {isModifyState ? (
+              <>
+                <MenuDiv>
+                  <Button
+                    backgroundColor={color.white}
+                    color={color.gray}
+                    onClick={() => {
+                      setIsModifyModalOpen(true);
+                      stockList.map((value: any) => {
+                        modifyStock(
+                          isId,
+                          detailStock.content,
+                          detailStock.description,
+                          detailStock.price
+                        );
+                      });
+                    }}
+                    style={{ width: '4.5%', marginLeft: '86.5%' }}
+                  >
+                    수정
+                  </Button>
+                  {isModifyModalOpen && (
+                    <Modal
+                      width={15}
+                      height={5}
+                      warningMessage={'수정되었습니다.'}
+                      closeModal={() => {
+                        setIsModifyModalOpen(false);
+                        setIsStockContent('');
+                        setIsStockDescription('');
+                        setIsStockPrice(0);
+                        setIsModifyState(false);
+                      }}
+                    />
+                  )}
+                  <Button
+                    backgroundColor={color.white}
+                    color={color.gray}
+                    onClick={() => {
+                      setIsDeleteModalOpen(true);
+                      setStockList(
+                        stockList.filter(
+                          (value: any, index: any) => value.stockId !== isId
+                        )
+                      );
+
+                      deleteStock(isId);
+                    }}
+                    style={{ width: '4.5%' }}
+                  >
+                    삭제
+                  </Button>
+                  {isDeleteModalOpen && (
+                    <Modal
+                      width={15}
+                      height={5}
+                      warningMessage={'삭제되었습니다.'}
+                      closeModal={() => {
+                        setIsDeleteModalOpen(false);
+                        setIsModifyState(false);
+                      }}
+                    />
+                  )}
+                  <Button
+                    backgroundColor={color.white}
+                    color={color.gray}
+                    style={{ width: '4.5%' }}
+                    onClick={() => {
+                      setIsCancelModalOpen(true);
+                    }}
+                  >
+                    취소
+                  </Button>
+                  {isCancelModalOpen && (
+                    <Modal
+                      width={15}
+                      height={5}
+                      warningMessage={'취소하시겠습니까?'}
+                      closeModal={() => {
+                        setIsCancelModalOpen(false);
+                        setIsModifyState(false);
+                      }}
+                    />
+                  )}
+                </MenuDiv>
+                <GuideBox>
+                  <Typo
+                    color={color.deep}
+                    fontSize={1}
+                    style={{
+                      marginLeft: '89%',
+                      width: '11%',
+                      marginTop: '1.5rem',
+                    }}
+                  >
+                    {detailStock.createdAt}
+                  </Typo>
+                  <StockNameInput
+                    placeholder={'주식 항목 이름을 적어주세요.'}
+                    value={detailStock.content}
+                    onChange={(e) => {
+                      setDetailStock({
+                        ...detailStock,
+                        content: e.target.value,
+                      });
+                    }}
+                  />
+                  <StockContentInput
+                    value={detailStock.description}
+                    placeholder={'주식 항목에 대한 설명을 적어주세요.'}
+                    onChange={(e) => {
+                      setDetailStock({
+                        ...detailStock,
+                        description: e.target.value,
+                      });
+                    }}
+                  />
+                  <HorizontalRule />
+                  <PriceDiv>
+                    <Typo
+                      color={color.deep}
+                      fontSize={1}
+                      style={{
+                        marginLeft: '1%',
+                        width: '10%',
+                        marginTop: '1.5rem',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      1주당
+                    </Typo>
+                    <NumberInput
+                      value={detailStock.price}
+                      onChange={(e) => {
+                        setDetailStock({
+                          ...detailStock,
+                          price: e.target.value,
+                        });
+                      }}
+                    />
+                    <Typo
+                      color={color.deep}
+                      fontSize={1}
+                      style={{
+                        width: '5%',
+                        marginTop: '1.5rem',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      미소
+                    </Typo>
+                  </PriceDiv>
+                </GuideBox>
+              </>
+            ) : (
+              <>
+                <ListTitleContainer style={{ marginTop: '2.5rem' }}>
+                  <Typo
+                    color={color.gray}
+                    fontSize={1}
+                    style={{
+                      width: '15%',
+                    }}
+                  >
+                    No.
+                  </Typo>
+                  <Typo
+                    color={color.gray}
+                    fontSize={1}
+                    style={{ width: '39.5%' }}
+                  >
+                    종목 이름
+                  </Typo>
+                  <Typo
+                    color={color.gray}
+                    fontSize={1}
+                    style={{ width: '45.5%' }}
+                  >
+                    생성 날짜
+                  </Typo>
+                </ListTitleContainer>
+                <StyledHorizontalRule />
+                {stockList &&
+                  stockList.map((stock: any, index: any) => {
+                    return (
+                      stock && (
+                        <>
+                          <ListTitleContainer
+                            key={stock.id}
+                            style={{ marginTop: '1rem', marginBottom: '1rem' }}
                           >
-                            수정
-                          </Button>
-                          <Button
-                            backgroundColor={color.white}
-                            color={color.black}
-                            fontWeight={'bold'}
-                            style={{
-                              width: '20%',
-                            }}
-                          >
-                            삭제
-                          </Button>
-                        </ItemDiv>
-                      </ListTitleContainer>
-                      <StyledHorizontalRule />
-                    </>
-                  )
-                );
-              })}
+                            <Typo
+                              color={color.deep}
+                              fontSize={1.2}
+                              style={{ width: '15%' }}
+                            >
+                              {index + 1}
+                            </Typo>
+                            <Typo
+                              color={color.deep}
+                              fontSize={1.2}
+                              style={{ width: '39.3%' }}
+                              onClick={() => {
+                                getDetailStockList(stock.stockId);
+                              }}
+                            >
+                              {stock.content}
+                            </Typo>
+                            <Typo
+                              fontSize={1.1}
+                              color={color.gray}
+                              style={{ width: '15%' }}
+                            >
+                              {stock.createdAt}
+                            </Typo>
+                            <ItemDiv>
+                              <Button
+                                backgroundColor={color.white}
+                                color={color.black}
+                                fontWeight={'bold'}
+                                onClick={() => {
+                                  getDetailStockList(stock.stockId);
+                                }}
+                                style={{
+                                  width: '10%',
+                                  marginLeft: '70%',
+                                }}
+                              >
+                                수정
+                              </Button>
+                              <Button
+                                backgroundColor={color.white}
+                                color={color.black}
+                                fontWeight={'bold'}
+                                onClick={() => {
+                                  setIsDeleteModalOpen(true);
+                                  setStockList(
+                                    stockList.filter(
+                                      (value: any, index: any) =>
+                                        value.stockId !== stock.stockId
+                                    )
+                                  );
+                                  stockList.map((value: any) => {
+                                    if (value.stockId === stock.stockId) {
+                                      deleteStock(value.stockId);
+                                    }
+                                  });
+                                }}
+                                style={{
+                                  width: '20%',
+                                }}
+                              >
+                                삭제
+                              </Button>
+                              {isDeleteModalOpen && (
+                                <Modal
+                                  width={15}
+                                  height={5}
+                                  warningMessage={'삭제되었습니다.'}
+                                  closeModal={() => {
+                                    setIsDeleteModalOpen(false);
+                                  }}
+                                />
+                              )}
+                            </ItemDiv>
+                          </ListTitleContainer>
+                          <StyledHorizontalRule />
+                        </>
+                      )
+                    );
+                  })}
+              </>
+            )}
           </>
         ) : (
           <>
             <MenuDiv>
               <Button
                 backgroundColor={color.white}
-                color={color.gray}
+                color={color.blue}
                 style={{ width: '5%', marginLeft: '90%' }}
+                onClick={() => {
+                  postStock(isStockContent, isStockDescription, isStockPrice);
+                  setIsPostModalOpen(true);
+                }}
               >
-                수정
+                완료
               </Button>
               <Button
                 backgroundColor={color.white}
-                color={color.gray}
+                color={color.blue}
                 style={{ width: '5%' }}
+                onClick={() => {
+                  setIsCancelModalOpen(true);
+                }}
               >
-                삭제
+                취소
               </Button>
+              {isCancelModalOpen && (
+                <Modal
+                  width={15}
+                  height={5}
+                  warningMessage={'취소하시겠습니까?'}
+                  closeModal={() => {
+                    setIsCancelModalOpen(false);
+                    setIsAddState(false);
+                  }}
+                />
+              )}
+              {isPostModalOpen && (
+                <Modal
+                  width={15}
+                  height={5}
+                  warningMessage={'추가되었습니다.'}
+                  closeModal={() => {
+                    setIsPostModalOpen(false);
+                    setIsStockContent('');
+                    setIsStockDescription('');
+                    setIsStockPrice(0);
+                    setIsAddState(false);
+                  }}
+                />
+              )}
             </MenuDiv>
             <GuideBox>
               <Typo
@@ -227,10 +517,22 @@ const ManageInvestment = () => {
                   marginTop: '1.5rem',
                 }}
               >
-                날짜 넣을 자리
+                {timestring}
               </Typo>
-              <StockNameInput type='text' value='선생님 몸무게' />
-              <StockContentInput placeholder={'어쩌고 저쩌고 설명..'} />
+              <StockNameInput
+                placeholder={'주식 항목 이름을 적어주세요.'}
+                value={isStockContent}
+                onChange={(e) => {
+                  setIsStockContent(e.target.value);
+                }}
+              />
+              <StockContentInput
+                value={isStockDescription}
+                placeholder={'주식 항목에 대한 설명을 적어주세요.'}
+                onChange={(e) => {
+                  setIsStockDescription(e.target.value);
+                }}
+              />
               <HorizontalRule />
               <PriceDiv>
                 <Typo
@@ -245,7 +547,12 @@ const ManageInvestment = () => {
                 >
                   1주당
                 </Typo>
-                <PriceInput value='10' />
+                <NumberInput
+                  value={isStockPrice}
+                  onChange={(e) => {
+                    setIsStockPrice(e.target.value);
+                  }}
+                />
                 <Typo
                   color={color.deep}
                   fontSize={1}

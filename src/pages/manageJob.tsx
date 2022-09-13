@@ -46,7 +46,6 @@ const ManageJob = () => {
   const [isModifyModalOpen, setIsModifyModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [jobList, setJobList] = useRecoilState(jobListState);
-
   const [loginUserState, setLoginUserState] = useRecoilState(loginState);
   const router = useRouter();
 

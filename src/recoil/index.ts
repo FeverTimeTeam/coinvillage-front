@@ -63,4 +63,34 @@ const jobListState = atom<any>({
   default: [],
 });
 
-export { loginState, nationListState, jobListState };
+const aboutPageState = atom<any>({
+  key: 'aboutPageState',
+  default: {
+    isAbout: false,
+  },
+});
+
+const stocksListState = atom<any>({
+  key: 'stocksListState',
+  default: [],
+});
+
+const detailStockState = atom<any>({
+  key: 'detailStockState',
+  default: [],
+});
+
+const todayMessage = atom<any>({
+  key: 'todayMessage',
+  default: {},
+});
+
+export {
+  loginState,
+  nationListState,
+  jobListState,
+  aboutPageState,
+  stocksListState,
+  detailStockState,
+  todayMessage,
+};

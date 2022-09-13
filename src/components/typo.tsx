@@ -7,6 +7,7 @@ type Props = {
   fontSize?: number;
   children: any;
   style?: any;
+  onClick?: () => void;
 };
 
 type RootProps = {
@@ -24,9 +25,10 @@ const Typo: React.FC<Props> = ({
   fontSize = 1,
   children,
   style,
+  onClick,
 }) => {
   return (
-    <Root color={color} fontSize={fontSize} style={style}>
+    <Root color={color} fontSize={fontSize} style={style} onClick={onClick}>
       {children}
     </Root>
   );

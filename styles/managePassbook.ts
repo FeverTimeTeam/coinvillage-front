@@ -47,9 +47,10 @@ const GuideBox = styled.div`
   width: 77%;
   margin-top: 1.5rem;
   background-color: ${color.light_gray3};
-  height: 2.5rem;
+  height: 6rem;
   border-radius: 0.8rem;
-  padding: 2.5rem 3%;
+  padding: 3% 3%;
+  line-height: 1.5;
 `;
 
 export {
