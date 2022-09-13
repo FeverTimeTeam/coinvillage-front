@@ -305,7 +305,7 @@ const aboutCoinvillage = () => {
                 style={{
                   position: 'absolute',
                   top: '44rem',
-                  left: '49%',
+                  left: '47.8%',
                   width: '5%',
                   height: '5%',
                 }}

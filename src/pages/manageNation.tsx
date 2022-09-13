@@ -34,7 +34,6 @@ const ManageNation = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isPayModalOpen, setIsPayModalOpen] = useState<boolean>(false);
   const [loginUserState, setLoginUserState] = useRecoilState(loginState);
-
   const router = useRouter();
 
   useEffect(() => {

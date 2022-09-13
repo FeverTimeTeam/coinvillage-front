@@ -29,7 +29,6 @@ const ManageInvestment = () => {
   const [loginUserState, setLoginUserState] = useRecoilState(loginState);
   const [isAddState, setIsAddState] = useState<boolean>(false);
   const [isModifyState, setIsModifyState] = useState<boolean>(false);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isStockContent, setIsStockContent] = useState<string>('');
   const [isStockDescription, setIsStockDescription] = useState<string>('');
   const [isStockPrice, setIsStockPrice] = useState<number>(0);
@@ -165,47 +164,20 @@ const ManageInvestment = () => {
               주식(종목) 관리
             </Typo>
             {isAddState || isModifyState ? null : (
-              <div style={{ display: 'flex' }}>
-                <Button
-                  backgroundColor={color.white}
-                  color={color.kb}
-                  borderColor={color.kb}
-                  onClick={onClickAdd}
-                  style={{
-                    marginLeft: '1rem',
-                    marginRight: '0.5rem',
-                    border: 'solid',
-                    borderWidth: '0.15rem',
-                  }}
-                >
-                  종목 추가
-                </Button>
-                <Button
-                  backgroundColor={color.white}
-                  color={'#B13992'}
-                  borderColor={'#B13992'}
-                  onClick={() => {
-                    setIsModalOpen(true);
-                  }}
-                  width={8}
-                  style={{
-                    border: 'solid',
-                    borderWidth: '0.15rem',
-                  }}
-                >
-                  오늘의 정보 추가
-                </Button>
-                {isModalOpen && (
-                  <Modal
-                    width={30}
-                    height={15}
-                    informationInput={true}
-                    closeModal={() => {
-                      setIsModalOpen(false);
-                    }}
-                  />
-                )}
-              </div>
+              <Button
+                backgroundColor={color.white}
+                color={color.kb}
+                borderColor={color.kb}
+                onClick={onClickAdd}
+                style={{
+                  marginLeft: '1rem',
+                  marginRight: '0.5rem',
+                  border: 'solid',
+                  borderWidth: '0.15rem',
+                }}
+              >
+                종목 추가
+              </Button>
             )}
           </TopBarLeftItemsContainer>
         </TopBarContainer>

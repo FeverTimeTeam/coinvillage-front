@@ -80,6 +80,11 @@ const detailStockState = atom<any>({
   default: [],
 });
 
+const todayMessage = atom<any>({
+  key: 'todayMessage',
+  default: {},
+});
+
 export {
   loginState,
   nationListState,
@@ -87,4 +92,5 @@ export {
   aboutPageState,
   stocksListState,
   detailStockState,
+  todayMessage,
 };
