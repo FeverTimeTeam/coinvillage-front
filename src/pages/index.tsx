@@ -5,9 +5,12 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Typo from '../components/typo';
 import color from '../constants/color';
-import { useRecoilState } from 'recoil';
+import { loginState } from '../recoil';
 import { aboutPageState } from '../recoil';
 import Modal from '../components/smallModal';
+import { axiosInstance } from '../queries/index';
+import { useRecoilState } from 'recoil';
+import { todayMessage } from '../recoil';
 
 const IndexPageWrapper = styled.div`
   display: flex;
@@ -20,14 +23,35 @@ const IndexPageWrapper = styled.div`
 
 const Home: NextPage = () => {
   const [aboutState, setAboutState] = useRecoilState(aboutPageState);
+  const [loginUserState, setLoginUserState] = useRecoilState(loginState);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isMessage, setIsMessage] = useRecoilState(todayMessage);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const getToDayMessage = () => {
+    axiosInstance
+      .get('/infos')
+      .then((response) => {
+        console.log(response.data);
+        setIsMessage(response.data);
+        setIsModalOpen(true);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
   useEffect(() => {
     setAboutState({ isAbout: false });
   }, []);
-
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const onClickButton = () => {
-    setIsModalOpen(true);
-  };
+  useEffect(() => {
+    if (
+      loginUserState.isLogin == true &&
+      loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
+        .authorityName != 'ROLE_NATION'
+    ) {
+      setIsLogin(true);
+    }
+  }, []);
 
   return (
     <IndexPageWrapper>
@@ -61,21 +85,24 @@ const Home: NextPage = () => {
               />
             </div>
           </Link>
-          <div style={{ position: 'absolute', top: '4rem', left: '36rem' }}>
-            <Image
-              src='/chat_text_button.png'
-              onClick={onClickButton}
-              style={{ width: '100%', height: '100%' }}
-            />
-            {isModalOpen && (
-              <Modal
-                warningMessage={'선생님은 오늘 본가 갈 예정'}
-                closeModal={() => {
-                  setIsModalOpen(false);
+          {isLogin ? (
+            <div style={{ position: 'absolute', top: '4rem', left: '36rem' }}>
+              <Image
+                src='/chat_text_button.png'
+                onClick={() => {
+                  getToDayMessage();
                 }}
+                style={{ width: '100%', height: '100%' }}
               />
-            )}
-          </div>
+              {isModalOpen && (
+                <Modal
+                  closeModal={() => {
+                    setIsModalOpen(false);
+                  }}
+                />
+              )}
+            </div>
+          ) : null}
           <div style={{ position: 'absolute', top: '-5.5rem', left: '-11rem' }}>
             <Link href='/aboutCoinvillage'>
               <div style={{ position: 'relative' }}>
