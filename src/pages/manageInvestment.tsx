@@ -192,12 +192,14 @@ const ManageInvestment = () => {
                     onClick={() => {
                       setIsModifyModalOpen(true);
                       stockList.map((value: any) => {
-                        modifyStock(
-                          isId,
-                          detailStock.content,
-                          detailStock.description,
-                          detailStock.price
-                        );
+                        if (value.stockId === isId) {
+                          modifyStock(
+                            isId,
+                            detailStock.content,
+                            detailStock.description,
+                            detailStock.price
+                          );
+                        }
                       });
                     }}
                     style={{
