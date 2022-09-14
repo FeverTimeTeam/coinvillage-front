@@ -200,7 +200,12 @@ const ManageInvestment = () => {
                         );
                       });
                     }}
-                    style={{ width: '4.5%', marginLeft: '86.5%' }}
+                    style={{
+                      width: '4.5%',
+                      marginLeft: '86.5%',
+                      fontWeight: 'bold',
+                      color: `${color.deep}`,
+                    }}
                   >
                     수정
                   </Button>
@@ -231,7 +236,11 @@ const ManageInvestment = () => {
 
                       deleteStock(isId);
                     }}
-                    style={{ width: '4.5%' }}
+                    style={{
+                      width: '4.5%',
+                      fontWeight: 'bold',
+                      color: `${color.deep}`,
+                    }}
                   >
                     삭제
                   </Button>
@@ -249,7 +258,11 @@ const ManageInvestment = () => {
                   <Button
                     backgroundColor={color.white}
                     color={color.gray}
-                    style={{ width: '4.5%' }}
+                    style={{
+                      width: '4.5%',
+                      fontWeight: 'bold',
+                      color: `${color.deep}`,
+                    }}
                     onClick={() => {
                       setIsCancelModalOpen(true);
                     }}
@@ -332,7 +345,7 @@ const ManageInvestment = () => {
                         fontWeight: 'bold',
                       }}
                     >
-                      미소
+                      리브
                     </Typo>
                   </PriceDiv>
                 </GuideBox>
