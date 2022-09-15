@@ -85,6 +85,11 @@ const todayMessage = atom<any>({
   default: {},
 });
 
+const putState = atom<boolean>({
+  key: 'putState',
+  default: false,
+});
+
 export {
   loginState,
   nationListState,
@@ -93,4 +98,5 @@ export {
   stocksListState,
   detailStockState,
   todayMessage,
+  putState,
 };
