@@ -4,7 +4,6 @@ import {
   TopBarContainer,
   TopBarLeftItemsContainer,
   ListContentContainer,
-  ListDayContentContainer,
   GuideBox,
 } from '../../styles/managePassbook';
 import Button from '../components/button';
@@ -15,34 +14,14 @@ import DropDown from '../components/dropDown';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { loginState } from '../recoil';
+import { axiosInstance } from '../queries/index';
 
 const ManagePassbook = () => {
-  const [isInterestRate, setIsInterestRate] = useState<string>('10');
-  const [isTax, setIsTax] = useState<string>('10');
+  const [isInterestRate, setIsInterestRate] = useState<string>('0');
+  const [isTax, setIsTax] = useState<string>('0');
   const [isPaymentDay, setIsPaymentDay] = useState<string>('');
-  const [isDayOfWeek, setIsDayOfWeek] = useState<string>('');
-  const [dropDownDisabled, setDropDownDisabled] = useState<boolean>(false);
   const [inputDisabled, setInputDisabled] = useState<boolean>(false);
   const [isModifyState, setIsModifyState] = useState<boolean>(false);
-  const [isDayOfWeekList, setIsDayOfWeekList] = useState<string[]>([
-    '월',
-    '화',
-    '수',
-    '목',
-    '금',
-    '토',
-    '일',
-  ]);
-  const [dateOfThePaymentList, setDateOfThePaymentList] = useState<string[]>([
-    '매주(일주일 단위)',
-    '2주 단위',
-    '매달(한 달 단위)',
-    '2개월마다',
-    '3개월마다',
-    '4개월마다',
-    '6개월마다',
-  ]);
-
   const router = useRouter();
   const [loginUserState, setLoginUserState] = useRecoilState(loginState);
 
@@ -55,6 +34,38 @@ const ManagePassbook = () => {
       alert('비로그인 유저 및 학생 회원은 접근 불가합니다.');
       router.push('/');
     }
+  }, []);
+
+  const putSavingsSetting = () => {
+    axiosInstance
+      .put('/savings/setting', {
+        day: isPaymentDay,
+        interest: isInterestRate,
+        tax: isTax,
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  useEffect(() => {
+    const getSavingsSetting = () => {
+      axiosInstance
+        .get('savings/setting')
+        .then((response) => {
+          console.log(response.data);
+          setIsPaymentDay(response.data.day);
+          setIsInterestRate(response.data.interest);
+          setIsTax(response.data.tax);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    };
+    getSavingsSetting();
   }, []);
 
   return (
@@ -76,6 +87,7 @@ const ManagePassbook = () => {
                 borderColor={color.kb}
                 onClick={() => {
                   setIsModifyState(false);
+                  putSavingsSetting();
                 }}
                 style={{
                   marginLeft: '1rem',
@@ -158,46 +170,7 @@ const ManagePassbook = () => {
                 fontSize={1.1}
                 style={{ marginLeft: '3%', width: '12%', marginTop: '0.5rem' }}
               >
-                이자 지급 시기
-              </Typo>
-              <DropDown
-                itemList={dateOfThePaymentList}
-                style={{ width: '12%', marginTop: '0.2rem' }}
-                height={2.5}
-                onChange={(e) => {
-                  if (
-                    e.target.value === '매주(일주일 단위)' ||
-                    e.target.value === '2주 단위'
-                  ) {
-                    setInputDisabled(true);
-                    setDropDownDisabled(false);
-                  } else {
-                    setDropDownDisabled(true);
-                    setInputDisabled(false);
-                  }
-                }}
-              />
-              <Typo
-                color={color.deep}
-                fontSize={1.1}
-                style={{ marginLeft: '1%', width: '4%', marginTop: '0.5rem' }}
-              >
-                요일
-              </Typo>
-              <DropDown
-                itemList={isDayOfWeekList}
-                style={{ width: '5%', marginTop: '0.2rem', marginRight: '15%' }}
-                height={2.5}
-                disabled={dropDownDisabled}
-              />
-            </ListContentContainer>
-            <ListDayContentContainer>
-              <Typo
-                color={color.deep}
-                fontSize={1.1}
-                style={{ marginLeft: '76%', width: '4%', marginTop: '1.75rem' }}
-              >
-                날짜
+                이자 지급 날짜
               </Typo>
               <TextInput
                 placeholder=''
@@ -211,17 +184,16 @@ const ManagePassbook = () => {
                 style={{
                   width: '5%',
                   textAlign: 'center',
-                  marginTop: '1.5rem',
                 }}
               />
-            </ListDayContentContainer>
-            <Typo
-              color={color.system_information}
-              fontSize={0.9}
-              style={{ marginLeft: '76%', width: '15%', marginTop: '1rem' }}
-            >
-              *숫자 1~31 입력 가능
-            </Typo>
+              <Typo
+                color={color.system_information}
+                fontSize={0.9}
+                style={{ marginLeft: '3%', width: '15%', marginTop: '0.7rem' }}
+              >
+                *숫자 1~31 입력 가능
+              </Typo>
+            </ListContentContainer>
             <hr
               style={{
                 border: '0',
@@ -275,7 +247,7 @@ const ManagePassbook = () => {
               <Typo
                 color={color.deep}
                 fontSize={1.1}
-                style={{ width: '13%', marginTop: '0.5rem' }}
+                style={{ width: '13.5%', marginTop: '0.5rem' }}
               >
                 적금 통장 잔액의
               </Typo>
@@ -286,6 +258,7 @@ const ManagePassbook = () => {
                   width: '5%',
                   textAlign: 'center',
                   textWeight: 'bold',
+                  marginTop: '0.4%',
                 }}
               >
                 {isInterestRate}
@@ -293,7 +266,11 @@ const ManagePassbook = () => {
               <Typo
                 color={color.deep}
                 fontSize={1.1}
-                style={{ marginLeft: '1%', width: '8%', marginTop: '0.5rem' }}
+                style={{
+                  marginLeft: '1.35%',
+                  width: '8%',
+                  marginTop: '0.5rem',
+                }}
               >
                 &nbsp;%&nbsp;&nbsp;&nbsp;&nbsp;지급
               </Typo>
@@ -302,38 +279,34 @@ const ManagePassbook = () => {
                 fontSize={1.1}
                 style={{ marginLeft: '3%', width: '12%', marginTop: '0.5rem' }}
               >
-                이자 지급 시기
+                이자 지급 날짜
               </Typo>
-              <DropDown
-                itemList={dateOfThePaymentList}
-                style={{ width: '12%', marginTop: '0.2rem' }}
-                height={2.5}
-                onChange={(e) => {
-                  if (
-                    e.target.value === '매주(일주일 단위)' ||
-                    e.target.value === '2주 단위'
-                  ) {
-                    setInputDisabled(true);
-                    setDropDownDisabled(false);
-                  } else {
-                    setDropDownDisabled(true);
-                    setInputDisabled(false);
-                  }
-                }}
-              />
               <Typo
                 color={color.deep}
                 fontSize={1.1}
-                style={{ marginLeft: '1%', width: '4%', marginTop: '0.5rem' }}
+                style={{ width: '4%', marginTop: '0.5rem' }}
               >
-                요일
+                매 달
               </Typo>
-              <DropDown
-                itemList={isDayOfWeekList}
-                style={{ width: '5%', marginTop: '0.2rem', marginRight: '15%' }}
-                height={2.5}
-                disabled={dropDownDisabled}
-              />
+              <Typo
+                color={color.black}
+                fontSize={1.5}
+                style={{
+                  width: '4%',
+                  textAlign: 'center',
+                  textWeight: 'bold',
+                  marginTop: '0.4%',
+                }}
+              >
+                {isPaymentDay}
+              </Typo>
+              <Typo
+                color={color.deep}
+                fontSize={1.1}
+                style={{ width: '4%', marginTop: '0.5rem' }}
+              >
+                일
+              </Typo>
             </ListContentContainer>
             <ListContentContainer>
               <Typo
@@ -350,6 +323,7 @@ const ManagePassbook = () => {
                   width: '5%',
                   textAlign: 'center',
                   textWeight: 'bold',
+                  marginTop: '0.3%',
                 }}
               >
                 {isTax}

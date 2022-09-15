@@ -160,9 +160,10 @@ const AboutSection = styled(Section)`
 
   #tongjang_main {
     position: absolute;
-    right: 0rem;
-    bottom: 0rem;
-    width: 23rem;
+    right: -2rem;
+    bottom: 2rem;
+    width: 20rem;
+    height: 35rem;
     z-index: 0;
 
     @media screen and (min-width: ${deviceSize.laptop}) {
@@ -185,7 +186,7 @@ const AboutSection = styled(Section)`
   #tooja {
     position: absolute;
     right: 0rem;
-    bottom: 10rem;
+    bottom: 5rem;
     width: 23rem;
     z-index: 0;
 
@@ -304,7 +305,7 @@ const aboutCoinvillage = () => {
                 src='/scroll_button.png'
                 style={{
                   position: 'absolute',
-                  top: '44rem',
+                  top: '35rem',
                   left: '47.8%',
                   width: '5%',
                   height: '5%',

@@ -5,6 +5,8 @@ import Button from './button';
 import Typo from './typo';
 import { axiosInstance } from '../queries/index';
 import TextInput from './textInput';
+import { useRecoilState } from 'recoil';
+import { putState } from '../recoil';
 
 type Props = {
   closeModal: () => void;
@@ -60,6 +62,7 @@ const Modal: React.FC<Props> = ({
   const [isJobName, setIsJobName] = useState<string>('');
   const [isJobContent, setIsJobContent] = useState<string>('');
   const [isJobPay, setIsJobPay] = useState<number>(0);
+  const [isPutState, setIsPutState] = useRecoilState(putState);
   const postJob = (jobName: string, jobContent: string, payCheck: number) => {
     axiosInstance
       .post('/jobs', {
@@ -69,6 +72,7 @@ const Modal: React.FC<Props> = ({
       })
       .then((response) => {
         console.log(response.data);
+        setIsPutState(true);
       })
       .catch((e) => {
         console.log(e);

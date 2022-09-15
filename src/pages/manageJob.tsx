@@ -19,27 +19,9 @@ import StyledHorizontalRule from '../components/horizontalRule';
 import { useRecoilState } from 'recoil';
 import { jobListState } from '../recoil';
 import { useRouter } from 'next/router';
-import { loginState } from '../recoil';
+import { loginState, putState } from '../recoil';
 
 const ManageJob = () => {
-  /*type memberList = {
-    authorityDtoSet: any[];
-    email: string;
-    memberId: number;
-    nickname: string;
-    password: string;
-    phoneNumer: string;
-    property: number;
-  };
-  type job = {
-    headcount: number;
-    jobId: number;
-    jobName: string;
-    jobContent: string;
-    payCheck: number;
-    memberList: memberList[];
-  }; 
-  */
   const [isModifyState, setIsModifyState] = useState<boolean>(true);
   const [modifyButtonText, setModifyButtonText] = useState<string>('수정하기');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -47,6 +29,7 @@ const ManageJob = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [jobList, setJobList] = useRecoilState(jobListState);
   const [loginUserState, setLoginUserState] = useRecoilState(loginState);
+  const [isPutState, setIsPutState] = useRecoilState(putState);
   const router = useRouter();
 
   useEffect(() => {
@@ -104,14 +87,8 @@ const ManageJob = () => {
 
   useEffect(() => {
     getJobList();
-  }, [isModalOpen]);
-
-  /*console.log(
-    jobList.map((job) => {
-      console.log(job.memberList);
-    })
-  ); 
-  */
+    console.log('반영이');
+  }, [isPutState]);
 
   return (
     <Root>
@@ -160,6 +137,7 @@ const ManageJob = () => {
                   jobInput={true}
                   closeModal={() => {
                     setIsModalOpen(false);
+                    setIsPutState(false);
                   }}
                 />
               )}
@@ -177,19 +155,19 @@ const ManageJob = () => {
                 </Typo>
                 <Typo
                   fontSize={1.2}
-                  style={{ fontWeight: 'bold', width: '42%' }}
+                  style={{ fontWeight: 'bold', width: '41.5%' }}
                 >
                   하는 일
                 </Typo>
                 <Typo
                   fontSize={1.2}
-                  style={{ fontWeight: 'bold', width: '10%' }}
+                  style={{ fontWeight: 'bold', width: '12%' }}
                 >
                   인원
                 </Typo>
                 <Typo
                   fontSize={1.2}
-                  style={{ fontWeight: 'bold', width: '14%' }}
+                  style={{ fontWeight: 'bold', width: '12.5%' }}
                 >
                   월급
                 </Typo>
@@ -224,7 +202,7 @@ const ManageJob = () => {
                         {job.memberList &&
                           job.memberList.map((member: any, index: any) => {
                             return (
-                              <Typo fontSize={1.2} style={{ width: '5%' }}>
+                              <Typo fontSize={1.2} style={{ width: '7%' }}>
                                 {index === job.headcount - 1
                                   ? `${member.nickname}`
                                   : `${member.nickname},`}
@@ -251,13 +229,13 @@ const ManageJob = () => {
                 </Typo>
                 <Typo
                   fontSize={1.2}
-                  style={{ fontWeight: 'bold', width: '49%' }}
+                  style={{ fontWeight: 'bold', width: '46.5%' }}
                 >
                   하는 일
                 </Typo>
                 <Typo
                   fontSize={1.2}
-                  style={{ fontWeight: 'bold', width: '8.5%' }}
+                  style={{ fontWeight: 'bold', width: '9%' }}
                 >
                   월급
                 </Typo>
