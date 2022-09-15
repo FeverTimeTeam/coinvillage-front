@@ -170,9 +170,6 @@ const ManageNation = () => {
     }
   });
 
-  console.log(`bb ${allItemChecked}`);
-  console.log(`allIsChecked ${allIsChecked}`);
-
   return (
     <Root>
       <>
@@ -263,10 +260,10 @@ const ManageNation = () => {
           <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '8%' }}>
             이름
           </Typo>
-          <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '12%' }}>
+          <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '15%' }}>
             직업
           </Typo>
-          <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '36%' }}>
+          <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '33%' }}>
             하는 일
           </Typo>
           <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '8%' }}>
@@ -281,114 +278,120 @@ const ManageNation = () => {
         </ListTitleContainer>
         <StyledHorizontalRule />
         {nationList &&
-          nationList.map((nation: any, index: any) => {
-            return (
-              nation && (
-                <ListItemContainer key={nation.memberId}>
-                  {!isModifyState ? (
-                    <div style={{ width: '5.5rem' }}> </div>
-                  ) : (
-                    <CheckBox
-                      onClick={() => {
-                        setNationList(
-                          nationList.map((value: any) =>
-                            value.memberId === nation.memberId
-                              ? {
-                                  ...value,
-                                  isChecked: !value.isChecked,
-                                }
-                              : { ...value }
-                          )
-                        );
-                      }}
-                      isChecked={nation.isChecked}
-                      style={{
-                        marginLeft: '0.5rem',
-                        marginRight: '3.5rem',
-                      }}
-                    />
-                  )}
-                  <Typo fontSize={1.2} style={{ width: '7.5%' }}>
-                    {index + 1}
-                  </Typo>
-                  <Typo fontSize={1.2} style={{ width: '8%' }}>
-                    {nation.nickname}
-                  </Typo>
-                  {isModifyState ? (
-                    <Typo fontSize={1.2} style={{ width: '12%' }}>
-                      {nation.jobName}
+          nationList
+            .filter(
+              (nation: any) =>
+                nation.memberId !==
+                loginUserState.userInfo.memberResponseDto.memberId
+            )
+            .map((nation: any, index: any) => {
+              return (
+                nation && (
+                  <ListItemContainer key={nation.memberId}>
+                    {!isModifyState ? (
+                      <div style={{ width: '6rem' }}> </div>
+                    ) : (
+                      <CheckBox
+                        onClick={() => {
+                          setNationList(
+                            nationList.map((value: any) =>
+                              value.memberId === nation.memberId
+                                ? {
+                                    ...value,
+                                    isChecked: !value.isChecked,
+                                  }
+                                : { ...value }
+                            )
+                          );
+                        }}
+                        isChecked={nation.isChecked}
+                        style={{
+                          marginLeft: '0.5rem',
+                          marginRight: '3.5rem',
+                        }}
+                      />
+                    )}
+                    <Typo fontSize={1.2} style={{ width: '7%' }}>
+                      {index + 1}
                     </Typo>
-                  ) : (
-                    <DropDown
-                      key={nation.memberId}
-                      itemList={nation.jobList}
-                      selectedItem={nation.jobName}
-                      style={{ width: '12%' }}
-                      height={1.8}
-                      onChange={(e) => {
-                        setNationList(
-                          nationList.map((value: any) =>
-                            value.memberId === nation.memberId
-                              ? { ...value, jobName: e.target.value }
-                              : value
-                          )
-                        );
-                        nationList.map((value: any) => {
-                          if (value.memberId === nation.memberId) {
-                            modifyNation(value.memberId, e.target.value);
-                          }
-                        });
-                      }}
-                    />
-                  )}
-                  <Typo fontSize={1.2} style={{ width: '36%' }}>
-                    {nation.jobContent}
-                  </Typo>
-                  <Typo fontSize={1.2} style={{ width: '8%' }}>
-                    {nation.payCheck}
-                  </Typo>
-                  <Typo fontSize={1.2} style={{ width: '8%' }}>
-                    {nation.property}
-                  </Typo>
-                  {!isModifyState ? (
-                    <Image
-                      src='/delete_button.png'
-                      hover={true}
-                      width={1.5}
-                      height={1.5}
-                      onClick={() => {
-                        setIsModalOpen(true);
-                        setNationList(
-                          nationList.filter(
-                            (value: any) => value.memberId !== nation.memberId
-                          )
-                        );
-                        nationList.map((value: any) => {
-                          if (value.memberId === nation.memberId) {
-                            deleteNation(value.memberId);
-                          }
-                        });
-                      }}
-                      style={{
-                        marginLeft: '3rem',
-                        marginRight: '5rem',
-                      }}
-                    />
-                  ) : null}
-                  {isModalOpen && (
-                    <Modal
-                      width={15}
-                      height={5}
-                      warningMessage={'삭제되었습니다.'}
-                      closeModal={() => {
-                        setIsModalOpen(false);
-                      }}
-                    />
-                  )}
-                </ListItemContainer>
-              )
-            );
-          })}
+                    <Typo fontSize={1.2} style={{ width: '8.5%' }}>
+                      {nation.nickname}
+                    </Typo>
+                    {isModifyState ? (
+                      <Typo fontSize={1.2} style={{ width: '15%' }}>
+                        {nation.jobName}
+                      </Typo>
+                    ) : (
+                      <DropDown
+                        key={nation.memberId}
+                        itemList={nation.jobList}
+                        selectedItem={nation.jobName}
+                        style={{ width: '18%' }}
+                        height={1.8}
+                        onChange={(e) => {
+                          setNationList(
+                            nationList.map((value: any) =>
+                              value.memberId === nation.memberId
+                                ? { ...value, jobName: e.target.value }
+                                : value
+                            )
+                          );
+                          nationList.map((value: any) => {
+                            if (value.memberId === nation.memberId) {
+                              modifyNation(value.memberId, e.target.value);
+                            }
+                          });
+                        }}
+                      />
+                    )}
+                    <Typo fontSize={1.2} style={{ width: '35%' }}>
+                      {nation.jobContent}
+                    </Typo>
+                    <Typo fontSize={1.2} style={{ width: '8%' }}>
+                      {nation.payCheck}
+                    </Typo>
+                    <Typo fontSize={1.2} style={{ width: '8%' }}>
+                      {nation.property}
+                    </Typo>
+                    {!isModifyState ? (
+                      <Image
+                        src='/delete_button.png'
+                        hover={true}
+                        width={1.5}
+                        height={1.5}
+                        onClick={() => {
+                          setIsModalOpen(true);
+                          setNationList(
+                            nationList.filter(
+                              (value: any) => value.memberId !== nation.memberId
+                            )
+                          );
+                          nationList.map((value: any) => {
+                            if (value.memberId === nation.memberId) {
+                              deleteNation(value.memberId);
+                            }
+                          });
+                        }}
+                        style={{
+                          marginLeft: '3rem',
+                          marginRight: '5rem',
+                        }}
+                      />
+                    ) : null}
+                    {isModalOpen && (
+                      <Modal
+                        width={15}
+                        height={5}
+                        warningMessage={'삭제되었습니다.'}
+                        closeModal={() => {
+                          setIsModalOpen(false);
+                        }}
+                      />
+                    )}
+                  </ListItemContainer>
+                )
+              );
+            })}
       </>
     </Root>
   );

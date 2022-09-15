@@ -50,8 +50,10 @@ const Home: NextPage = () => {
         .authorityName != 'ROLE_NATION'
     ) {
       setIsLogin(true);
+    } else {
+      setIsLogin(false);
     }
-  }, []);
+  }, [loginUserState.isLogin]);
 
   return (
     <IndexPageWrapper>
