@@ -422,7 +422,7 @@ const ManageInvestment = () => {
                                   getDetailStockList(stock.stockId);
                                 }}
                                 style={{
-                                  width: '10%',
+                                  width: '12%',
                                   marginLeft: '70%',
                                 }}
                               >

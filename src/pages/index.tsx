@@ -88,13 +88,13 @@ const Home: NextPage = () => {
             </div>
           </Link>
           {isLogin ? (
-            <div style={{ position: 'absolute', top: '4rem', left: '36rem' }}>
+            <div style={{ position: 'absolute', top: '5rem', left: '36.5rem' }}>
               <Image
                 src='/chat_text_button.png'
                 onClick={() => {
                   getToDayMessage();
                 }}
-                style={{ width: '100%', height: '100%' }}
+                style={{ width: '80%', height: '80%' }}
               />
               {isModalOpen && (
                 <Modal
@@ -105,23 +105,23 @@ const Home: NextPage = () => {
               )}
             </div>
           ) : null}
-          <div style={{ position: 'absolute', top: '-5.5rem', left: '-11rem' }}>
+          <div style={{ position: 'absolute', top: '0.1rem', left: '1rem' }}>
             <Link href='/aboutCoinvillage'>
               <div style={{ position: 'relative' }}>
                 <Image
                   src='/union.png'
-                  style={{ width: '95%', height: '100%' }}
+                  style={{ width: '80%', height: '90%' }}
                 />
                 <div
                   style={{
                     position: 'absolute',
-                    top: '0.8rem',
+                    top: '0.5rem',
                     left: '3.2rem',
                   }}
                 >
                   <Typo
                     color={color.warm_gray1}
-                    fontSize={1.7}
+                    fontSize={1.3}
                     style={{
                       marginTop: '1.5rem',
                       fontWeight: 'bold',

@@ -36,10 +36,7 @@ const TopBarLeftItemsContainer = styled.div`
 
 const ListContentContainer = styled.div`
   display: flex;
-  margin-top: 2.5rem;
-`;
-const ListDayContentContainer = styled.div`
-  display: flex;
+  margin-top: 2rem;
 `;
 
 const GuideBox = styled.div`
@@ -58,6 +55,5 @@ export {
   TopBarContainer,
   TopBarLeftItemsContainer,
   ListContentContainer,
-  ListDayContentContainer,
   GuideBox,
 };

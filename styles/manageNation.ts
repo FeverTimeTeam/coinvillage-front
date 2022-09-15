@@ -43,6 +43,13 @@ const ListTitleContainer = styled.div`
   margin-bottom: 1rem;
 `;
 
+const ListModifyTitleContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  margin-top: 3.6rem;
+  margin-bottom: 1rem;
+`;
+
 const ListItemContainer = styled.div`
   display: flex;
   margin-top: 1.5rem;
@@ -62,6 +69,7 @@ export {
   TopBarContainer,
   TopBarLeftItemsContainer,
   ListTitleContainer,
+  ListModifyTitleContainer,
   ListItemContainer,
   PaycheckButton,
 };

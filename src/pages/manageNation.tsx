@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   ListItemContainer,
   ListTitleContainer,
+  ListModifyTitleContainer,
   PaycheckButton,
   Root,
   TopBarContainer,
@@ -29,6 +30,7 @@ const ManageNation = () => {
   const [modifyButtonText, setModifyButtonText] = useState<string>('수정하기');
   const [allIsChecked, setAllIsChecked] = useState<boolean>(false);
   const [allItemChecked, setAllItemChecked] = useState<boolean>(false);
+  const [isWord, setIsWord] = useState<string>('');
   const [searchWord, setSearchWord] = useState<string>('');
   const [nationList, setNationList] = useRecoilState(nationListState);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -170,6 +172,12 @@ const ManageNation = () => {
     }
   });
 
+  useEffect(() => {
+    const timeOut = setTimeout(() => setSearchWord(isWord), 300);
+    searchNation(searchWord);
+    return () => clearTimeout(timeOut);
+  }, [isWord]);
+
   return (
     <Root>
       <>
@@ -223,23 +231,51 @@ const ManageNation = () => {
           <SearchBox
             width={9}
             height={1}
-            value={searchWord}
+            value={isWord}
             placeholder='이름 검색'
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              searchNation(searchWord);
-              setSearchWord(e.target.value);
+              setIsWord(e.target.value);
             }}
             onSubmit={(e: any) => {
               e.preventDefault();
+              setIsWord(e.target.value);
               searchNation(searchWord);
-              setSearchWord('');
             }}
           />
         </TopBarContainer>
-        <ListTitleContainer>
-          {!isModifyState ? (
-            <div style={{ width: '5rem' }}> </div>
-          ) : (
+        {!isModifyState ? (
+          <ListModifyTitleContainer>
+            <Typo
+              fontSize={1.2}
+              style={{
+                marginLeft: '5rem',
+                fontWeight: 'bold',
+                width: '7.5%',
+              }}
+            >
+              랭킹
+            </Typo>
+            <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '10.5%' }}>
+              이름
+            </Typo>
+            <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '12.5%' }}>
+              직업
+            </Typo>
+            <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '32%' }}>
+              하는 일
+            </Typo>
+            <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '6.8%' }}>
+              월급
+            </Typo>
+            <Typo
+              fontSize={1.2}
+              style={{ fontWeight: 'bold', width: '8%', marginRight: '8%' }}
+            >
+              총 재산
+            </Typo>
+          </ListModifyTitleContainer>
+        ) : (
+          <ListTitleContainer>
             <div>
               <Typo
                 fontSize={0.7}
@@ -253,29 +289,29 @@ const ManageNation = () => {
                 style={{ marginLeft: '0.5rem', marginRight: '3rem' }}
               />
             </div>
-          )}
-          <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '8%' }}>
-            랭킹
-          </Typo>
-          <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '8%' }}>
-            이름
-          </Typo>
-          <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '15%' }}>
-            직업
-          </Typo>
-          <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '33%' }}>
-            하는 일
-          </Typo>
-          <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '8%' }}>
-            월급
-          </Typo>
-          <Typo
-            fontSize={1.2}
-            style={{ fontWeight: 'bold', width: '8%', marginRight: '8%' }}
-          >
-            총 재산
-          </Typo>
-        </ListTitleContainer>
+            <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '8.5%' }}>
+              랭킹
+            </Typo>
+            <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '8.5%' }}>
+              이름
+            </Typo>
+            <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '14.5%' }}>
+              직업
+            </Typo>
+            <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '34.8%' }}>
+              하는 일
+            </Typo>
+            <Typo fontSize={1.2} style={{ fontWeight: 'bold', width: '7.5%' }}>
+              월급
+            </Typo>
+            <Typo
+              fontSize={1.2}
+              style={{ fontWeight: 'bold', width: '8%', marginRight: '8%' }}
+            >
+              총 재산
+            </Typo>
+          </ListTitleContainer>
+        )}
         <StyledHorizontalRule />
         {nationList &&
           nationList
