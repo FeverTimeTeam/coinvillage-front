@@ -116,20 +116,37 @@ const ManageJob = () => {
               >
                 {modifyButtonText}
               </Button>
-              <Button
-                backgroundColor={color.white}
-                color={color.kb}
-                borderColor={color.kb}
-                onClick={() => {
-                  setIsModalOpen(true);
-                }}
-                style={{
-                  marginRight: '1rem',
-                  border: 'solid',
-                }}
-              >
-                직업 추가
-              </Button>
+              {isModifyState ? (
+                <Button
+                  backgroundColor={color.white}
+                  color={color.kb}
+                  borderColor={color.kb}
+                  onClick={() => {
+                    setIsModalOpen(true);
+                  }}
+                  style={{
+                    marginRight: '0.5rem',
+                    border: 'solid',
+                  }}
+                >
+                  직업 추가
+                </Button>
+              ) : (
+                <Button
+                  backgroundColor={color.white}
+                  color={color.kb}
+                  borderColor={color.kb}
+                  onClick={() => {
+                    setIsModifyState(true);
+                  }}
+                  style={{
+                    marginRight: '1rem',
+                    border: 'solid',
+                  }}
+                >
+                  취소 하기
+                </Button>
+              )}
               {isModalOpen && (
                 <Modal
                   width={30}
