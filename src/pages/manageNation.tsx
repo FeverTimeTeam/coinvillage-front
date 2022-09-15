@@ -30,7 +30,6 @@ const ManageNation = () => {
   const [modifyButtonText, setModifyButtonText] = useState<string>('수정하기');
   const [allIsChecked, setAllIsChecked] = useState<boolean>(false);
   const [allItemChecked, setAllItemChecked] = useState<boolean>(false);
-  const [isWord, setIsWord] = useState<string>('');
   const [searchWord, setSearchWord] = useState<string>('');
   const [nationList, setNationList] = useRecoilState(nationListState);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -60,6 +59,7 @@ const ManageNation = () => {
       .get('/managements')
       .then((response) => {
         setNationList(response.data);
+        console.log('불러오기');
       })
       .catch((e) => {
         console.log(e);
@@ -166,18 +166,6 @@ const ManageNation = () => {
     }),
   ]);
 
-  nationList.map((nation: any) => {
-    if (nation.isChecked === true) {
-      console.log(nation.nickname);
-    }
-  });
-
-  useEffect(() => {
-    const timeOut = setTimeout(() => setSearchWord(isWord), 300);
-    searchNation(searchWord);
-    return () => clearTimeout(timeOut);
-  }, [isWord]);
-
   return (
     <Root>
       <>
@@ -231,14 +219,13 @@ const ManageNation = () => {
           <SearchBox
             width={9}
             height={1}
-            value={isWord}
+            value={searchWord}
             placeholder='이름 검색'
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setIsWord(e.target.value);
+              setSearchWord(e.target.value);
             }}
             onSubmit={(e: any) => {
               e.preventDefault();
-              setIsWord(e.target.value);
               searchNation(searchWord);
             }}
           />
