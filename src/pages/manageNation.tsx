@@ -19,11 +19,13 @@ import StyledHorizontalRule from '../components/horizontalRule';
 import DropDown from '../components/dropDown';
 import { axiosInstance } from '../queries/index';
 import { useRecoilState } from 'recoil';
-import { loginState, nationListState } from '../recoil';
+import { isLoggedInState, nationListState } from '../recoil';
 import Modal from '../components/modal';
 import { truncate } from 'fs';
 import { devNull } from 'os';
 import { useRouter } from 'next/router';
+import { loginUserState } from '../recoil/index';
+import useAuthLoadEffect from '../hooks/useAuthLoadEffect';
 
 const ManageNation = () => {
   const [isModifyState, setIsModifyState] = useState<boolean>(true);
@@ -34,19 +36,11 @@ const ManageNation = () => {
   const [nationList, setNationList] = useRecoilState(nationListState);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isPayModalOpen, setIsPayModalOpen] = useState<boolean>(false);
-  const [loginUserState, setLoginUserState] = useRecoilState(loginState);
+  const [loginUser, setLoginUser] = useRecoilState(loginUserState);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
   const router = useRouter();
 
-  useEffect(() => {
-    if (
-      loginUserState.isLogin == false ||
-      loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
-        .authorityName == 'ROLE_NATION'
-    ) {
-      alert('비로그인 유저 및 학생 회원은 접근 불가합니다.');
-      router.push('/');
-    }
-  }, []);
+  useAuthLoadEffect();
 
   const onClickModify = () => {
     setIsModifyState((isModifyState) => !isModifyState);
@@ -303,9 +297,7 @@ const ManageNation = () => {
         {nationList &&
           nationList
             .filter(
-              (nation: any) =>
-                nation.memberId !==
-                loginUserState.userInfo.memberResponseDto.memberId
+              (nation: any) => nation.memberId !== loginUser?.userInfo?.memberId
             )
             .map((nation: any, index: any) => {
               return (

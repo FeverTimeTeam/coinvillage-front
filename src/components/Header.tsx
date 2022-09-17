@@ -6,7 +6,7 @@ import Typo from './typo';
 import Button from './button';
 import deviceSize from '../constants/deviceSize';
 import { FiLogOut } from 'react-icons/fi';
-import { loginState, aboutPageState } from '../recoil';
+import { loginUserState, aboutPageState, isLoggedInState } from '../recoil';
 import { useRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
 import { axiosInstance } from '../queries';
@@ -143,8 +143,9 @@ const MemberInfoArea = styled.div`
 `;
 
 const Header: React.FC = () => {
-  const [loginUserState, setLoginUserState] = useRecoilState(loginState);
+  const [loginUser, setLoginUser] = useRecoilState(loginUserState);
   const [aboutState, setPageState] = useRecoilState(aboutPageState);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
   const router = useRouter();
 
   useEffect(() => {
@@ -153,27 +154,12 @@ const Header: React.FC = () => {
 
   function onLogout() {
     if (confirm('로그아웃 하시겠습니까?')) {
-      sessionStorage.removeItem('recoil-persist');
-      delete axiosInstance.defaults.headers.common['Authorization'];
-      setLoginUserState({
-        isLogin: false,
-        userInfo: {
-          memberResponseDto: {
-            authorityDtoSet: [
-              {
-                authorityName: 'ROLE_NATION',
-              },
-            ],
-            email: '',
-            memberId: -999,
-            nickname: '',
-            password: '',
-            phoneNumber: '',
-            property: 0,
-          },
-          token: '',
-        },
+      setLoginUser({
+        userInfo: null,
       });
+      sessionStorage.clear();
+      delete axiosInstance.defaults.headers.common['Authorization'];
+      setIsLoggedIn(false);
       router.push('/');
     }
   }
@@ -203,16 +189,14 @@ const Header: React.FC = () => {
           </>
         ) : (
           <>
-            {loginUserState.isLogin == true ? (
+            {isLoggedIn ? (
               <RulerMenuWrapper>
-                {loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
-                  .authorityName === 'ROLE_RULER' ? (
-                  <Link href='/manageNation'>국민 관리</Link>
-                ) : null}
+                {loginUser?.userInfo?.authorityDtoSet[0]?.authorityName ===
+                  'ROLE_RULER' && <Link href='/manageNation'>국민 관리</Link>}
                 <MemberInfoArea>
-                  {loginUserState.userInfo.memberResponseDto.nickname}(
-                  {loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
-                    .authorityName == 'ROLE_RULER'
+                  {loginUser?.userInfo?.nickname}(
+                  {loginUser?.userInfo?.authorityDtoSet[0]?.authorityName ==
+                  'ROLE_RULER'
                     ? '대통령'
                     : '국민'}
                   )

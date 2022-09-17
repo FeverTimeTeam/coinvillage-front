@@ -20,13 +20,16 @@ import NumberInput from '../components/numberInput';
 import Typo from '../components/typo';
 import Modal from '../components/modal';
 import { useRecoilState } from 'recoil';
-import { loginState, stocksListState, detailStockState } from '../recoil';
+import { stocksListState, detailStockState, loginUserState } from '../recoil';
 import { useRouter } from 'next/router';
+import { isLoggedInState } from '../recoil/index';
+import useAuthLoadEffect from '../hooks/useAuthLoadEffect';
 
 const ManageInvestment = () => {
   const [stockList, setStockList] = useRecoilState(stocksListState);
   const [detailStock, setDetailStock] = useRecoilState(detailStockState);
-  const [loginUserState, setLoginUserState] = useRecoilState(loginState);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
+  const [loginUser, setLoginUser] = useRecoilState(loginUserState);
   const [isAddState, setIsAddState] = useState<boolean>(false);
   const [isModifyState, setIsModifyState] = useState<boolean>(false);
   const [isStockContent, setIsStockContent] = useState<string>('');
@@ -45,6 +48,8 @@ const ManageInvestment = () => {
     date: today.getDate(),
   };
   const timestring = `${time.year - 2000}.${time.month}.${time.date}`;
+
+  useAuthLoadEffect();
 
   const getStockList = () => {
     axiosInstance
@@ -125,16 +130,6 @@ const ManageInvestment = () => {
       });
   };
 
-  useEffect(() => {
-    if (
-      loginUserState.isLogin == false ||
-      loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
-        .authorityName == 'ROLE_NATION'
-    ) {
-      alert('비로그인 유저 및 학생 회원은 접근 불가합니다.');
-      router.push('/');
-    }
-  }, []);
   const onClickAdd = () => {
     setIsAddState((isAddState) => !isAddState);
   };

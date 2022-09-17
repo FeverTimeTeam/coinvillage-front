@@ -19,7 +19,8 @@ import StyledHorizontalRule from '../components/horizontalRule';
 import { useRecoilState } from 'recoil';
 import { jobListState } from '../recoil';
 import { useRouter } from 'next/router';
-import { loginState, putState } from '../recoil';
+import { putState, loginUserState } from '../recoil';
+import useAuthLoadEffect from '../hooks/useAuthLoadEffect';
 
 const ManageJob = () => {
   const [isModifyState, setIsModifyState] = useState<boolean>(true);
@@ -28,20 +29,11 @@ const ManageJob = () => {
   const [isModifyModalOpen, setIsModifyModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [jobList, setJobList] = useRecoilState(jobListState);
-  const [loginUserState, setLoginUserState] = useRecoilState(loginState);
+  const [loginUser, setLoginUser] = useRecoilState(loginUserState);
   const [isPutState, setIsPutState] = useRecoilState(putState);
   const router = useRouter();
 
-  useEffect(() => {
-    if (
-      loginUserState.isLogin == false ||
-      loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
-        .authorityName == 'ROLE_NATION'
-    ) {
-      alert('비로그인 유저 및 학생 회원은 접근 불가합니다.');
-      router.push('/');
-    }
-  }, []);
+  useAuthLoadEffect();
 
   const onClickModify = () => {
     setIsModifyState((isModifyState) => !isModifyState);

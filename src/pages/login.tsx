@@ -7,12 +7,14 @@ import {
   LoginButton,
   SignUpWrapper,
 } from '../../styles/login';
-import { useRecoilState } from 'recoil';
+import { constSelector, useRecoilState } from 'recoil';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { axiosInstance } from '../queries';
-import { aboutPageState, loginState } from '../recoil';
+import { aboutPageState, loginUserState } from '../recoil';
 import styled from 'styled-components';
+import { isLoggedInState } from '../recoil/index';
+import { AxiosResponse } from 'axios';
 
 export const FullHeightRoot = styled(Root)`
   height: 100vh;
@@ -23,8 +25,9 @@ const Login = () => {
   const [pw, setPw] = useState<string>('');
   const router = useRouter();
 
-  const [loginUserState, setLoginUserState] = useRecoilState(loginState);
+  const [loginUser, setLoginUser] = useRecoilState(loginUserState);
   const [aboutState, setAboutState] = useRecoilState(aboutPageState);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
 
   useEffect(() => {
     setAboutState({ isAbout: 'sign' });
@@ -47,14 +50,26 @@ const Login = () => {
           email: id,
           password: pw,
         })
-        .then((res) => {
-          if (res.status == 200) {
-            setLoginUserState({
-              isLogin: true,
-              userInfo: res.data,
-            });
+        .then((response) => {
+          if (response.status == 200) {
+            setIsLoggedIn(true);
             axiosInstance.defaults.headers.common['Authorization'] =
-              'Bearer ' + res.data.token;
+              'Bearer ' + response.data.token;
+            sessionStorage.setItem('token', response.data.token);
+            sessionStorage.setItem(
+              'memberId',
+              response.data.memberResponseDto.memberId
+            );
+            const memberId = sessionStorage.getItem('memberId');
+            axiosInstance
+              .get(`/members/${memberId}`)
+              .then((response) => {
+                console.log(response.data);
+                setLoginUser({ userInfo: response.data });
+              })
+              .catch((e) => {
+                console.log(e);
+              });
             router.push('/');
           }
         });
