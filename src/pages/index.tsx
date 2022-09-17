@@ -5,12 +5,14 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Typo from '../components/typo';
 import color from '../constants/color';
-import { loginState } from '../recoil';
+import { loginUserState } from '../recoil';
 import { aboutPageState } from '../recoil';
 import Modal from '../components/smallModal';
 import { axiosInstance } from '../queries/index';
 import { useRecoilState } from 'recoil';
 import { todayMessage } from '../recoil';
+import useAuthLoadEffect from '../hooks/useAuthLoadEffect';
+import { isLoggedInState } from '../recoil/index';
 
 const IndexPageWrapper = styled.div`
   display: flex;
@@ -23,10 +25,12 @@ const IndexPageWrapper = styled.div`
 
 const Home: NextPage = () => {
   const [aboutState, setAboutState] = useRecoilState(aboutPageState);
-  const [loginUserState, setLoginUserState] = useRecoilState(loginState);
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [loginUser, setLoginUser] = useRecoilState(loginUserState);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
   const [isMessage, setIsMessage] = useRecoilState(todayMessage);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  useAuthLoadEffect();
 
   const getToDayMessage = () => {
     axiosInstance
@@ -43,17 +47,6 @@ const Home: NextPage = () => {
   useEffect(() => {
     setAboutState({ isAbout: false });
   }, []);
-  useEffect(() => {
-    if (
-      loginUserState.isLogin == true &&
-      loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
-        .authorityName != 'ROLE_NATION'
-    ) {
-      setIsLogin(true);
-    } else {
-      setIsLogin(false);
-    }
-  }, [loginUserState.isLogin]);
 
   return (
     <IndexPageWrapper>
@@ -87,7 +80,7 @@ const Home: NextPage = () => {
               />
             </div>
           </Link>
-          {isLogin ? (
+          {isLoggedIn && (
             <div style={{ position: 'absolute', top: '5rem', left: '36.5rem' }}>
               <Image
                 src='/chat_text_button.png'
@@ -104,7 +97,7 @@ const Home: NextPage = () => {
                 />
               )}
             </div>
-          ) : null}
+          )}
           <div style={{ position: 'absolute', top: '0.1rem', left: '1rem' }}>
             <Link href='/aboutCoinvillage'>
               <div style={{ position: 'relative' }}>
