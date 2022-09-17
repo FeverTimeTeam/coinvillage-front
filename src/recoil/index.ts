@@ -3,50 +3,19 @@ import { UserInfoType } from '../types/userInfo';
 import { recoilPersist } from 'recoil-persist';
 
 interface loginStateType {
-  isLogin: boolean;
-  userInfo: UserInfoType;
+  userInfo: UserInfoType | null;
 }
 
-const sessionStorage =
-  typeof window !== `undefined` ? window.sessionStorage : undefined;
-
-const { persistAtom } = recoilPersist({
-  key: 'recoil-persist',
-  storage: sessionStorage,
+export const loginUserState = atom<loginStateType>({
+  key: 'loginUserState',
+  default: {
+    userInfo: null,
+  },
 });
 
-type Nation = {
-  memberId: number;
-  nickname: string;
-  jobName: string;
-  jobContent: string;
-  payCheck: number;
-  property: number;
-  jobList: string[];
-};
-
-const loginState = atom<loginStateType>({
-  key: 'loginState',
-  default: {
-    isLogin: false,
-    userInfo: {
-      memberResponseDto: {
-        authorityDtoSet: [
-          {
-            authorityName: 'ROLE_NATION',
-          },
-        ],
-        email: '',
-        memberId: -999,
-        nickname: '',
-        password: '',
-        phoneNumber: '',
-        property: 0,
-      },
-      token: 'string',
-    },
-  },
-  effects_UNSTABLE: [persistAtom],
+export const isLoggedInState = atom<boolean>({
+  key: 'isLoggedInstate',
+  default: false,
 });
 
 const nationListState = atom<any>({
@@ -91,7 +60,6 @@ const putState = atom<boolean>({
 });
 
 export {
-  loginState,
   nationListState,
   jobListState,
   aboutPageState,
