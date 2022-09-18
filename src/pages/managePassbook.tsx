@@ -13,8 +13,9 @@ import Typo from '../components/typo';
 import DropDown from '../components/dropDown';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
-import { loginState } from '../recoil';
+import { isLoggedInState, loginUserState } from '../recoil';
 import { axiosInstance } from '../queries/index';
+import useAuthLoadEffect from '../hooks/useAuthLoadEffect';
 
 const ManagePassbook = () => {
   const [isInterestRate, setIsInterestRate] = useState<string>('0');
@@ -23,18 +24,10 @@ const ManagePassbook = () => {
   const [inputDisabled, setInputDisabled] = useState<boolean>(false);
   const [isModifyState, setIsModifyState] = useState<boolean>(false);
   const router = useRouter();
-  const [loginUserState, setLoginUserState] = useRecoilState(loginState);
+  const [loginUser, setLoginUser] = useRecoilState(loginUserState);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
 
-  useEffect(() => {
-    if (
-      loginUserState.isLogin == false ||
-      loginUserState.userInfo.memberResponseDto.authorityDtoSet[0]
-        .authorityName == 'ROLE_NATION'
-    ) {
-      alert('비로그인 유저 및 학생 회원은 접근 불가합니다.');
-      router.push('/');
-    }
-  }, []);
+  useAuthLoadEffect();
 
   const putSavingsSetting = () => {
     axiosInstance
